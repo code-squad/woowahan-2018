@@ -1,0 +1,82 @@
+@import url("../fonts/60sSTRIPE.otf");
+
+header {
+
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background-color: #00acc1;
+    position: fixed;
+    top: 0;
+
+}
+
+header .header-wrapper{
+
+    position: relative;
+    display: block;
+    height: 100%;
+
+}
+
+header .header-wrapper .brand-logo{
+
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-decoration: none;
+    text-align: center;
+    color: rgba(255,255,255, .9);
+    font-size: 1.6rem;
+    display: inline-block;
+    white-space: nowrap;
+    font-family: '60sSTRIPE';
+    font-weight: lighter;
+}
+
+.signup-box {
+
+  width: 400px;
+  height: 520px;
+  margin: 100px auto 0 auto;
+  padding-top: 10px;
+}
+
+.signup-box h4 {
+
+  /*font-family: '60sSTRIPE';*/
+  text-align: center;
+  /*letter-spacing: .05em;*/
+  margin-top: 40px;
+  /*color: #616161;*/
+  color: #616161;
+  display: block;
+}
+
+.signup-box .signup-form {
+
+  width: 250px;
+  height: 230px;
+  /*border: 1px solid black;*/
+  margin: 30px auto 0 auto;
+}
+
+.signup-box .signup-form  .input-field input:focus,  .signup-box .signup-form  .input-field input:focus{
+     border-bottom: 1px solid #4dd0e1;
+     box-shadow: 0 1px 0 0 #4dd0e1;
+}
+
+.signup-box .signup-form  .input-field input:focus + label,  .signup-box .signup-form  .input-field input:focus + label{
+     color: #4dd0e1;
+  }
+
+.signup-box .signup-form .signup-btn{
+
+  width: 230px;
+  height: 40px;
+  line-height: 40px;
+  margin: 40px auto 0 auto;
+  display: block;
+  background-color: #4dd0e1;
+  padding-top: 10px;
+}

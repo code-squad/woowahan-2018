@@ -1,0 +1,169 @@
+@import url("../fonts/60sSTRIPE.otf");
+
+header {
+
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  background-color: #00acc1;
+  position: fixed;
+  top: 0;
+
+}
+
+header .header-wrapper{
+
+  position: relative;
+  display: block;
+  height: 100%;
+
+}
+
+header .header-wrapper .brand-logo{
+
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-decoration: none;
+  text-align: center;
+  color: rgba(255,255,255, .9);
+  font-size: 1.6rem;
+  display: inline-block;
+  white-space: nowrap;
+  font-family: '60sSTRIPE';
+  font-weight: lighter;
+
+}
+
+header .header-wrapper ul {
+
+  float: right;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+
+}
+
+header .header-wrapper li {
+
+  list-style-type: none;
+  float: right;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
+header .header-wrapper li a{
+
+  font-size: 1rem;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  width: 75px;
+  height: 50px;
+  line-height: 50px;
+  color: rgba(255,255,255,0.9);
+  font-family: 'Noto Sans Light',sans-serif;
+  font-weight: 100;
+  transition: all .5s ease 0s;
+
+}
+
+header .header-wrapper li a:hover{
+
+  background-color: rgba(0,0,0,0.1);
+  color: white;
+
+}
+
+.login-box {
+
+  width: 400px;
+  height: 480px;
+  margin: 120px auto 0 auto;
+  padding-top: 10px;
+
+}
+
+.login-box h4 {
+
+  text-align: center;
+  margin-top: 40px;
+  color: #616161;
+  display: block;
+
+}
+
+.login-box .login-form {
+
+  width: 250px;
+  height: 230px;
+  margin: 30px auto 0 auto;
+
+}
+
+.login-box .login-form  .input-field input:focus,  .login-box .login-form  .input-field input:focus{
+
+  border-bottom: 1px solid #4dd0e1;
+  box-shadow: 0 1px 0 0 #4dd0e1;
+
+}
+
+.login-box .login-form  .input-field input:focus + label,  .login-box .login-form  .input-field input:focus + label{
+
+  color: #4dd0e1;
+
+}
+
+.login-box .login-form .login-btn{
+
+  width: 230px;
+  height: 40px;
+  line-height: 40px;
+  margin: 0 auto;
+  display: block;
+  background-color: #4dd0e1;
+  padding-top: 10px;
+
+}
+
+.login-box .github-login {
+
+  width: 230px;
+  height: 40px;
+  line-height: 40px;
+  margin: 0 auto;
+  display: block;
+  background-color: #90a4ae;
+  color: white;
+
+}
+
+.login-box .github-login .github-icon {
+
+  width: 40px;
+  height: 40px;
+  background-image: url("../image/github-logo.png");
+  background-repeat: no-repeat;
+  background-size: 30px 30px;
+  background-position: center;
+  float: left;
+
+}
+
+.login-box .github-login .github-login-text {
+
+  margin-right: 15px;
+
+}
+
+.login-box .alternatives-separator {
+
+  overflow: hidden;
+  text-align: center;
+  color: #616161;
+  margin-top: 20px;
+  margin-bottom: 7px;
+
+}

@@ -1,0 +1,156 @@
+@import url("../fonts/60sSTRIPE.otf");
+
+body {
+    background: url(../image/programming.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin: 0;
+
+}
+
+.background {
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+}
+
+header {
+
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background-color: #00acc1;
+    position: fixed;
+    top: 0;
+
+}
+
+header .header-wrapper{
+
+    position: relative;
+    display: block;
+    height: 100%;
+
+}
+
+header .header-wrapper .brand-logo{
+
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-decoration: none;
+    text-align: center;
+    color: rgba(255,255,255, .9);
+    font-size: 1.6rem;
+    display: inline-block;
+    white-space: nowrap;
+    font-family: '60sSTRIPE';
+    font-weight: lighter;
+}
+
+header .header-wrapper ul {
+
+    float: right;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+}
+
+header .header-wrapper li {
+
+    list-style-type: none;
+    float: right;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header .header-wrapper li a{
+
+    font-size: 1rem;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    width: 75px;
+    height: 50px;
+    line-height: 50px;
+    color: rgba(255,255,255,0.9);
+    font-family: 'Noto Sans Light',sans-serif;
+    font-weight: 100;
+    transition: all .5s ease 0s;
+
+}
+
+header .header-wrapper li a:hover{
+
+    background-color: rgba(0,0,0,0.1);
+    color: white;
+
+}
+
+.title-area {
+
+    width: 100%;
+    height: 400px;
+    margin: 0 auto;
+}
+
+.title-area .title {
+
+  width: 800px;
+  min-width: 700px;
+  height: 100px;
+  color: white;
+  line-height: 40px;
+  font-family: '60sSTRIPE', serif;
+  font-size: 8rem;
+  margin: 25% auto 0 auto;
+  text-align: center;
+  letter-spacing: 10px;
+
+}
+
+@media only screen and (max-width: 400px){
+
+  .title-area { margin-top:  70%; }
+
+}
+
+@media only screen and (min-width: 401px) and (max-width: 600px) {
+
+  .title-area { margin-top:  50%; }
+
+}
+
+@media only screen and (min-width: 601px) and (max-width: 799px) {
+
+  .title-area { margin-top:  40%; }
+
+}
+
+@media only screen and (min-width: 800px) and (max-width: 900px) {
+
+  .title-area { margin-top:  37%; }
+
+}
+
+.title-area .subtitle {
+
+    width: 800px;
+    min-width: 700px;
+    height: 30px;
+    line-height: 30px;
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 100;
+    margin: 10px auto 0 auto;
+    text-align: center;
+    letter-spacing: 4px;
+
+}

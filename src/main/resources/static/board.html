@@ -1,0 +1,177 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./lib/materialize.min.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="./css/board.css"/>
+</head>
+
+<body>
+
+  <header>
+    <div class="header-wrapper">
+      <a href="#" class="brand-logo">JWP Trello</a>
+      <ul>
+        <li><a href="#">logout</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="board-header-area">
+      <p class="board-name">Default Board</p>
+
+      <div class="member-list z-depth-1">
+          <ul class="members">
+            <li class="member">
+                <img src="./image/profile.png" />
+                <span class="member-name">Javajigi</span>
+            </li>
+          </ul>
+
+          <div class="add-member-form">
+              <input class="email-for-invitation" type="text" placeholder="e.g. taco@trello.com"/>
+              <div class="add-member-btn btn waves-effect waves-light" type="submit">submit</div>
+          </div>
+      </div>
+
+      <div class="members-btn waves-effect waves-light btn">members</div>
+  </div>
+
+  <div id="board-canvas" class="deck-sortable">
+    <div class="deck-wrapper">
+      <div class="deck-content z-depth-1">
+
+        <div class="deck-header">
+          <textarea class="deck-header-name" value="First Todo">First Todo</textarea>
+        </div>
+
+        <div class="deck-cards">
+        </div>
+
+        <div class="card-composer">
+          <div class="add-card-form">
+            <textarea class="card-title"></textarea>
+            <div class=btn-area>
+              <button class="btn waves-effect waves-light save-card">save</button>
+              <button class="btn waves-effect waves-light cancel-card">cancel</button>
+            </div>
+          </div>
+          <a class="add-card-btn" href="#">Add a Card...</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="add-deck-area">
+      <button class="btn waves-effect waves-light add-deck-btn">Add a Deck</button>
+      <form class="add-deck-form z-depth-1">
+        <div class="input-field col s12">
+          <input id="add-deck" type="text" class="validate" placeholder="Deck's name"/>
+          <div class=btn-area>
+            <button type="submit" class="waves-effect waves-light btn save-deck">save</button>
+            <button class="waves-effect waves-light btn cancel-deck">cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <!--------------------  Card Modal HTML-------------------------------->
+
+  <div id="modal" class="modal">
+    <div class="close-moadl"></div>
+    <div class="modal-content">
+      <span class="card-title-in-modal">{{card-title}}</span>
+      <span class="due-date-notification">Due Date</span>
+      <div class="deck-name-and-current-due-date-wrapper">
+        <span class="in-deck">in deck</span>
+        <span class="deck-name">{{deck-name}}</span>
+        <span class="current-due-date"></span>
+      </div>
+
+      <p class="card-description-edit-btn">
+        Edit the description
+      </p>
+      <div class="card-description-edit">
+        <textarea class="card-description-textarea"></textarea>
+        <div class="edit-controls">
+          <button class="btn waves-effect waves-light card-edit-save">Save</button>
+          <button class="btn waves-effect waves-light card-edit-close">Cancel</button>
+        </div>
+      </div>
+
+      <div class="card-description"></div>
+
+      <p>Add comment</p>
+      <div class="comment-frame">
+        <textarea class="comment-contents z-depth-1" placeholder="Write a comment..."></textarea>
+      </div>
+      <div class="comment-send btn waves-effect waves-light">Send</div></br>
+
+      <p>Activity</p>
+      <div class="comments">
+
+      </div>
+    </div>
+
+    <div class="modal-sidebar">
+
+      <p>Add</p>
+      <div class="modal-sidebar-btn z-depth-1 members-btn-in-card">Members</div>
+
+      <div class="modal-for-members z-depth-1">
+        <div class="members-btn-header">Members</div>
+        <div class="search-member">
+          <input type="text" placeholder="Search members" />
+        </div>
+      </div>
+
+      <div class="modal-sidebar-btn z-depth-1 due-date-btn"> Due Date</div>
+      <div class="modal-for-due-date z-depth-1">
+        <div class="due-date-btn-header">Change Due Date</div>
+        <form class="dpicker-widget">
+          <div class="datapicker-select-date">
+            <label>Date</label></br>
+            <input class="datepicker datapicker-select-input" type="date" placeholder="17/6/2016"/>
+          </div>
+
+          <div class="datapicker-select-time">
+            <label>Time</label></br>
+            <input class="datapicker-select-input" type="text" placeholder="12:00" tabindex="101"/>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-sidebar-btn z-depth-1 file-attachment">Attachment</div>
+
+      <div class="modal-for-attachment z-depth-1">
+        <div class="attachment-btn-header">Attach</div>
+        <input type="file" id="fileUpload" name="files[]" />
+        <div class="attach-from-computer">Computer</div>
+        <div class="attach-with-link">Attach a link</div>
+        <input type="text" class="link-for-attachment" placeholder="Paste any link here..." />
+        <div class="link-submit z-depth-1">Attach</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!----------------------------------------------------------------->
+
+  <!--------------------  Warning Modal HTML-------------------------------->
+
+    <div id="warning-modal" class="modal">
+     <div class="close-moadl"></div>
+     <div class="modal-content">
+       <h5>Please Write Contents!</h5>
+     </div>
+    </div>
+
+  <!----------------------------------------------------------------->
+
+  <script type="text/javascript" src="lib/jquery-2.2.0.min.js"></script>
+  <script type="text/javascript" src="lib/materialize.min.js"></script>
+  <script type="text/javascript" src="lib/handlebars-v4.0.5.js"></script>
+  <script type="text/javascript" src="./js/template.js"></script>
+</body>
+</html>
