@@ -2,6 +2,7 @@ package support;
 
 import com.woowahan.woowahan2018.domain.User;
 import com.woowahan.woowahan2018.domain.UserRepository;
+import com.woowahan.woowahan2018.dto.UserDto;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +18,8 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public abstract class AcceptanceTest {
-    private static final String DEFAULT_LOGIN_USER = "saram4030";
+    private static final String DEFAULT_LOGIN_USER_EMAIL = "saram4030";
+    private static final String DEFAULT_LOGIN_USER_PASSWORD = "12345asdf!@";
 
     @Autowired
     private TestRestTemplate template;
@@ -30,19 +32,11 @@ public abstract class AcceptanceTest {
     }
 
     public TestRestTemplate basicAuthTemplate() {
-        return basicAuthTemplate(defaultUser());
+        return template.withBasicAuth(DEFAULT_LOGIN_USER_EMAIL, DEFAULT_LOGIN_USER_PASSWORD);
     }
 
-    public TestRestTemplate basicAuthTemplate(User loginUser) {
-        return template.withBasicAuth(loginUser.getEmail(), loginUser.getEncryptedPassword());
-    }
-
-    protected User defaultUser() {
-        return findByEmail(DEFAULT_LOGIN_USER);
-    }
-
-    protected User findByEmail(String email) {
-        return userRepository.findByEmail(email).get();
+    public TestRestTemplate basicAuthTemplate(UserDto loginUser) {
+        return template.withBasicAuth(loginUser.getEmail(), loginUser.getPassword());
     }
 
     protected String createResource(String path, Object bodyPayload, TestRestTemplate template) {
@@ -63,7 +57,7 @@ public abstract class AcceptanceTest {
         return basicAuthTemplate().getForObject(location, responseType);
     }
 
-    protected <T> T getResource(String location, Class<T> responseType, User loginUser) {
+    protected <T> T getResource(String location, Class<T> responseType, UserDto loginUser) {
         return basicAuthTemplate(loginUser).getForObject(location, responseType);
     }
 }
