@@ -17,25 +17,26 @@
       <div class="signup-box z-depth-2">
 
           <h4>Create a Account</h4>
+          <div id="message"></div>
 
-          <form class="signup-form" method="POST">
+          <form class="signup-form" action="/api/users" method="POST">
             <div class="row">
                 <div class="input-field col s12">
-                  <input id="user_name" type="text" class="validate">
+                  <input id="user_name" name="username" type="text" class="validate">
                   <label for="user_name">Username</label>
                 </div>
             </div>
 
             <div class="row">
                 <div class="input-field col s12">
-                    <input id="email" type="email" class="validate">
+                    <input id="email" name="email" type="email" class="validate">
                     <label for="email">Email</label>
                   </div>
                 </div>
 
            <div class="row">
                 <div class="input-field col s12">
-                  <input id="password" type="password" class="validate">
+                  <input id="password" name="password" type="password" class="validate">
                   <label for="password">Password</label>
                 </div>
            </div>
@@ -46,5 +47,6 @@
 
       <script type="text/javascript" src="./lib/jquery-2.2.0.min.js"></script>
       <script type="text/javascript" src="./lib/materialize.min.js"></script>
+      <script type="text/javascript" src="js/signup.js"></script>
     </body>
   </html>
