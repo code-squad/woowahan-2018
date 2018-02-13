@@ -80,3 +80,9 @@ header .header-wrapper .brand-logo{
   background-color: #4dd0e1;
   padding-top: 10px;
 }
+
+#message {
+  text-align: center;
+  color: red;
+  height: 21px;
+}
