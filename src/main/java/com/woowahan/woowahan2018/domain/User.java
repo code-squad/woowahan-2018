@@ -1,5 +1,7 @@
 package com.woowahan.woowahan2018.domain;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Objects;
@@ -11,7 +13,7 @@ public class User extends AbstractEntity {
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String encryptedPassword;
 
     @Column(nullable = false)
     private String username;
@@ -20,10 +22,14 @@ public class User extends AbstractEntity {
 
     }
 
-    public User(String email, String password, String username) {
+    public User(String email, String encryptedPassword, String username) {
         this.email = email;
-        this.password = password;
+        this.encryptedPassword = encryptedPassword;
         this.username = username;
+    }
+
+    public boolean isCorrectPassword(String inputPassword, PasswordEncoder encoder) {
+        return encoder.matches(inputPassword, this.encryptedPassword);
     }
 
     public String getEmail() {
@@ -34,8 +40,8 @@ public class User extends AbstractEntity {
         return username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEncryptedPassword() {
+        return encryptedPassword;
     }
 
     @Override
@@ -44,12 +50,12 @@ public class User extends AbstractEntity {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(email, user.email) &&
-                Objects.equals(password, user.password);
+                Objects.equals(encryptedPassword, user.encryptedPassword);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, email, password);
+        return Objects.hash(username, email, encryptedPassword);
     }
 
     @Override
@@ -57,7 +63,7 @@ public class User extends AbstractEntity {
         return "User{" +
                 "username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
                 '}';
     }
 }

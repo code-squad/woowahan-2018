@@ -7,8 +7,10 @@ import com.woowahan.woowahan2018.exception.DuplicatedEmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Optional;
 
 @Service
@@ -19,14 +21,16 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Resource(name="bcryptEncoder")
+	private PasswordEncoder passwordEncoder;
+
 	public void createUser(UserDto userDto) throws DuplicatedEmailException {
 		Optional<User> maybeUser = userRepository.findByEmail(userDto.getEmail());
-		log.debug("userDto: {}", userDto);
 
 		if (maybeUser.isPresent())
 			throw new DuplicatedEmailException("이미 가입된 사용자입니다.");
 
-		userRepository.save(userDto.toUser());
+		userRepository.save(userDto.toUser(passwordEncoder));
 	}
 
 	private Optional<User> findUserById(long id) {
