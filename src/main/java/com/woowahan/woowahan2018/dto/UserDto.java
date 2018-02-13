@@ -1,25 +1,27 @@
 package com.woowahan.woowahan2018.dto;
 
 import com.woowahan.woowahan2018.domain.User;
+import org.hibernate.validator.constraints.Email;
 
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 public class UserDto {
-    private String username;
+
+    @Email(message = "잘못된 이메일 포맷입니다.")
     private String email;
+
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Za-z])(?=.*[$@$!%*?&].*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{10,}", message = "잘못된 비밀번호 포맷입니다.")
     private String password;
+    private String username;
 
     public UserDto() {
-
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public UserDto setUsername(String username) {
+    public UserDto(String email, String password, String username) {
+        this.email = email;
+        this.password = password;
         this.username = username;
-        return this;
     }
 
     public String getEmail() {
@@ -40,8 +42,17 @@ public class UserDto {
         return this;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public UserDto setUsername(String username) {
+        this.username = username;
+        return this;
+    }
+
     public User toUser() {
-        return new User(username, email, password);
+        return new User(email, password, username);
     }
 
     @Override
@@ -65,7 +76,6 @@ public class UserDto {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(username, email, password);
     }
 }

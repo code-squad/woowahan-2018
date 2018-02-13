@@ -1,5 +1,7 @@
 package com.woowahan.woowahan2018.domain;
 
+import org.hibernate.validator.constraints.Email;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Objects;
@@ -7,31 +9,32 @@ import java.util.Objects;
 @Entity
 public class User extends AbstractEntity {
 
-    @Column(nullable = false)
-    private String username;
-
+    @Email(message = "잘못된 이메일 포맷입니다.")
     @Column(nullable =  false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String username;
+
     public User() {
 
     }
 
-    public User(String username, String email, String password) {
-        this.username = username;
+    public User(String email, String password, String username) {
         this.email = email;
         this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
+        this.username = username;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
