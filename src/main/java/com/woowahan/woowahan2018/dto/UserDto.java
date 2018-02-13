@@ -3,16 +3,22 @@ package com.woowahan.woowahan2018.dto;
 import com.woowahan.woowahan2018.domain.User;
 import org.hibernate.validator.constraints.Email;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 public class UserDto {
 
     @Email(message = "잘못된 이메일 포맷입니다.")
+    @NotNull(message = "값을 입력해주세요.")
     private String email;
 
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Za-z])(?=.*[$@$!%*?&].*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{10,}", message = "잘못된 비밀번호 포맷입니다.")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Za-z])(?=.*[$@$!%*?&].*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{10,}"
+            , message = "잘못된 비밀번호 포맷입니다.")
+    @NotNull(message = "값을 입력해주세요.")
     private String password;
+
+    @NotNull(message = "값을 입력해주세요.")
     private String username;
 
     public UserDto() {

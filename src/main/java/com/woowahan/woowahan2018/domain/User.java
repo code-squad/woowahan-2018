@@ -1,7 +1,5 @@
 package com.woowahan.woowahan2018.domain;
 
-import org.hibernate.validator.constraints.Email;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Objects;
@@ -9,7 +7,6 @@ import java.util.Objects;
 @Entity
 public class User extends AbstractEntity {
 
-    @Email(message = "잘못된 이메일 포맷입니다.")
     @Column(nullable =  false, unique = true)
     private String email;
 
