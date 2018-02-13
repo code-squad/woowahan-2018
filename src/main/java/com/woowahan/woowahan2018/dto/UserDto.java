@@ -2,6 +2,7 @@ package com.woowahan.woowahan2018.dto;
 
 import com.woowahan.woowahan2018.domain.User;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -57,8 +58,10 @@ public class UserDto {
         return this;
     }
 
-    public User toUser() {
-        return new User(email, password, username);
+    public User toUser(PasswordEncoder encoder) {
+        return new User(email,
+                encoder.encode(this.password),
+                username);
     }
 
     @Override
