@@ -200,8 +200,7 @@ typings/
 ## Plugin-specific files:
 
 # IntelliJ
-*githubLogin.js
-
+*githubConfig.js
 
 # mpeltonen/sbt-idea plugin
 
