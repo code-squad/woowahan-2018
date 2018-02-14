@@ -39,6 +39,7 @@ cmake-build-debug/
 # IntelliJ
 /out/
 application-server.properties
+application-dev.properties
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -199,6 +200,8 @@ typings/
 ## Plugin-specific files:
 
 # IntelliJ
+*githubLogin.js
+
 
 # mpeltonen/sbt-idea plugin
 
