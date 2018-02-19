@@ -584,7 +584,7 @@ body #modal{
 
 }
 
-#modal .close-moadl {
+#modal .close-modal {
 
   width: 25px;
   height: 25px;
@@ -1180,7 +1180,7 @@ body #warning-modal {
 
 }
 
-#warning-modal .close-moadl {
+#warning-modal .close-modal {
 
   width: 25px;
   height: 25px;

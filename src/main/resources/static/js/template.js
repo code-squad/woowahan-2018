@@ -1,8 +1,8 @@
 var Template = {
 
-  board : "<li class='board waves-effect waves-light btn'>" +
-                    "{{input-value}}" +
-          "</li>",
+  board : "<a class='board waves-effect waves-light btn' href='../board.html?boardId={{id}}'>" +
+                    "{{name}}" +
+          "</a>",
 
   deck : "<div class='deck-wrapper'>" +
                 "<div class='deck-content z-depth-1'>" +
