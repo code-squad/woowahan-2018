@@ -1,5 +1,5 @@
 var Template = {
-
+  loginFail : "<p>아이디",
   board : "<li class='board waves-effect waves-light btn'>" +
                     "{{input-value}}" +
           "</li>",

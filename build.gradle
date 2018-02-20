@@ -24,12 +24,16 @@ repositories {
 
 
 dependencies {
+	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	runtime('mysql:mysql-connector-java')
-	runtime('com.h2database:h2')
+	compile('org.hibernate:hibernate-java8')
+	compile('com.h2database:h2')
+	compile('org.springframework.security.oauth:spring-security-oauth2')
 	runtime('org.springframework.boot:spring-boot-devtools')
+	runtime('net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.1.0')
+	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
 }

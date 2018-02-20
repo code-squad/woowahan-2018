@@ -1,11 +1,14 @@
 package com.woowahan.woowahan2018.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Objects;
 
 public class CommonResponse {
 
     private ResponseStatus status;
     private String message;
+    private Object content;
 
     public CommonResponse() {
     }
@@ -13,6 +16,12 @@ public class CommonResponse {
     private CommonResponse(ResponseStatus status, String message) {
         this.status = status;
         this.message = message;
+    }
+
+    private CommonResponse(ResponseStatus status, String message, Object content) {
+        this.status = status;
+        this.message = message;
+        this.content = content;
     }
 
     public ResponseStatus getStatus() {
@@ -29,6 +38,14 @@ public class CommonResponse {
 
     public static CommonResponse error(String message) {
         return new CommonResponse(ResponseStatus.FAIL, message);
+    }
+
+    public static CommonResponse success(String message, Object content) {
+        return new CommonResponse(ResponseStatus.OK, message, content);
+    }
+
+    public static CommonResponse error(String message, Object content) {
+        return new CommonResponse(ResponseStatus.FAIL, message, content);
     }
 
     @Override
@@ -51,5 +68,16 @@ public class CommonResponse {
                 "status='" + status + '\'' +
                 ", message='" + message + '\'' +
                 '}';
+    }
+
+    public String toJsonString() {
+        ObjectMapper mapper = new ObjectMapper();
+        String result;
+        try {
+            result = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            result = "";
+        }
+        return result;
     }
 }
