@@ -1,42 +1,30 @@
-console.log("login.js");
+import Utils from './Utils.js';
 
-const form = document.querySelector("form");
-const email = document.querySelector("#email");
-const password = document.querySelector("#password");
+class LoginController {
+    login(e) {
+        e.preventDefault();
 
-function login(e) {
-    let promise;
-    e.preventDefault();
-    console.log("send login request");
-    promise = new Promise((resolve) => {
-        let xhr = new XMLHttpRequest();
-        xhr.open("post", "/api/users/login", true);
-        xhr.addEventListener("load", () => {
-        	resolve(JSON.parse(xhr.response));
-        });
-        xhr.setRequestHeader("Content-type", "application/json");
+        const email = Utils.$("#email");
+        const password = Utils.$("#password");
 
-        const data = {
-            "email" : email.value,
-            "password" : password.value
-        };
+        const parameters = {
+            "email": email.value,
+            "password": password.value
+        }
 
-        xhr.send(JSON.stringify(data));
-    });
+        Utils.ajax("/api/users/login", "POST", parameters).then(this.afterLoginRequest);
+    }
 
-    return promise;
-}
+    afterLoginRequest(res){
+        let status = res.status;
 
-function afterLoginRequest(res){
-    let status = res.status;
-
-    if (status === "OK") {
-        window.location.replace("/boards.html");
-    } else {
-        document.querySelector(".login-notification").innerHTML = `<p> ${res.message} </p>`;
+        if (status === "OK") {
+            window.location.replace("/boards.html");
+        } else {
+            console.log("asdf");
+            document.querySelector(".login-notification").innerHTML = `<p> ${res.message} </p>`;
+        }
     }
 }
 
-form.addEventListener("submit", (e) => {
-    login(e).then(afterLoginRequest)
-});
+export default LoginController;
