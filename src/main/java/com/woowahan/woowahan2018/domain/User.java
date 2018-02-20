@@ -23,7 +23,7 @@ public class User extends AbstractEntity {
 
     @Column(nullable = false)
     @Length(max = 30)
-    private String username;
+    private String name;
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
@@ -32,20 +32,20 @@ public class User extends AbstractEntity {
 
     }
 
-    public User(String email, String encryptedPassword, String username) {
+    public User(String email, String encryptedPassword, String name) {
         this.email = email;
         this.encryptedPassword = encryptedPassword;
-        this.username = username;
+        this.name = name;
     }
 
-    public User(String email, String encryptedPassword, String username, AccountType accountType) {
-        this(email, username, accountType);
+    public User(String email, String encryptedPassword, String name, AccountType accountType) {
+        this(email, name, accountType);
         this.encryptedPassword = encryptedPassword;
     }
 
-    public User(String email, String username, AccountType accountType) {
+    public User(String email, String name, AccountType accountType) {
         this.email = email;
-        this.username = username;
+        this.name = name;
         this.accountType = accountType;
     }
 
@@ -57,8 +57,8 @@ public class User extends AbstractEntity {
         return email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public String getEncryptedPassword() {
@@ -78,7 +78,7 @@ public class User extends AbstractEntity {
         return "User{" +
                 "email='" + email + '\'' +
                 ", encryptedPassword='" + encryptedPassword + '\'' +
-                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
                 ", accountType=" + accountType +
                 '}';
     }
@@ -91,12 +91,12 @@ public class User extends AbstractEntity {
         User user = (User) o;
         return Objects.equals(email, user.email) &&
                 Objects.equals(encryptedPassword, user.encryptedPassword) &&
-                Objects.equals(username, user.username) &&
+                Objects.equals(name, user.name) &&
                 accountType == user.accountType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), email, encryptedPassword, username, accountType);
+        return Objects.hash(super.hashCode(), email, encryptedPassword, name, accountType);
     }
 }

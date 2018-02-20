@@ -15,9 +15,9 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class UserDto {
-    @Email(message = "잘못된 이메일 포맷입니다."
+    @Email(message = "이메일은 @를 포함해야 합니다."
             , groups = { TrelloUserGroup.class, GithubUserGroup.class })
-    @NotNull(message = "값을 입력해주세요."
+    @NotNull(message = "이메일을 입력해주세요."
             , groups = { TrelloUserGroup.class, GithubUserGroup.class })
     @Size(min = 5, max = 30
             , message = "이메일은 5자 이상, 30자 이하이어야 합니다."
@@ -25,15 +25,15 @@ public class UserDto {
     private String email;
 
     @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Za-z])(?=.*[$@#^!%*?&].*[$@#^!%*?&])[A-Za-z\\d$@#^!%*?&]{10,}"
-            , message = "잘못된 비밀번호 포맷입니다."
+            , message = "비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다."
             , groups = TrelloUserGroup.class)
-    @NotNull(message = "값을 입력해주세요."
+    @NotNull(message = "비밀번호를 입력해주세요."
             , groups = TrelloUserGroup.class)
     @Size(min = 10, max = 30, message = "비밀번호는 10자 이상, 30자 이하이어야 합니다."
             , groups = TrelloUserGroup.class)
     private String password;
 
-    @NotNull(message = "값을 입력해주세요."
+    @NotNull(message = "사용자 이름을 입력해주세요."
             , groups = { TrelloUserGroup.class, GithubUserGroup.class })
     private String username;
 
