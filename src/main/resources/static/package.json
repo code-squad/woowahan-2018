@@ -1,0 +1,24 @@
+{
+  "name": "woowahan-2018",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-squad/woowahan-2018.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/code-squad/woowahan-2018/issues"
+  },
+  "homepage": "https://github.com/code-squad/woowahan-2018#readme",
+  "dependencies": {
+    "node-sass": "^4.7.2",
+    "webpack": "^3.11.0"
+  }
+}
