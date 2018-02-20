@@ -3,11 +3,20 @@ package com.woowahan.woowahan2018.domain;
 import com.woowahan.woowahan2018.dto.BoardDto;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 public class Board extends AbstractEntity{
     private String name;
+
+    @OneToMany
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_board_decks"))
+    private List<Deck> decks;
 
     public Board() {
     }
@@ -18,6 +27,10 @@ public class Board extends AbstractEntity{
 
     public String getName() {
         return name;
+    }
+
+    public List<Deck> getDecks() {
+        return this.decks;
     }
 
     public BoardDto toBoardDto() {
@@ -44,5 +57,15 @@ public class Board extends AbstractEntity{
         return "Board{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    public void deleteDeck(long deckId) {
+        decks = decks.stream()
+                .filter(deck -> deck.getId() != deckId)
+                .collect(Collectors.toList());
+    }
+
+    public void addDeck(Deck deck) {
+        decks.add(deck);
     }
 }

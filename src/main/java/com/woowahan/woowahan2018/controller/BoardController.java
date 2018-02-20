@@ -26,11 +26,11 @@ public class BoardController {
 
     @GetMapping("")
     private BoardsDto list() {
-        List<Board> boards = boardService.findAll();
+        List<Board> boards = boardService.findAllBoards();
 
         return new BoardsDto(
                 boards.stream()
-                .map(board -> board.toBoardDto())
+                .map(Board::toBoardDto)
                 .collect(Collectors.toList())
         );
     }

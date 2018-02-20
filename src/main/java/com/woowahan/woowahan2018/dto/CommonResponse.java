@@ -6,6 +6,7 @@ public class CommonResponse {
 
     private ResponseStatus status;
     private String message;
+    private Object content;
 
     public CommonResponse() {
     }
@@ -13,6 +14,12 @@ public class CommonResponse {
     private CommonResponse(ResponseStatus status, String message) {
         this.status = status;
         this.message = message;
+    }
+
+    private CommonResponse(ResponseStatus status, String message, Object content) {
+        this.status = status;
+        this.message = message;
+        this.content = content;
     }
 
     public ResponseStatus getStatus() {
@@ -25,6 +32,10 @@ public class CommonResponse {
 
     public static CommonResponse success(String message) {
         return new CommonResponse(ResponseStatus.OK, message);
+    }
+
+    public static CommonResponse success(String message, Object content) {
+        return new CommonResponse(ResponseStatus.OK, message, content);
     }
 
     public static CommonResponse error(String message) {
