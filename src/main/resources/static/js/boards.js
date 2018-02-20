@@ -38,7 +38,7 @@ function appendBoard(res) {
   let status = res.status;
   console.log(res);
   if (status === "OK") {
-    boardListDom.innerHTML += createTemplate(Template.board, {'name': nameDom.value});
+    boardListDom.innerHTML += createTemplate(Template.board, {'id' : res.content.id, 'name': nameDom.value});
     closeModal();
     nameDom.value = "";
   } else {

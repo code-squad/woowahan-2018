@@ -38,7 +38,7 @@ public class BoardController {
     @PostMapping("")
     public CommonResponse createBoard(@RequestBody @Valid BoardDto boardDto) throws MethodArgumentNotValidException {
         log.debug("boardDto: {}", boardDto);
-        boardService.createBoard(boardDto);
-        return CommonResponse.success("Board를 성공적으로 생성했습니다.");
+        Board board = boardService.createBoard(boardDto);
+        return CommonResponse.success("Board를 성공적으로 생성했습니다.", board);
     }
 }

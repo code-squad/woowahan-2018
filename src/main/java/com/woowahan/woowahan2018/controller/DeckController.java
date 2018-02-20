@@ -28,8 +28,8 @@ public class DeckController {
     public CommonResponse postDeck(@PathVariable long boardId,
                                    @RequestBody
                                    @Valid DeckDto deckDto) throws NoSuchBoardFoundException {
-        boardService.createDeck(boardId, deckDto);
-        return CommonResponse.success("Deck 생성");
+        Deck deck = boardService.createDeck(boardId, deckDto);
+        return CommonResponse.success("Deck 생성", deck);
     }
 
     @DeleteMapping("/{deckId}")

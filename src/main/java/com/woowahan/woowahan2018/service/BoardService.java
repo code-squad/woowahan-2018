@@ -22,8 +22,8 @@ public class BoardService {
     @Autowired
     private DeckRepository deckRepository;
 
-    public void createBoard(BoardDto boardDto) {
-        boardRepository.save(boardDto.toBoard());
+    public Board createBoard(BoardDto boardDto) {
+        return boardRepository.save(boardDto.toBoard());
     }
 
     public List<Board> findAllBoards() {
@@ -37,13 +37,14 @@ public class BoardService {
     }
 
     @Transactional
-    public void createDeck(long boardId, DeckDto deckDto) throws NoSuchBoardFoundException {
+    public Deck createDeck(long boardId, DeckDto deckDto) throws NoSuchBoardFoundException {
         Deck deck = deckRepository.save(deckDto.toDeck());
 
         Board board = Optional.ofNullable(boardRepository.findOne(boardId))
                 .orElseThrow(NoSuchBoardFoundException::new);
 
         board.addDeck(deck);
+        return deck;
     }
 
     @Transactional

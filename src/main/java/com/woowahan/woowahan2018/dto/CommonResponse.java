@@ -30,6 +30,10 @@ public class CommonResponse {
         return message;
     }
 
+    public Object getContent() {
+        return content;
+    }
+
     public static CommonResponse success(String message) {
         return new CommonResponse(ResponseStatus.OK, message);
     }
