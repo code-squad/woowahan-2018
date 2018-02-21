@@ -18,8 +18,6 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class UserDto {
-    @NotNull(message = "이메일을 입력해주세요."
-            , groups = EmailFirstGroup.class)
     @NotBlank(message = "이메일을 입력해주세요."
             , groups = EmailFirstGroup.class)
     @Size(min = 5, max = 30
@@ -29,8 +27,6 @@ public class UserDto {
             , groups = EmailThirdGroup.class)
     private String email;
 
-    @NotNull(message = "비밀번호를 입력해주세요."
-            , groups = PasswordFirstGroup.class)
     @NotBlank(message = "비밀번호를 입력해주세요."
             , groups = PasswordFirstGroup.class)
     @Size(min = 10, max = 30, message = "비밀번호는 10자 이상, 30자 이하이어야 합니다."
@@ -40,8 +36,6 @@ public class UserDto {
             , groups = PasswordThirdGroup.class)
     private String password;
 
-    @NotNull(message = "사용자 이름을 입력해주세요."
-            , groups = NameFirstGroup.class)
     @NotBlank(message = "사용자 이름을 입력해주세요."
             , groups = NameFirstGroup.class)
     private String name;
