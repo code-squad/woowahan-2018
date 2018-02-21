@@ -63,8 +63,9 @@ public class CommonResponse {
     @Override
     public String toString() {
         return "CommonResponse{" +
-                "status='" + status + '\'' +
+                "status=" + status +
                 ", message='" + message + '\'' +
+                ", content=" + content +
                 '}';
     }
 }

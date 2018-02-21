@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class DeckDto {
 
-    @NotNull(message = "Deck이름을 입력해주세요.")
-    @NotBlank(message = "Deck이름을 입력해주세요.")
+    @NotNull(message = "이름을 입력하세요.")
+    @NotBlank(message = "이름을 입력하세요.")
     private String name;
 
     public DeckDto() {
