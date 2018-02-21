@@ -5,6 +5,7 @@ import com.woowahan.woowahan2018.dto.BoardDto;
 import com.woowahan.woowahan2018.dto.BoardsDto;
 import com.woowahan.woowahan2018.dto.CommonResponse;
 import com.woowahan.woowahan2018.dto.UserDto;
+import com.woowahan.woowahan2018.exception.NoSuchBoardFoundException;
 import com.woowahan.woowahan2018.service.BoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,14 +26,21 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping("")
-    private BoardsDto list() {
+    public CommonResponse list() {
         List<Board> boards = boardService.findAllBoards();
 
-        return new BoardsDto(
-                boards.stream()
-                .map(Board::toBoardDto)
-                .collect(Collectors.toList())
+        return CommonResponse.success("Boards를 읽어왔습니다.",
+                new BoardsDto(
+                    boards.stream()
+                    .map(Board::toBoardDto)
+                    .collect(Collectors.toList()))
         );
+    }
+
+    @GetMapping("/{boardId}")
+    public CommonResponse getOneBoard(@PathVariable long boardId) throws NoSuchBoardFoundException {
+        Board board = boardService.findOneBoard(boardId);
+        return CommonResponse.success("Board를 읽어왔습니다.", board);
     }
 
     @PostMapping("")

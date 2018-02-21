@@ -202,7 +202,7 @@ header .header-wrapper ul li a:hover{
   padding-left: 25px;
   display: block;
   background-color: #4dd0e1;
-  margin-top: 30px;
+  margin-top: -70px;
   margin-right: 20px;
   box-sizing: border-box;
   border-radius: 3px;
@@ -566,6 +566,13 @@ header .header-wrapper ul li a:hover{
 
   background-color: transparent;
 
+}
+
+.board-username {
+  padding-left: 40px;
+  font-size: 35px;
+  color: #4d4d4d;
+  height: 52px;
 }
 
 body #modal{

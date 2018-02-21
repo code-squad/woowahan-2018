@@ -5,8 +5,9 @@ const addDeckForm = document.querySelector(".add-deck-form");
 const addDeckArea = document.querySelector(".add-deck-area");
 const closeDeckButton = document.querySelector(".cancel-deck");
 const nameDom = document.querySelector("#add-deck");
-const saveButton = document.querySelector(".save-deck")
-const deckList = document.querySelector(".deck-list")
+const saveButton = document.querySelector(".save-deck");
+const deckList = document.querySelector(".deck-list");
+const boardUsername = document.querySelector(".board-username");
 
 function openDeckForm() {
     addDeckForm.style.display = "block";
@@ -75,6 +76,27 @@ function printAllDeck(res) {
     });
 }
 
+function getBoardName() {
+    return new Promise((resolve, timeLimit) => {
+        let xhr = new XMLHttpRequest();
+        xhr.open("get", `/api/boards/${boardId}`, true);
+        xhr.addEventListener("load", (e) => {
+            console.log(xhr);
+            resolve(JSON.parse(xhr.response));
+        });
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send();
+    });
+}
+
+function printBoardName(res) {
+    console.log(res)
+    if(res.status == "OK") {
+        const boardName = res.content.name;
+        boardUsername.innerHTML = boardName
+    }
+}
+
 function initControls() {
     addDeckButton.addEventListener("click", openDeckForm);
     closeDeckButton.addEventListener("click", (e) => {
@@ -89,6 +111,7 @@ function initControls() {
     });
 
     document.addEventListener("DOMContentLoaded", () => {
+        getBoardName().then(printBoardName);
         getExistDecks().then(printAllDeck);
     });
 }

@@ -36,28 +36,29 @@ public class BoardService {
     }
 
     public List<Deck> findAllDecks(long boardId) throws NoSuchBoardFoundException {
-        return Optional.ofNullable(boardRepository.findOne(boardId))
-                .map(Board::getDecks)
-                .orElseThrow(NoSuchBoardFoundException::new);
+        Board board = findOneBoard(boardId);
+        return board.getDecks();
     }
 
     @Transactional
     public Deck createDeck(long boardId, DeckDto deckDto) throws NoSuchBoardFoundException {
         Deck deck = deckRepository.save(deckDto.toDeck());
 
-        Board board = Optional.ofNullable(boardRepository.findOne(boardId))
-                .orElseThrow(NoSuchBoardFoundException::new);
-
+        Board board = findOneBoard(boardId);
         board.addDeck(deck);
         return deck;
     }
 
     @Transactional
     public void deleteDeck(long boardId, long deckId) throws NoSuchBoardFoundException {
-        Board board = Optional.ofNullable(boardRepository.findOne(boardId))
-                .orElseThrow(NoSuchBoardFoundException::new);
+        Board board = findOneBoard(boardId);
 
         board.deleteDeck(deckId);
         deckRepository.delete(deckId);
+    }
+
+    public Board findOneBoard(long boardId) throws NoSuchBoardFoundException {
+        return Optional.ofNullable(boardRepository.findOne(boardId))
+                .orElseThrow(NoSuchBoardFoundException::new);
     }
 }

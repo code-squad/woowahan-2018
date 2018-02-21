@@ -71,7 +71,7 @@ function getExistBoards() {
 }
 
 function printAllBoard(res) {
-  const boards = res.boards;
+  const boards = res.content;
 
   boards.forEach((item) => {
     boardListDom.innerHTML += createTemplate(Template.board, {'id': item.id, 'name': item.name});
