@@ -35,25 +35,25 @@ public class UserDto {
 
     @NotNull(message = "값을 입력해주세요."
             , groups = { TrelloUserGroup.class, GithubUserGroup.class })
-    private String username;
+    private String name;
 
     private AccountType accountType;
 
     public UserDto() {
     }
 
-    public UserDto(String email, String password, String username) {
+    public UserDto(String email, String password, String name) {
         this.email = email;
         this.password = password;
-        this.username = username;
+        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getname() {
+        return name;
     }
 
     public UserDto setEmail(String email) {
@@ -61,8 +61,8 @@ public class UserDto {
         return this;
     }
 
-    public UserDto setUsername(String username) {
-        this.username = username;
+    public UserDto setname(String name) {
+        this.name = name;
         return this;
     }
 
@@ -85,13 +85,13 @@ public class UserDto {
     }
 
     public User toUser() {
-        return new User(email, username, accountType);
+        return new User(email, name, accountType);
     }
 
     public User toUser(PasswordEncoder encoder) {
         return new User(email,
                 encoder.encode(password),
-                username,
+                name,
                 accountType);
     }
 
@@ -100,7 +100,7 @@ public class UserDto {
         return "UserDto{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
                 ", accountType=" + accountType +
                 '}';
     }
@@ -112,12 +112,12 @@ public class UserDto {
         UserDto userDto = (UserDto) o;
         return Objects.equals(email, userDto.email) &&
                 Objects.equals(password, userDto.password) &&
-                Objects.equals(username, userDto.username) &&
+                Objects.equals(name, userDto.name) &&
                 accountType == userDto.accountType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password, username, accountType);
+        return Objects.hash(email, password, name, accountType);
     }
 }
