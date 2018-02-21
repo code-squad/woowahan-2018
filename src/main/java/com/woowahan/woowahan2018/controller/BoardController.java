@@ -4,7 +4,7 @@ import com.woowahan.woowahan2018.domain.Board;
 import com.woowahan.woowahan2018.dto.BoardDto;
 import com.woowahan.woowahan2018.dto.BoardsDto;
 import com.woowahan.woowahan2018.dto.CommonResponse;
-import com.woowahan.woowahan2018.exception.NoSuchBoardFoundException;
+import com.woowahan.woowahan2018.exception.BoardNotFoundException;
 import com.woowahan.woowahan2018.service.BoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class BoardController {
     }
 
     @GetMapping("/{boardId}")
-    public CommonResponse getOneBoard(@PathVariable long boardId) throws NoSuchBoardFoundException {
+    public CommonResponse getOneBoard(@PathVariable long boardId) throws BoardNotFoundException {
         Board board = boardService.findOneBoard(boardId);
         return CommonResponse.success("Board를 읽어왔습니다.", board);
     }

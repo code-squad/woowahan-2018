@@ -1,8 +1,8 @@
 package com.woowahan.woowahan2018.exception;
 
-public class NoSuchBoardFoundException extends Throwable {
+public class BoardNotFoundException extends Throwable {
 
-    public NoSuchBoardFoundException() {
+    public BoardNotFoundException() {
         super("보드를 찾을 수 없습니다.");
     }
 

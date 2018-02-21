@@ -3,7 +3,7 @@ package com.woowahan.woowahan2018.controller;
 import com.woowahan.woowahan2018.domain.Deck;
 import com.woowahan.woowahan2018.dto.CommonResponse;
 import com.woowahan.woowahan2018.dto.DeckDto;
-import com.woowahan.woowahan2018.exception.NoSuchBoardFoundException;
+import com.woowahan.woowahan2018.exception.BoardNotFoundException;
 import com.woowahan.woowahan2018.service.BoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ public class DeckController {
     private BoardService boardService;
 
     @GetMapping("")
-    public CommonResponse getDecks(@PathVariable long boardId) throws NoSuchBoardFoundException {
+    public CommonResponse getDecks(@PathVariable long boardId) throws BoardNotFoundException {
         List<Deck> decks = boardService.findAllDecks(boardId);
         return CommonResponse.success("Decks을 읽어왔습니다.", decks);
     }
@@ -31,7 +31,7 @@ public class DeckController {
     @PostMapping("")
     public CommonResponse postDeck(@PathVariable long boardId,
                                    @RequestBody
-                                   @Valid DeckDto deckDto) throws NoSuchBoardFoundException {
+                                   @Valid DeckDto deckDto) throws BoardNotFoundException {
         log.debug("hello {}", deckDto);
         Deck deck = boardService.createDeck(boardId, deckDto);
         return CommonResponse.success("Deck 생성", deck);
@@ -39,7 +39,7 @@ public class DeckController {
 
     @DeleteMapping("/{deckId}")
     public CommonResponse deleteDeck(@PathVariable long boardId,
-                                     @PathVariable long deckId) throws NoSuchBoardFoundException {
+                                     @PathVariable long deckId) throws BoardNotFoundException {
         boardService.deleteDeck(boardId, deckId);
         return CommonResponse.success("Deck 삭제");
     }

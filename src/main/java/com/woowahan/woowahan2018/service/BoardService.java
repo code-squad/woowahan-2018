@@ -6,7 +6,7 @@ import com.woowahan.woowahan2018.domain.Deck;
 import com.woowahan.woowahan2018.domain.DeckRepository;
 import com.woowahan.woowahan2018.dto.BoardDto;
 import com.woowahan.woowahan2018.dto.DeckDto;
-import com.woowahan.woowahan2018.exception.NoSuchBoardFoundException;
+import com.woowahan.woowahan2018.exception.BoardNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +35,13 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
-    public List<Deck> findAllDecks(long boardId) throws NoSuchBoardFoundException {
+    public List<Deck> findAllDecks(long boardId) throws BoardNotFoundException {
         Board board = findOneBoard(boardId);
         return board.getDecks();
     }
 
     @Transactional
-    public Deck createDeck(long boardId, DeckDto deckDto) throws NoSuchBoardFoundException {
+    public Deck createDeck(long boardId, DeckDto deckDto) throws BoardNotFoundException {
         Deck deck = deckRepository.save(deckDto.toDeck());
 
         Board board = findOneBoard(boardId);
@@ -50,15 +50,15 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteDeck(long boardId, long deckId) throws NoSuchBoardFoundException {
+    public void deleteDeck(long boardId, long deckId) throws BoardNotFoundException {
         Board board = findOneBoard(boardId);
 
         board.deleteDeck(deckId);
         deckRepository.delete(deckId);
     }
 
-    public Board findOneBoard(long boardId) throws NoSuchBoardFoundException {
+    public Board findOneBoard(long boardId) throws BoardNotFoundException {
         return Optional.ofNullable(boardRepository.findOne(boardId))
-                .orElseThrow(NoSuchBoardFoundException::new);
+                .orElseThrow(BoardNotFoundException::new);
     }
 }
