@@ -1,5 +1,5 @@
 const form = document.querySelector(".signup-form");
-const username = document.querySelector("#user_name");
+const name = document.querySelector("#name");
 const email = document.querySelector("#email");
 const password = document.querySelector("#password");
 const message = document.querySelector("#message")
@@ -18,7 +18,7 @@ function signup(e) {
         xhr.setRequestHeader("Content-type", "application/json");
         var data = JSON.stringify(
         {
-            "username": username.value,
+            "name": name.value,
              "email" : email.value,
              "password" : password.value
         });

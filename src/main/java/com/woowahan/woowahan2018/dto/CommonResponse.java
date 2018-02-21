@@ -36,6 +36,10 @@ public class CommonResponse {
 		return status;
 	}
 
+	public String getField() {
+		return field;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -82,11 +86,7 @@ public class CommonResponse {
 
 	@Override
 	public String toString() {
-		return "CommonResponse{" +
-				"status='" + status + '\'' +
-				", field='" + field + '\'' +
-				", message='" + message + '\'' +
-				'}';
+		return toJsonString();
 	}
 
 	public String toJsonString() {

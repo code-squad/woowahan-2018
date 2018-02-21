@@ -3,6 +3,7 @@ package com.woowahan.woowahan2018.controller;
 import com.woowahan.woowahan2018.dto.AccountType;
 import com.woowahan.woowahan2018.dto.CommonResponse;
 import com.woowahan.woowahan2018.dto.UserDto;
+import com.woowahan.woowahan2018.dto.group.Order;
 import com.woowahan.woowahan2018.dto.group.TrelloUserGroup;
 import com.woowahan.woowahan2018.service.UserService;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("")
-    public CommonResponse createUser(@Validated(value = TrelloUserGroup.class )
+    public CommonResponse createUser(@Validated(value = Order.class)
                                      @RequestBody UserDto userDto) {
         userDto.setAccountType(AccountType.Trello);
         userService.createUser(userDto);

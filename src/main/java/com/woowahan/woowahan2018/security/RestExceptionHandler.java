@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
@@ -22,9 +24,16 @@ public class RestExceptionHandler {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public CommonResponse methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+	public List<CommonResponse> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
 		BindingResult result = ex.getBindingResult();
-		return CommonResponse.error(result.getFieldErrors().get(0).getDefaultMessage());
+		log.debug("getFieldError: {}", result.getFieldErrors());
+		List<CommonResponse> responses = result.getFieldErrors()
+				.stream()
+				.map(fieldError -> CommonResponse.error(fieldError.getField(), fieldError.getDefaultMessage()))
+				.collect(Collectors.toList());
+
+		log.debug("Error responses: {}", responses);
+		return responses;
 	}
 
 	@ExceptionHandler(Throwable.class)
