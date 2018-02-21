@@ -13,14 +13,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -124,11 +122,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	private static void responseText(HttpServletResponse response, CommonResponse content) throws IOException {
+		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+
 		byte[] bytes = content.toJsonString().getBytes(StandardCharsets.UTF_8);
 		response.setContentLength(bytes.length);
 		response.getOutputStream().write(bytes);
-
-		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
 		response.flushBuffer();
 	}
 
@@ -148,7 +146,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		public void onAuthenticationFailure(HttpServletRequest request,
 		                                    HttpServletResponse response,
 		                                    AuthenticationException exception) throws IOException {
-			responseText(response, CommonResponse.error("아이디 또는 패스워드가 잘못되었습니다."));
+			log.debug("User login failed, name={}", request.getUserPrincipal());
+			responseText(response, CommonResponse.error("아이디 또는 비밀번호가 잘못되었습니다."));
 		}
 	}
 
@@ -157,7 +156,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Before Logout
 		@Override
 		public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-
 		}
 
 		// After Logout
@@ -165,6 +163,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		public void onLogoutSuccess(HttpServletRequest request,
 		                            HttpServletResponse response,
 		                            Authentication authentication) throws IOException {
+			log.debug("authentication: {}", authentication);
 			responseText(response, CommonResponse.success(authentication.getName() + " 로그아웃 되었습니다."));
 		}
 	}
@@ -191,12 +190,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			                                    Authentication authentication) throws IOException, ServletException {
 
 				Map<String, String> map = (Map<String, String>) ((OAuth2Authentication) authentication).getUserAuthentication().getDetails();
-				log.debug("authentication details : {}", map);
+				log.debug("authentication details: {}", map);
 
-				LoginUser loginUser = (LoginUser) userService.githubLogin(map.get("email"), map.get("login"));
-				SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
-						loginUser, null, loginUser.getAuthorities()
-				));
+				LoginUser loginUser = (LoginUser) userService.loginWithGithub(map.get("email"), map.get("login"));
 
 				this.setDefaultTargetUrl("/boards.html");
 				super.onAuthenticationSuccess(request, response, authentication);

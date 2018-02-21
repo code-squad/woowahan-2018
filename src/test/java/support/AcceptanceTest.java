@@ -18,7 +18,6 @@ import static org.junit.Assert.assertThat;
 public abstract class AcceptanceTest {
     private static final String DEFAULT_LOGIN_USER_EMAIL = "javajigi@a.com";
     private static final String DEFAULT_LOGIN_USER_PASSWORD = "12345asdfg!@";
-    private static final String DEFAULT_LOGIN_USERNAME = "자바지기";
 
     @Autowired
     private TestRestTemplate template;
