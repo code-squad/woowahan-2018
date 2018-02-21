@@ -26,7 +26,6 @@ public class RestExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public List<CommonResponse> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
 		BindingResult result = ex.getBindingResult();
-		log.debug("getFieldError: {}", result.getFieldErrors());
 		List<CommonResponse> responses = result.getFieldErrors()
 				.stream()
 				.map(fieldError -> CommonResponse.error(fieldError.getField(), fieldError.getDefaultMessage()))
