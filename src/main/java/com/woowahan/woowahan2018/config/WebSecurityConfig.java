@@ -54,12 +54,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserService userService;
 
 	@Autowired
-	private CustomLoginHandler customLoginHandler;
-
-	@Autowired
-	private CustomLogoutHandler customLogoutHandler;
-
-	@Autowired
 	OAuth2ClientContext oauth2ClientContext;
 
 	@Resource(name = "bcryptEncoder")
@@ -67,6 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		CustomLogoutHandler customLogoutHandler = new CustomLogoutHandler();
 		http
 				.authorizeRequests()
 				.antMatchers("/css/**",
@@ -103,7 +98,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
-
 	}
 
 	@Override
@@ -112,6 +106,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	private RestAuthenticationFilter customAuthenticationFilter() throws Exception {
+		CustomLoginHandler customLoginHandler = new CustomLoginHandler();
 		RestAuthenticationFilter filter = new RestAuthenticationFilter();
 		filter.setAuthenticationSuccessHandler(customLoginHandler);
 		filter.setAuthenticationFailureHandler(customLoginHandler);
@@ -130,8 +125,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		response.flushBuffer();
 	}
 
-	@Component
-	public static class CustomLoginHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
+	private class CustomLoginHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
 		// Login Success
 		@Override
 		public void onAuthenticationSuccess(HttpServletRequest request,
@@ -151,8 +145,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		}
 	}
 
-	@Component
-	public static class CustomLogoutHandler implements LogoutHandler, LogoutSuccessHandler {
+	private class CustomLogoutHandler implements LogoutHandler, LogoutSuccessHandler {
 		// Before Logout
 		@Override
 		public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {

@@ -37,11 +37,4 @@ public class LoginAcceptanceTest extends AcceptanceTest {
 
         assertThat(response, is(CommonResponse.error("아이디 또는 비밀번호가 잘못되었습니다.")));
     }
-
-    @Test
-    public void logout() {
-        ResponseEntity<String> response = basicAuthTemplate().postForEntity("/api/users/logout", null, String.class);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.ACCEPTED));
-    }
 }
