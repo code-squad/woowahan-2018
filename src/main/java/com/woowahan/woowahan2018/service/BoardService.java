@@ -7,6 +7,8 @@ import com.woowahan.woowahan2018.domain.DeckRepository;
 import com.woowahan.woowahan2018.dto.BoardDto;
 import com.woowahan.woowahan2018.dto.DeckDto;
 import com.woowahan.woowahan2018.exception.NoSuchBoardFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,9 @@ import java.util.Optional;
 
 @Service
 public class BoardService {
+
+    private static final Logger log = LoggerFactory.getLogger(BoardService.class);
+
     @Autowired
     private BoardRepository boardRepository;
 

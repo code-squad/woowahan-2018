@@ -10,6 +10,10 @@ public class Deck extends AbstractEntity {
     @Column(nullable = false)
     private String name;
 
+    public Deck() {
+
+    }
+
     public Deck(String name) {
         this.name = name;
     }

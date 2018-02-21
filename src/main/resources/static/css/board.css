@@ -6,15 +6,10 @@ body{
   overflow-x: scroll;
   white-space: nowrap;
   overflow-y: scroll;
-
-
 }
 
 body #materialize-modal-overlay-2 {
-
-
     overflow: scroll;
-
 }
 
 header {
@@ -273,6 +268,11 @@ header .header-wrapper ul li a:hover{
   white-space: nowrap;
   background-color: #eceff1;
 
+}
+
+.deck-list {
+  display: inline-block;
+  vertical-align: top;
 }
 
 #board-canvas .deck-wrapper .deck-header{
