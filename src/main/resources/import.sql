@@ -1,0 +1,1 @@
+INSERT INTO board (id, name) values (1, 'title');

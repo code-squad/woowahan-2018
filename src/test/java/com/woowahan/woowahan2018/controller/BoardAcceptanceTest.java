@@ -1,17 +1,17 @@
 package com.woowahan.woowahan2018.controller;
 
 import com.woowahan.woowahan2018.dto.BoardDto;
-import com.woowahan.woowahan2018.dto.BoardsDto;
 import com.woowahan.woowahan2018.dto.CommonResponse;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import support.AcceptanceTest;
 
-import static org.hamcrest.CoreMatchers.hasItem;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class BoardAcceptanceTest extends AcceptanceTest {
 	private static final Logger log = LoggerFactory.getLogger(BoardAcceptanceTest.class);
@@ -42,7 +42,11 @@ public class BoardAcceptanceTest extends AcceptanceTest {
         BoardDto newBoard = new BoardDto("Test Board!!");
         template().postForObject("/api/boards/", newBoard, CommonResponse.class);
 
-		BoardsDto response = template().getForObject("/api/boards/", BoardsDto.class);
-		assertThat(response.getBoards(), hasItem(newBoard));
+		CommonResponse response = template().getForObject("/api/boards/", CommonResponse.class);
+		log.debug("response : {} ", response);
+		LinkedHashMap<String, List<LinkedHashMap<String, String>>> content
+				= (LinkedHashMap<String, List<LinkedHashMap<String, String>>>) response.getContent();
+		List<LinkedHashMap<String, String>> boards = content.get("boards");
+		assertThat(boards.get(1).containsValue("Test Board!!"), is(true));
 	}
 }

@@ -4,7 +4,7 @@ import com.woowahan.woowahan2018.domain.Board;
 import com.woowahan.woowahan2018.dto.BoardDto;
 import com.woowahan.woowahan2018.dto.BoardsDto;
 import com.woowahan.woowahan2018.dto.CommonResponse;
-import com.woowahan.woowahan2018.dto.UserDto;
+import com.woowahan.woowahan2018.exception.BoardNotFoundException;
 import com.woowahan.woowahan2018.service.BoardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,20 +25,27 @@ public class BoardController {
     private BoardService boardService;
 
     @GetMapping("")
-    private BoardsDto list() {
-        List<Board> boards = boardService.findAll();
+    public CommonResponse list() {
+        List<Board> boards = boardService.findAllBoards();
 
-        return new BoardsDto(
-                boards.stream()
-                .map(board -> board.toBoardDto())
-                .collect(Collectors.toList())
+        return CommonResponse.success("Boards를 읽어왔습니다.",
+                new BoardsDto(
+                    boards.stream()
+                    .map(Board::toBoardDto)
+                    .collect(Collectors.toList()))
         );
+    }
+
+    @GetMapping("/{boardId}")
+    public CommonResponse getOneBoard(@PathVariable long boardId) throws BoardNotFoundException {
+        Board board = boardService.findOneBoard(boardId);
+        return CommonResponse.success("Board를 읽어왔습니다.", board);
     }
 
     @PostMapping("")
     public CommonResponse createBoard(@RequestBody @Valid BoardDto boardDto) throws MethodArgumentNotValidException {
         log.debug("boardDto: {}", boardDto);
-        boardService.createBoard(boardDto);
-        return CommonResponse.success("Board를 성공적으로 생성했습니다.");
+        Board board = boardService.createBoard(boardDto);
+        return CommonResponse.success("Board를 성공적으로 생성했습니다.", board);
     }
 }
