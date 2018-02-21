@@ -4,7 +4,6 @@ import com.woowahan.woowahan2018.domain.Board;
 import com.woowahan.woowahan2018.dto.BoardDto;
 import com.woowahan.woowahan2018.dto.BoardsDto;
 import com.woowahan.woowahan2018.dto.CommonResponse;
-import com.woowahan.woowahan2018.dto.UserDto;
 import com.woowahan.woowahan2018.exception.NoSuchBoardFoundException;
 import com.woowahan.woowahan2018.service.BoardService;
 import org.slf4j.Logger;
