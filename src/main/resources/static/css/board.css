@@ -575,6 +575,17 @@ header .header-wrapper ul li a:hover{
   height: 52px;
 }
 
+.error-message {
+  padding-left: 40px;
+  font-size: 15px;
+  color: red;
+  margin-top: -40px;
+}
+
+.open {
+  display: block !important;
+}
+
 body #modal{
 
   width: 800px;

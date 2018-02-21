@@ -4,12 +4,13 @@ import com.woowahan.woowahan2018.domain.Deck;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class DeckDto {
 
     @NotNull(message = "이름을 입력하세요.")
-    @NotBlank(message = "이름을 입력하세요.")
+    @Size(min = 1, max = 20, message = "길이제한: 1~20자")
     private String name;
 
     public DeckDto() {

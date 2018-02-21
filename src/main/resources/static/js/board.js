@@ -8,13 +8,14 @@ const nameDom = document.querySelector("#add-deck");
 const saveButton = document.querySelector(".save-deck");
 const deckList = document.querySelector(".deck-list");
 const boardUsername = document.querySelector(".board-username");
+const errorMessasge = document.querySelector(".error-message");
 
 function openDeckForm() {
-    addDeckForm.style.display = "block";
+    addDeckForm.classList.add("open");
 }
 
 function closeDeckForm() {
-    addDeckForm.style.display = "none";
+    addDeckForm.classList.remove("open");
 }
 
 function saveDeck() {
@@ -45,6 +46,9 @@ function appendDeck(res) {
     if (status === "OK") {
         deckList.innerHTML += createTemplate(Template.deck, {'value': res.content.name})
         closeDeckForm();
+        errorMessasge.innerHTML = "";
+    } else {
+        errorMessasge.innerHTML = res.message;
     }
 }
 
@@ -68,12 +72,16 @@ function getExistDecks() {
 }
 
 function printAllDeck(res) {
-    const decks = res.content;
-    console.log(res);
-    decks.forEach((item) => {
-        console.log(item)
-        deckList.innerHTML += createTemplate(Template.deck, {"value" : item.name});
-    });
+    if(res.status == "OK") {
+        const decks = res.content;
+        decks.forEach((item) => {
+            console.log(item)
+            deckList.innerHTML += createTemplate(Template.deck, {"value" : item.name});
+        });
+        errorMessasge.innerHTML = "";
+    } else {
+        errorMessasge.innerHTML = res.message;
+    }
 }
 
 function getBoardName() {
@@ -94,6 +102,9 @@ function printBoardName(res) {
     if(res.status == "OK") {
         const boardName = res.content.name;
         boardUsername.innerHTML = boardName
+        errorMessasge.innerHTML = "";
+    } else {
+        errorMessasge.innerHTML = res.message;
     }
 }
 
