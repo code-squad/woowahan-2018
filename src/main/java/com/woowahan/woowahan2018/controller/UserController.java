@@ -39,12 +39,4 @@ public class UserController {
 
         return CommonResponse.success("성공적으로 가입했습니다.");
     }
-
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpSession session) {
-        HttpHeaders headers = new HttpHeaders();
-        session.removeAttribute("loginUser");
-
-        return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
-    }
 }
