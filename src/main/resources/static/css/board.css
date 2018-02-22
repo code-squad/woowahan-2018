@@ -586,6 +586,10 @@ header .header-wrapper ul li a:hover{
   display: block !important;
 }
 
+.close {
+  display: none !important;
+}
+
 body #modal{
 
   width: 800px;

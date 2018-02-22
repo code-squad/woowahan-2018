@@ -9,16 +9,16 @@ var Template = {
                     "<div class='deck-header'>" +
                       "<textarea class='deck-header-name'>{{value}}</textarea>" +
                     "</div>" +
-                    "<div class='deck-cards'></div>" +
+                    "<div class='deck-cards' id='deck-cards-{{id}}'></div>" +
                     "<div class='card-composer'>" +
-                       "<div class='add-card-form'>" +
-                          "<textarea class='card-title'></textarea>" +
+                       "<div class='add-card-form' id='add-card-form-{{id}}'>" +
+                          "<textarea class='card-title' id='card-title-{{id}}'></textarea>" +
                           "<div class='btn-area'>" +
-                            "<button class='btn waves-effect waves-light save-card'>save</button>" +
-                            "<button class='btn waves-effect waves-light cancel-card'>cancel</button>" +
+                            "<button class='btn waves-effect waves-light save-card' id='save-card-{{id}}'>save</button>" +
+                            "<button class='btn waves-effect waves-light cancel-card' id='cancel-card-{{id}}'>cancel</button>" +
                           "</div>" +
                        "</div>" +
-                       "<a class='add-card-btn' href='#'>Add a Card...</a>" +
+                       "<a class='add-card-btn' id='add-card-btn-{{id}}' href='#'>Add a Card...</a>" +
                     "</div>" +
                 "</div>" +
               "</div>",

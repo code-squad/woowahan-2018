@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ public class Board extends AbstractEntity{
 
     @OneToMany
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_board_decks"))
-    private List<Deck> decks;
+    private List<Deck> decks = new ArrayList<>();
 
     public Board() {
     }
