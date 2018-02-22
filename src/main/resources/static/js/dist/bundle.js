@@ -64,13 +64,48 @@
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */,
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Utils {
+    static ajax(url, httpMethod, parameters) {
+        return new Promise((resolve) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open(httpMethod, url, true);
+            xhr.addEventListener("load", () => {
+            	resolve(JSON.parse(xhr.response));
+            });
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.send(JSON.stringify(parameters));
+        });
+    }
+
+    static $(selector) {
+        return document.querySelector(selector);
+    }
+
+    static eventHandler(selector, event, callback) {
+        const dom = this.$(selector);
+
+        if(dom === null) {
+            return;
+        }
+
+        dom.addEventListener(event, callback);
+    }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Utils);
+
+
+/***/ }),
 /* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__User_js__ = __webpack_require__(2);
 
 
@@ -88,8 +123,8 @@ __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* default */].eventHandler(
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Messages_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Messages_js__ = __webpack_require__(3);
 
 
 
@@ -227,44 +262,7 @@ class Validator {
 /* harmony default export */ __webpack_exports__["a"] = (UserController);
 
 /***/ }),
-/* 3 */,
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-class Utils {
-    static ajax(url, httpMethod, parameters) {
-        return new Promise((resolve) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open(httpMethod, url, true);
-            xhr.addEventListener("load", () => {
-            	resolve(JSON.parse(xhr.response));
-            });
-            xhr.setRequestHeader("Content-type", "application/json");
-            xhr.send(JSON.stringify(parameters));
-        });
-    }
-
-    static $(selector) {
-        return document.querySelector(selector);
-    }
-
-    static eventHandler(selector, event, callback) {
-        const dom = this.$(selector);
-
-        if(dom === null) {
-            return;
-        }
-
-        dom.addEventListener(event, callback);
-    }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (Utils);
-
-
-/***/ }),
-/* 5 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
