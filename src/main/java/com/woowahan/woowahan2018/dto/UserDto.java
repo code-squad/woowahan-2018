@@ -103,7 +103,7 @@ public class UserDto {
         return "UserDto{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", username='" + name + '\'' +
+                ", name='" + name + '\'' +
                 ", accountType=" + accountType +
                 '}';
     }

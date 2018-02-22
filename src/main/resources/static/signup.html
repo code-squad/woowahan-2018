@@ -1,52 +1,55 @@
 <html>
-    <head>
-      <meta charset="utf-8">
-      <title>JWP Trello signUp</title>
-      <link type="text/css" rel="stylesheet" href="./lib/materialize.min.css"  media="screen,projection"/>
-      <link type="text/css" rel="stylesheet" href="./css/signup.css">
-    </head>
+<head>
+    <meta charset="utf-8">
+    <title>JWP Trello signUp</title>
+    <link type="text/css" rel="stylesheet" href="./lib/materialize.min.css" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="./css/signup.css">
+</head>
 
-    <body>
+<body>
 
-      <header>
-          <div class="header-wrapper">
-              <a href="#" class="brand-logo">JWP Trello</a>
-          </div>
-      </header>
+<header>
+    <div class="header-wrapper">
+        <a href="#" class="brand-logo">JWP Trello</a>
+    </div>
+</header>
 
-      <div class="signup-box z-depth-2">
+<div class="signup-box z-depth-2">
 
-          <h4>Create a Account</h4>
-          <div id="message"></div>
+    <h4>Create a Account</h4>
+    <div id="message"></div>
 
-          <form class="signup-form" action="/api/users" method="POST">
-            <div class="row">
-                <div class="input-field col s12">
-                  <input id="name" name="name" type="text" class="validate">
-                  <label for="name">Username</label>
-                </div>
+    <form class="signup-form" action="/api/users" method="POST">
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="name" name="name" type="text">
+                <label for="name">Username</label>
+                <div class="name-noti"></div>
             </div>
+        </div>
 
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="email" name="email" type="email" class="validate">
-                    <label for="email">Email</label>
-                  </div>
-                </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="email" name="email" type="email">
+                <label for="email">Email</label>
+                <div class="email-noti"></div>
+            </div>
+        </div>
 
-           <div class="row">
-                <div class="input-field col s12">
-                  <input id="password" name="password" type="password" class="validate">
-                  <label for="password">Password</label>
-                </div>
-           </div>
-              <input class="signup-btn waves-effect waves-light btn" type="submit" value="가입하기" />
-          </form>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="password" name="password" type="password">
+                <label for="password">Password</label>
+                <div class="password-noti"></div>
+            </div>
+        </div>
+        <input class="signup-btn waves-effect waves-light btn" type="submit" value="가입하기"/>
+    </form>
 
-      </div>
+</div>
 
-      <script type="text/javascript" src="./lib/jquery-2.2.0.min.js"></script>
-      <script type="text/javascript" src="./lib/materialize.min.js"></script>
-      <script type="text/javascript" src="js/signup.js"></script>
-    </body>
-  </html>
+<script type="text/javascript" src="./lib/jquery-2.2.0.min.js"></script>
+<script type="text/javascript" src="./lib/materialize.min.js"></script>
+<script type="text/javascript" src="./js/dist/bundle.js"></script>
+</body>
+</html>
