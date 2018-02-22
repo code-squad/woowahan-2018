@@ -8,6 +8,7 @@ import com.woowahan.woowahan2018.dto.group.name.NameFirstGroup;
 import com.woowahan.woowahan2018.dto.group.password.PasswordFirstGroup;
 import com.woowahan.woowahan2018.dto.group.password.PasswordSecondGroup;
 import com.woowahan.woowahan2018.dto.group.password.PasswordThirdGroup;
+import com.woowahan.woowahan2018.support.ErrorMessageContainer;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,25 +19,25 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class UserDto {
-    @NotBlank(message = "이메일을 입력해주세요."
+    @NotBlank(message = "EMAIL.EMPTY"
             , groups = EmailFirstGroup.class)
     @Size(min = 5, max = 30
-            , message = "이메일은 5자 이상, 30자 이하이어야 합니다."
+            , message = "EMAIL.LENGTH"
             , groups = EmailSecondGroup.class)
-    @Email(message = "이메일은 @를 포함해야 합니다."
+    @Email(message = "EMAIL.INVALID"
             , groups = EmailThirdGroup.class)
     private String email;
 
-    @NotBlank(message = "비밀번호를 입력해주세요."
+    @NotBlank(message = "PASSWORD.EMPTY"
             , groups = PasswordFirstGroup.class)
-    @Size(min = 10, max = 30, message = "비밀번호는 10자 이상, 30자 이하이어야 합니다."
+    @Size(min = 10, max = 30, message = "PASSWORD.LENGTH"
             , groups = PasswordSecondGroup.class)
     @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Za-z])(?=.*[$@#^!%*?&].*[$@#^!%*?&])[A-Za-z\\d$@#^!%*?&]{10,}"
-            , message = "비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다."
+            , message = "PASSWORD.PATTERN"
             , groups = PasswordThirdGroup.class)
     private String password;
 
-    @NotBlank(message = "사용자 이름을 입력해주세요."
+    @NotBlank(message = "NAME.EMPTY"
             , groups = NameFirstGroup.class)
     private String name;
 

@@ -1,8 +1,10 @@
 package com.woowahan.woowahan2018.security;
 
 import com.woowahan.woowahan2018.dto.CommonResponse;
+import com.woowahan.woowahan2018.support.ErrorMessageContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,10 @@ import java.util.stream.Collectors;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class RestExceptionHandler {
-
 	private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);
+
+	@Autowired
+	ErrorMessageContainer errorMessageContainer;
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -28,7 +32,7 @@ public class RestExceptionHandler {
 		BindingResult result = ex.getBindingResult();
 		List<CommonResponse> responses = result.getFieldErrors()
 				.stream()
-				.map(fieldError -> CommonResponse.error(fieldError.getField(), fieldError.getDefaultMessage()))
+				.map(fieldError -> CommonResponse.error(fieldError.getField(), errorMessageContainer.getMessage(fieldError.getDefaultMessage())))
 				.collect(Collectors.toList());
 
 		log.debug("Error responses: {}", responses);
