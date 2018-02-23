@@ -1,7 +1,11 @@
 import { _ } from './support/Utils.js';
-import SIGNUP_MSG from './support/Messages.js';
+import * as SIGNUP_MSG from '../message.json'
 
 class UserController {
+    constructor() {
+        this.validator = new Validator();
+    }
+
     login(e, callback) {
         e.preventDefault();
         const loginURL = "/api/users/login";
@@ -41,8 +45,7 @@ class UserController {
 
     validateValue(e) {
         const targetDom = e.target;
-        const validator = new Validator();
-        const message = validator.manager(targetDom);
+        const message = this.validator.manager(targetDom);
 
         if (message === undefined) {
             targetDom.className = "validate valid";
@@ -51,6 +54,7 @@ class UserController {
             e.target.className = "validate invalid";
             _.$("." + targetDom.id + "-noti").innerHTML = message;
         }
+
     }
 
 }
@@ -91,13 +95,13 @@ class UserResponseHandler {
 class Validator {
     manager(targetDom) {
         const checkValue = {
-            'email': this.checkEmail,
-            'password': this.checkPassword,
-            'name': this.checkName
+            'email': this.checkEmail.bind(this),
+            'password': this.checkPassword.bind(this),
+            'name': this.checkName.bind(this)
         };
 
         if (checkValue[targetDom.id]) {
-            checkValue[targetDom.id](targetDom.value);
+            return checkValue[targetDom.id](targetDom.value);
         }
 
     }

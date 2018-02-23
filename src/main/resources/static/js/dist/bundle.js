@@ -131,18 +131,21 @@ const boardsViewHandler = new __WEBPACK_IMPORTED_MODULE_2__boards_js__["b" /* Bo
 const boardController = new __WEBPACK_IMPORTED_MODULE_3__board_js__["a" /* BoardController */]();
 const boardViewHandler = new __WEBPACK_IMPORTED_MODULE_3__board_js__["b" /* BoardViewHandler */]();
 
+// user관련 이벤트
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".login-form", "submit", (e) => userController.login(e, userResponseHandler.login));
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".signup-form", "submit", (e) => userController.signup(e, userResponseHandler.signup));
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".logout-button", "click", (e) => userController.logout(e, userResponseHandler.logout));
 
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".signup-form", "focusout", userController.validateValue);
+// 회원가입 유효성 체크
+__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".signup-form", "focusout", userController.validateValue.bind(userController));
 
+// myBoards 관련 이벤트
 boardsController.domLoaded(boardsViewHandler.printBoards);
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".add-board-btn", "click", boardsViewHandler.openModal.bind(boardsViewHandler));
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".close-modal", "click", boardsViewHandler.closeModal.bind(boardsViewHandler));
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".save-board", "click", (e) => boardsController.saveBoard(boardsViewHandler.appendBoard.bind(boardsViewHandler)));
 
-
+// board 관련 이벤트
 boardController.domLoaded(boardViewHandler.printBoard.bind(boardViewHandler));
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".add-deck-btn", "click", boardViewHandler.openDeckForm.bind(boardViewHandler));
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".cancel-deck", "click", (e) => {
@@ -150,6 +153,10 @@ __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".canc
     boardViewHandler.closeDeckForm();
 })
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".save-deck", "click", (e) => boardController.saveDeck(e, boardViewHandler.appendDeck.bind(boardViewHandler)))
+
+
+
+
 
 
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".deck-list", "click", (e) => {
@@ -164,12 +171,16 @@ __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".deck
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserController; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UserResponseHandler; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Messages_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Messages_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__support_Messages_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__message_json__);
 
 
 
 class UserController {
+    constructor() {
+        this.validator = new Validator();
+    }
+
     login(e, callback) {
         e.preventDefault();
         const loginURL = "/api/users/login";
@@ -209,8 +220,7 @@ class UserController {
 
     validateValue(e) {
         const targetDom = e.target;
-        const validator = new Validator();
-        const message = validator.manager(targetDom);
+        const message = this.validator.manager(targetDom);
 
         if (message === undefined) {
             targetDom.className = "validate valid";
@@ -219,6 +229,7 @@ class UserController {
             e.target.className = "validate invalid";
             __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].$("." + targetDom.id + "-noti").innerHTML = message;
         }
+
     }
 
 }
@@ -259,42 +270,42 @@ class UserResponseHandler {
 class Validator {
     manager(targetDom) {
         const checkValue = {
-            'email': this.checkEmail,
-            'password': this.checkPassword,
-            'name': this.checkName
+            'email': this.checkEmail.bind(this),
+            'password': this.checkPassword.bind(this),
+            'name': this.checkName.bind(this)
         };
 
         if (checkValue[targetDom.id]) {
-            checkValue[targetDom.id](targetDom.value);
+            return checkValue[targetDom.id](targetDom.value);
         }
 
     }
 
     checkEmail(email) {
         if (email === "") {
-            return __WEBPACK_IMPORTED_MODULE_1__support_Messages_js___default.a.EMAIL.EMPTY;
+            return __WEBPACK_IMPORTED_MODULE_1__message_json__["EMAIL"].EMPTY;
         } else if (email.length < 5 || email.length > 30) {
-            return __WEBPACK_IMPORTED_MODULE_1__support_Messages_js___default.a.EMAIL.LENGTH;
+            return __WEBPACK_IMPORTED_MODULE_1__message_json__["EMAIL"].LENGTH;
         } else if (!email.includes("@")) {
-            return __WEBPACK_IMPORTED_MODULE_1__support_Messages_js___default.a.EMAIL.AT;
+            return __WEBPACK_IMPORTED_MODULE_1__message_json__["EMAIL"].AT;
         } else if (email[email.indexOf("@") + 1] === ".") {
-            return __WEBPACK_IMPORTED_MODULE_1__support_Messages_js___default.a.EMAIL.DOT_LOCATION;
+            return __WEBPACK_IMPORTED_MODULE_1__message_json__["EMAIL"].DOT_LOCATION;
         }
     }
 
     checkPassword(password) {
         if (password === "") {
-            return __WEBPACK_IMPORTED_MODULE_1__support_Messages_js___default.a.PASSWORD.EMPTY;
+            return __WEBPACK_IMPORTED_MODULE_1__message_json__["PASSWORD"].EMPTY;
         } else if (password.length < 10 || password.length > 30) {
-            return __WEBPACK_IMPORTED_MODULE_1__support_Messages_js___default.a.PASSWORD.LENGTH;
+            return __WEBPACK_IMPORTED_MODULE_1__message_json__["PASSWORD"].LENGTH;
         } else if (!new RegExp("^(?=.*\\d)(?=.*[A-Za-z])(?=.*[$@#^!%*?&].*[$@#^!%*?&])[A-Za-z\\d$@#^!%*?&]{10,}").test(password)) {
-            return __WEBPACK_IMPORTED_MODULE_1__support_Messages_js___default.a.PASSWORD.PATTERN;
+            return __WEBPACK_IMPORTED_MODULE_1__message_json__["PASSWORD"].PATTERN;
         }
     }
 
     checkName(name) {
         if (name.length === 0) {
-            return __WEBPACK_IMPORTED_MODULE_1__support_Messages_js___default.a.NAME.EMPTY;
+            return __WEBPACK_IMPORTED_MODULE_1__message_json__["NAME"].EMPTY;
         }
     }
 }
@@ -305,41 +316,7 @@ class Validator {
 /* 3 */
 /***/ (function(module, exports) {
 
-//<<<<<<< HEAD
-//import Utils from "./Utils";
-//
-//const Message = {
-//
-//  get() {
-//
-//  }
-//}
-//
-//
-//export default Message;
-//=======
-//const SIGNUP_MSG = {
-//    EMAIL: {
-//        EMPTY: "이메일을 입력해주세요.",
-//        LENGTH: "이메일은 5자 이상, 30자 이하이어야 합니다.",
-//        AT: "이메일은 @를 포함해야 합니다.",
-//        DOT_LOCATION: "'.'에서 '.'의 위치가 잘못되었습니다."
-//    },
-//
-//    PASSWORD: {
-//        EMPTY: "비밀번호를 입력해주세요",
-//        LENGTH: "비밀번호는 10자 이상, 30자 이하이어야 합니다.",
-//        PATTERN: "비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다."
-//    },
-//
-//    NAME: {
-//        EMPTY: "사용자 이름을 입력해주세요."
-//    }
-//}
-//
-//export default SIGNUP_MSG;
-//>>>>>>> 04bed227e17010eeed3d77f17442f8b3fcf3a089
-
+module.exports = {"EMAIL":{"EMPTY":"이메일을 입력해주세요.","LENGTH":"이메일은 5자 이상, 30자 이하이어야 합니다.","AT":"이메일은 @를 포함해야 합니다.","DOT_LOCATION":"'.'에서 '.'의 위치가 잘못되었습니다.","PATTERN":"유효한 이메일 형식이 아닙니다."},"PASSWORD":{"EMPTY":"비밀번호를 입력해주세요","LENGTH":"비밀번호는 10자 이상, 30자 이하이어야 합니다.","PATTERN":"비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다."},"NAME":{"EMPTY":"사용자 이름을 입력해주세요."}}
 
 /***/ }),
 /* 4 */
