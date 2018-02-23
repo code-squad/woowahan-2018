@@ -23,30 +23,20 @@ public class User extends AbstractEntity {
 
     @Column(nullable = false)
     @Length(max = 30)
-    private String username;
-
-    @Enumerated(EnumType.STRING)
-    private AccountType accountType;
+    private String name;
 
     public User() {
 
     }
 
-    public User(String email, String encryptedPassword, String username) {
-        this.email = email;
-        this.encryptedPassword = encryptedPassword;
-        this.username = username;
-    }
-
-    public User(String email, String encryptedPassword, String username, AccountType accountType) {
-        this(email, username, accountType);
+    public User(String email, String encryptedPassword, String name) {
+        this(email, name);
         this.encryptedPassword = encryptedPassword;
     }
 
-    public User(String email, String username, AccountType accountType) {
+    public User(String email, String name) {
         this.email = email;
-        this.username = username;
-        this.accountType = accountType;
+        this.name = name;
     }
 
     public boolean isCorrectPassword(String inputPassword, PasswordEncoder encoder) {
@@ -57,8 +47,8 @@ public class User extends AbstractEntity {
         return email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public String getEncryptedPassword() {
@@ -69,20 +59,6 @@ public class User extends AbstractEntity {
         return new LoginUser(email, encryptedPassword, authorities);
     }
 
-    public AccountType getAccountType() {
-        return accountType;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", encryptedPassword='" + encryptedPassword + '\'' +
-                ", username='" + username + '\'' +
-                ", accountType=" + accountType +
-                '}';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,12 +67,20 @@ public class User extends AbstractEntity {
         User user = (User) o;
         return Objects.equals(email, user.email) &&
                 Objects.equals(encryptedPassword, user.encryptedPassword) &&
-                Objects.equals(username, user.username) &&
-                accountType == user.accountType;
+                Objects.equals(name, user.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), email, encryptedPassword, username, accountType);
+        return Objects.hash(name, email, encryptedPassword);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
+                '}';
     }
 }

@@ -6,15 +6,10 @@ body{
   overflow-x: scroll;
   white-space: nowrap;
   overflow-y: scroll;
-
-
 }
 
 body #materialize-modal-overlay-2 {
-
-
     overflow: scroll;
-
 }
 
 header {
@@ -207,7 +202,7 @@ header .header-wrapper ul li a:hover{
   padding-left: 25px;
   display: block;
   background-color: #4dd0e1;
-  margin-top: 30px;
+  margin-top: -70px;
   margin-right: 20px;
   box-sizing: border-box;
   border-radius: 3px;
@@ -273,6 +268,11 @@ header .header-wrapper ul li a:hover{
   white-space: nowrap;
   background-color: #eceff1;
 
+}
+
+.deck-list {
+  display: inline-block;
+  vertical-align: top;
 }
 
 #board-canvas .deck-wrapper .deck-header{
@@ -568,6 +568,28 @@ header .header-wrapper ul li a:hover{
 
 }
 
+.board-username {
+  padding-left: 40px;
+  font-size: 35px;
+  color: #4d4d4d;
+  height: 52px;
+}
+
+.error-message {
+  padding-left: 40px;
+  font-size: 15px;
+  color: red;
+  margin-top: -40px;
+}
+
+.open {
+  display: block !important;
+}
+
+.close {
+  display: none !important;
+}
+
 body #modal{
 
   width: 800px;
@@ -584,7 +606,7 @@ body #modal{
 
 }
 
-#modal .close-moadl {
+#modal .close-modal {
 
   width: 25px;
   height: 25px;
@@ -1180,7 +1202,7 @@ body #warning-modal {
 
 }
 
-#warning-modal .close-moadl {
+#warning-modal .close-modal {
 
   width: 25px;
   height: 25px;

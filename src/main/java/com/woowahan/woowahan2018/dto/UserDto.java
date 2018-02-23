@@ -33,36 +33,24 @@ public class UserDto {
             , groups = TrelloUserGroup.class)
     private String password;
 
-    @NotNull(message = "값을 입력해주세요."
-            , groups = { TrelloUserGroup.class, GithubUserGroup.class })
-    private String username;
-
-    private AccountType accountType;
+    @NotNull(message = "값을 입력해주세요.")
+    private String name;
 
     public UserDto() {
     }
 
-    public UserDto(String email, String password, String username) {
+    public UserDto(String email, String password, String name) {
         this.email = email;
         this.password = password;
-        this.username = username;
+        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public UserDto setEmail(String email) {
         this.email = email;
-        return this;
-    }
-
-    public UserDto setUsername(String username) {
-        this.username = username;
         return this;
     }
 
@@ -75,24 +63,39 @@ public class UserDto {
         return this;
     }
 
-    public AccountType getAccountType() {
-        return accountType;
+    public String getName() {
+        return name;
     }
 
-    public UserDto setAccountType(AccountType accountType) {
-        this.accountType = accountType;
+    public UserDto setName(String name) {
+        this.name = name;
         return this;
     }
 
     public User toUser() {
-        return new User(email, username, accountType);
+        return new User(email, name);
     }
 
-    public User toUser(PasswordEncoder encoder) {
+    public User toUser (PasswordEncoder encoder){
         return new User(email,
-                encoder.encode(password),
-                username,
-                accountType);
+                encoder.encode(this.password),
+                name);
+    }
+
+    @Override
+    public boolean equals (Object o){
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(email, userDto.email) &&
+                Objects.equals(password, userDto.password) &&
+                Objects.equals(name, userDto.name);
+    }
+
+    @Override
+    public int hashCode () {
+
+        return Objects.hash(email, password, name);
     }
 
     @Override
@@ -100,24 +103,7 @@ public class UserDto {
         return "UserDto{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", accountType=" + accountType +
+                ", name='" + name + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserDto userDto = (UserDto) o;
-        return Objects.equals(email, userDto.email) &&
-                Objects.equals(password, userDto.password) &&
-                Objects.equals(username, userDto.username) &&
-                accountType == userDto.accountType;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(email, password, username, accountType);
     }
 }

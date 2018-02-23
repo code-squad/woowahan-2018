@@ -1,24 +1,24 @@
 var Template = {
-
-  board : "<a class='board waves-effect waves-light btn' href='../board.html?boardId={{id}}'>" +
-                    "{{name}}" +
-          "</a>",
+  loginFail : "<p>아이디",
+  board : "<li class='board waves-effect waves-light btn'>" +
+                    "{{input-value}}" +
+          "</li>",
 
   deck : "<div class='deck-wrapper'>" +
                 "<div class='deck-content z-depth-1'>" +
                     "<div class='deck-header'>" +
                       "<textarea class='deck-header-name'>{{value}}</textarea>" +
                     "</div>" +
-                    "<div class='deck-cards' id='deck-cards-{{id}}'></div>" +
+                    "<div class='deck-cards'></div>" +
                     "<div class='card-composer'>" +
-                       "<div class='add-card-form' id='add-card-form-{{id}}'>" +
-                          "<textarea class='card-title' id='card-title-{{id}}'></textarea>" +
+                       "<div class='add-card-form'>" +
+                          "<textarea class='card-title'></textarea>" +
                           "<div class='btn-area'>" +
-                            "<button class='btn waves-effect waves-light save-card' id='save-card-{{id}}'>save</button>" +
-                            "<button class='btn waves-effect waves-light cancel-card' id='cancel-card-{{id}}'>cancel</button>" +
+                            "<button class='btn waves-effect waves-light save-card'>save</button>" +
+                            "<button class='btn waves-effect waves-light cancel-card'>cancel</button>" +
                           "</div>" +
                        "</div>" +
-                       "<a class='add-card-btn' id='add-card-btn-{{id}}' href='#'>Add a Card...</a>" +
+                       "<a class='add-card-btn' href='#'>Add a Card...</a>" +
                     "</div>" +
                 "</div>" +
               "</div>",

@@ -32,16 +32,20 @@ public class CommonResponse {
         return message;
     }
 
+    public Object getContent() {
+        return content;
+    }
+
     public static CommonResponse success(String message) {
         return new CommonResponse(ResponseStatus.OK, message);
     }
 
-    public static CommonResponse error(String message) {
-        return new CommonResponse(ResponseStatus.FAIL, message);
-    }
-
     public static CommonResponse success(String message, Object content) {
         return new CommonResponse(ResponseStatus.OK, message, content);
+    }
+
+    public static CommonResponse error(String message) {
+        return new CommonResponse(ResponseStatus.FAIL, message);
     }
 
     public static CommonResponse error(String message, Object content) {
@@ -65,8 +69,9 @@ public class CommonResponse {
     @Override
     public String toString() {
         return "CommonResponse{" +
-                "status='" + status + '\'' +
+                "status=" + status +
                 ", message='" + message + '\'' +
+                ", content=" + content +
                 '}';
     }
 
