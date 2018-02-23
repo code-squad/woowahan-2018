@@ -1,5 +1,7 @@
 package com.woowahan.woowahan2018.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Objects;
 
 public class CommonResponse {
@@ -46,6 +48,10 @@ public class CommonResponse {
         return new CommonResponse(ResponseStatus.FAIL, message);
     }
 
+    public static CommonResponse error(String message, Object content) {
+        return new CommonResponse(ResponseStatus.FAIL, message, content);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,5 +73,16 @@ public class CommonResponse {
                 ", message='" + message + '\'' +
                 ", content=" + content +
                 '}';
+    }
+
+    public String toJsonString() {
+        ObjectMapper mapper = new ObjectMapper();
+        String result;
+        try {
+            result = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            result = "";
+        }
+        return result;
     }
 }

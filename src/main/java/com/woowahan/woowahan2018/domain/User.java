@@ -1,20 +1,24 @@
 package com.woowahan.woowahan2018.domain;
 
+import com.woowahan.woowahan2018.dto.AccountType;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class User extends AbstractEntity {
-
-    @Column(nullable =  false, unique = true)
+    @Column(nullable = false, unique = true)
     @Length(min = 5, max = 30)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String encryptedPassword;
 
     @Column(nullable = false)
@@ -26,8 +30,12 @@ public class User extends AbstractEntity {
     }
 
     public User(String email, String encryptedPassword, String name) {
-        this.email = email;
+        this(email, name);
         this.encryptedPassword = encryptedPassword;
+    }
+
+    public User(String email, String name) {
+        this.email = email;
         this.name = name;
     }
 
@@ -47,13 +55,19 @@ public class User extends AbstractEntity {
         return encryptedPassword;
     }
 
+    public LoginUser toLoginUser(List<GrantedAuthority> authorities) {
+        return new LoginUser(email, encryptedPassword, authorities);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         User user = (User) o;
         return Objects.equals(email, user.email) &&
-                Objects.equals(encryptedPassword, user.encryptedPassword);
+                Objects.equals(encryptedPassword, user.encryptedPassword) &&
+                Objects.equals(name, user.name);
     }
 
     @Override

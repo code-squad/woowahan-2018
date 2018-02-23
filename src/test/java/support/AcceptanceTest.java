@@ -1,7 +1,5 @@
 package support;
 
-import com.woowahan.woowahan2018.domain.User;
-import com.woowahan.woowahan2018.domain.UserRepository;
 import com.woowahan.woowahan2018.dto.UserDto;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +16,12 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public abstract class AcceptanceTest {
-    private static final String DEFAULT_LOGIN_USER_EMAIL = "saram4030";
-    private static final String DEFAULT_LOGIN_USER_PASSWORD = "12345asdf!@";
+    private static final String DEFAULT_LOGIN_USER_EMAIL = "javajigi@a.com";
+    private static final String DEFAULT_LOGIN_USER_PASSWORD = "12345asdfg!@";
+    private static final String DEFAULT_LOGIN_USERNAME = "자바지기";
 
     @Autowired
     private TestRestTemplate template;
-
-    @Autowired
-    private UserRepository userRepository;
 
     public TestRestTemplate template() {
         return template;
