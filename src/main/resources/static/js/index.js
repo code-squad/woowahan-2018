@@ -1,24 +1,36 @@
-import Utils from './support/Utils.js';
-import UserController from './User.js';
-// import MESSAGE from './support/Messages.js';
+import { _ } from './support/Utils.js';
+import { UserController, UserResponseHandler } from './User.js';
+import { BoardsController, BoardsViewHandler } from './boards.js';
+import { BoardController, BoardViewHandler } from './board.js';
 
 const userController = new UserController();
+const userResponseHandler = new UserResponseHandler();
+const boardsController = new BoardsController();
+const boardsViewHandler = new BoardsViewHandler();
+const boardController = new BoardController();
+const boardViewHandler = new BoardViewHandler();
+
+_.eventHandler(".login-form", "submit", (e) => userController.login(e, userResponseHandler.login));
+_.eventHandler(".signup-form", "submit", (e) => userController.signup(e, userResponseHandler.signup));
+_.eventHandler(".logout-button", "click", (e) => userController.logout(e, userResponseHandler.logout));
+
+_.eventHandler(".signup-form", "focusout", userController.validateValue);
+
+boardsController.domLoaded(boardsViewHandler.printBoards);
+_.eventHandler(".add-board-btn", "click", boardsViewHandler.openModal.bind(boardsViewHandler));
+_.eventHandler(".close-modal", "click", boardsViewHandler.closeModal.bind(boardsViewHandler));
+_.eventHandler(".save-board", "click", (e) => boardsController.saveBoard(boardsViewHandler.appendBoard.bind(boardsViewHandler)));
 
 
-//1. 로딩(domcontentloaded 콜백에서
-// 1.1 msg를 가져온다 => 전역객체에 추가.
-// 1.1.2 이벤트등록(addeventlist)  <= 1.1 then callback 안에서 구현.
-
-let MESSAGE;
-document.addEventListener("DOMcontentloaded", () => {
-  Utils.ajax("/message.json", "GET").then((data) => {
-    MESSAGE = data;
-  });
+boardController.domLoaded(boardViewHandler.printBoard.bind(boardViewHandler));
+_.eventHandler(".add-deck-btn", "click", boardViewHandler.openDeckForm.bind(boardViewHandler));
+_.eventHandler(".cancel-deck", "click", (e) => {
+    e.preventDefault();
+    boardViewHandler.closeDeckForm();
 })
+_.eventHandler(".save-deck", "click", (e) => boardController.saveDeck(e, boardViewHandler.appendDeck.bind(boardViewHandler)))
 
-Utils.eventHandler(".login-form", "submit", userController.login.bind(userController));
-Utils.eventHandler(".signup-form", "submit", userController.signup.bind(userController));
-Utils.eventHandler(".logout-button", "click", userController.logout.bind(userController));
 
-Utils.eventHandler(".signup-form", "focusout", userController.validateValue.bind(userController));
-
+_.eventHandler(".deck-list", "click", (e) => {
+    console.log(e)
+})

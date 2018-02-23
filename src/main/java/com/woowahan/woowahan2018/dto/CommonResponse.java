@@ -37,6 +37,10 @@ public class CommonResponse {
 		return status;
 	}
 
+	public Object getContent() {
+		return content;
+	}
+
 	public String getField() {
 		return field;
 	}
@@ -100,4 +104,5 @@ public class CommonResponse {
 		}
 		return result;
 	}
+
 }

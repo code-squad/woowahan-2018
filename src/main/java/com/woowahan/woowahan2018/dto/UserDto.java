@@ -41,8 +41,6 @@ public class UserDto {
             , groups = NameFirstGroup.class)
     private String name;
 
-    private AccountType accountType;
-
     public UserDto() {
     }
 
@@ -56,13 +54,13 @@ public class UserDto {
         return email;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public UserDto setEmail(String email) {
         this.email = email;
         return this;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public UserDto setName(String name) {
@@ -79,34 +77,12 @@ public class UserDto {
         return this;
     }
 
-    public AccountType getAccountType() {
-        return accountType;
-    }
-
-    public UserDto setAccountType(AccountType accountType) {
-        this.accountType = accountType;
-        return this;
-    }
-
     public User toUser() {
-        return new User(email, name, accountType);
+        return new User(email, name);
     }
 
-    public User toUser(PasswordEncoder encoder) {
-        return new User(email,
-                encoder.encode(password),
-                name,
-                accountType);
-    }
-
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", accountType=" + accountType +
-                '}';
+    public User toUser (PasswordEncoder encoder){
+        return new User(email, encoder.encode(this.password) ,name);
     }
 
     @Override
@@ -116,12 +92,21 @@ public class UserDto {
         UserDto userDto = (UserDto) o;
         return Objects.equals(email, userDto.email) &&
                 Objects.equals(password, userDto.password) &&
-                Objects.equals(name, userDto.name) &&
-                accountType == userDto.accountType;
+                Objects.equals(name, userDto.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password, name, accountType);
+
+        return Objects.hash(email, password, name);
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

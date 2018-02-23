@@ -131,7 +131,13 @@ header .header-wrapper li a:hover{
 
 }
 
-.modal .close-moadl {
+.modal.open {
+  display: block;
+  top: 100px;
+  z-index: 1;
+}
+
+.modal .close-modal {
 
   width: 25px;
   height: 25px;

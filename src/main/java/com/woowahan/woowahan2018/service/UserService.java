@@ -69,12 +69,21 @@ public class UserService implements UserDetailsService {
 	public UserDetails loginWithGithub(String email, String username) {
 		Optional<User> maybeUser = userRepository.findByEmail(email);
 		if (!maybeUser.isPresent()) {
-			User user = userRepository.save(new User(email, username, AccountType.Github));
+			User user = userRepository.save(new User(email, username));
 			return registerAuthentication(user);
 		}
 
 		return registerAuthentication(maybeUser.get());
 	}
+
+    public UserDetails githubLogin(String email, String username) {
+        Optional<User> maybeUser = userRepository.findByEmail(email);
+        if (!maybeUser.isPresent()) {
+            User newUser = new User(email, username);
+            return userRepository.save(newUser).toLoginUser(buildUserAuthority());
+        }
+        return maybeUser.get().toLoginUser(buildUserAuthority());
+    }
 
 	private LoginUser registerAuthentication(User user) {
 		LoginUser loginUser = user.toLoginUser(buildUserAuthority());

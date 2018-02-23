@@ -33,7 +33,6 @@ public class UserController {
     @PostMapping("")
     public CommonResponse createUser(@Validated(value = {EmailPriorityGroup.class, PasswordPriorityGroup.class, NamePriorityGroup.class})
                                      @RequestBody UserDto userDto) {
-        userDto.setAccountType(AccountType.Trello);
         userService.createUser(userDto);
         log.debug("it's email : {}", userDto.getEmail());
 
