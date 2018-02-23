@@ -34,4 +34,25 @@ const boardUtils = {
     }
 }
 
-export { _, boardUtils };
+const API = {
+    USERS: {
+        SIGNUP: "/api/users",
+        LOGIN: "/api/users/login",
+        LOGOUT: "/api/users/logout"
+    },
+    BOARDS: {
+        MYBOARD: "/api/boards",
+        BOARD(boardId) {
+            return `/api/boards/${boardId}`;
+        },
+        DECKS(boardId) {
+            return `/api/boards/${boardId}/decks`;
+        },
+        CARDS(deckId) {
+            return `/api/decks/${deckId}/cards`;
+        }
+    }
+
+}
+
+export { _, boardUtils, API };

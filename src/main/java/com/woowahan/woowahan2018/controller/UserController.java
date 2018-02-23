@@ -3,7 +3,9 @@ package com.woowahan.woowahan2018.controller;
 import com.woowahan.woowahan2018.dto.AccountType;
 import com.woowahan.woowahan2018.dto.CommonResponse;
 import com.woowahan.woowahan2018.dto.UserDto;
-import com.woowahan.woowahan2018.dto.group.TrelloUserGroup;
+import com.woowahan.woowahan2018.dto.group.EmailPriorityGroup;
+import com.woowahan.woowahan2018.dto.group.NamePriorityGroup;
+import com.woowahan.woowahan2018.dto.group.PasswordPriorityGroup;
 import com.woowahan.woowahan2018.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,19 +31,11 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("")
-    public CommonResponse createUser(@Validated(value = TrelloUserGroup.class )
+    public CommonResponse createUser(@Validated(value = {EmailPriorityGroup.class, PasswordPriorityGroup.class, NamePriorityGroup.class})
                                      @RequestBody UserDto userDto) {
         userService.createUser(userDto);
         log.debug("it's email : {}", userDto.getEmail());
 
         return CommonResponse.success("성공적으로 가입했습니다.");
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpSession session) {
-        HttpHeaders headers = new HttpHeaders();
-        session.removeAttribute("loginUser");
-
-        return new ResponseEntity<>(headers, HttpStatus.ACCEPTED);
     }
 }

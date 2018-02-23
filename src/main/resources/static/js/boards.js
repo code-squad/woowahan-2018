@@ -1,4 +1,4 @@
-import { _, boardUtils } from './support/Utils.js';
+import { _, boardUtils, API } from './support/Utils.js';
 
 class BoardsController {
     domLoaded(callback) {
@@ -10,7 +10,7 @@ class BoardsController {
     }
 
     getBoards(callback) {
-        _.ajax("/api/boards", "GET").then(callback);
+        _.ajax(API.BOARDS.MYBOARD, "GET").then(callback);
     }
 
     saveBoard(callback) {
@@ -19,7 +19,7 @@ class BoardsController {
             "name": nameDom.value
         }
 
-        _.ajax("/api/boards", "POST", parameters).then(callback);
+        _.ajax(API.BOARDS.MYBOARD, "POST", parameters).then(callback);
     }
 
 }
@@ -40,8 +40,9 @@ class BoardsViewHandler {
     printBoards(res) {
         const boards = res.content.boards;
         const boardListDom = _.$('.board-list');
-
+        console.log(boards)
         boards.forEach((item) => {
+            console.log(item)
             boardListDom.innerHTML += boardUtils.createTemplate(Template.board, {'id': item.id, 'name': item.name});
         })
     }

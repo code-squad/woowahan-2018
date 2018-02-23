@@ -1,8 +1,10 @@
 package com.woowahan.woowahan2018.security;
 
 import com.woowahan.woowahan2018.dto.CommonResponse;
+import com.woowahan.woowahan2018.support.ErrorMessageContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -13,24 +15,38 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class RestExceptionHandler {
-
 	private static final Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);
+
+	@Autowired
+	ErrorMessageContainer errorMessageContainer;
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public CommonResponse methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+	public List<CommonResponse> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
 		BindingResult result = ex.getBindingResult();
-		return CommonResponse.error(result.getFieldErrors().get(0).getDefaultMessage());
+		List<CommonResponse> responses = result.getFieldErrors()
+				.stream()
+				.map(fieldError -> CommonResponse.error(fieldError.getField(), errorMessageContainer.getMessage(fieldError.getDefaultMessage())))
+				.collect(Collectors.toList());
+
+		log.debug("Error responses: {}", responses);
+		return responses;
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(Throwable.class)
-	public CommonResponse handleControllerException(HttpServletRequest req, Throwable ex) {
+	public List<CommonResponse> handleControllerException(HttpServletRequest req, Throwable ex) {
+		List<CommonResponse> response = new ArrayList<>();
+		response.add(CommonResponse.error(ex.getMessage()));
+
 		log.debug("Exception raised. {}", ex.getMessage());
-		return CommonResponse.error(ex.getMessage());
+		return response;
 	}
 }

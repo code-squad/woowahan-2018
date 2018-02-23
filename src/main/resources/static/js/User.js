@@ -1,10 +1,15 @@
-import { _ } from './support/Utils.js';
-import SIGNUP_MSG from './support/Messages.js';
+import { _, API } from './support/Utils.js';
+import * as SIGNUP_MSG from '../message.json'
 
 class UserController {
+    constructor() {
+        this.validator = new Validator();
+        this.userViewHandler = new UserViewHandler();
+    }
+
     login(e, callback) {
         e.preventDefault();
-        const loginURL = "/api/users/login";
+        const loginURL = API.USERS.LOGIN;
         const email = _.$("#email");
         const password = _.$("#password");
         const parameters = {
@@ -18,7 +23,7 @@ class UserController {
     signup(e, callback) {
         e.preventDefault();
 
-        const signupURL = "/api/users";
+        const signupURL = API.USERS.SIGNUP;
         const name = _.$("#name");
         const email = _.$("#email");
         const password = _.$("#password");
@@ -35,27 +40,20 @@ class UserController {
     logout(e, callback) {
         e.preventDefault();
 
-        const logoutURL = "/api/users/logout";
+        const logoutURL = API.USERS.LOGOUT;
         _.ajax(logoutURL, "POST").then(callback);
     }
 
     validateValue(e) {
         const targetDom = e.target;
-        const validator = new Validator();
-        const message = validator.manager(targetDom);
+        const message = this.validator.manager(targetDom);
+        this.userViewHandler.showErrorMessage(targetDom, message);
 
-        if (message === undefined) {
-            targetDom.className = "validate valid";
-            _.$("." + targetDom.id + "-noti").innerHTML = "";
-        } else {
-            e.target.className = "validate invalid";
-            _.$("." + targetDom.id + "-noti").innerHTML = message;
-        }
     }
 
 }
 
-class UserResponseHandler {
+class UserViewHandler {
     login(res) {
         let status = res.status;
         if (status === "OK") {
@@ -72,7 +70,10 @@ class UserResponseHandler {
         if (status === "OK")
             window.location.href = "/login.html";
         else {
-            message.innerHTML = res.message
+            res.forEach((data) => {
+                const targetDom = _.$("#" + data.field);
+                this.showErrorMessage(targetDom, data.message);
+            })
         }
     }
 
@@ -85,19 +86,29 @@ class UserResponseHandler {
             console.log("logout failed.")
         }
     }
+
+    showErrorMessage(targetDom, message) {
+        if (message === undefined) {
+            targetDom.className = "validate valid";
+            _.$("." + targetDom.id + "-noti").innerHTML = "";
+        } else {
+            targetDom.className = "validate invalid";
+            _.$("." + targetDom.id + "-noti").innerHTML = message;
+        }
+    }
 }
 
 
 class Validator {
     manager(targetDom) {
         const checkValue = {
-            'email': this.checkEmail,
-            'password': this.checkPassword,
-            'name': this.checkName
+            'email': this.checkEmail.bind(this),
+            'password': this.checkPassword.bind(this),
+            'name': this.checkName.bind(this)
         };
 
         if (checkValue[targetDom.id]) {
-            checkValue[targetDom.id](targetDom.value);
+            return checkValue[targetDom.id](targetDom.value);
         }
 
     }
@@ -131,4 +142,4 @@ class Validator {
     }
 }
 
-export { UserController, UserResponseHandler };
+export { UserController, UserViewHandler };
