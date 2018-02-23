@@ -1,4 +1,4 @@
-import { _ } from './support/Utils.js';
+import { _, API } from './support/Utils.js';
 import * as SIGNUP_MSG from '../message.json'
 
 class UserController {
@@ -9,7 +9,7 @@ class UserController {
 
     login(e, callback) {
         e.preventDefault();
-        const loginURL = "/api/users/login";
+        const loginURL = API.USERS.LOGIN;
         const email = _.$("#email");
         const password = _.$("#password");
         const parameters = {
@@ -23,7 +23,7 @@ class UserController {
     signup(e, callback) {
         e.preventDefault();
 
-        const signupURL = "/api/users";
+        const signupURL = API.USERS.SIGNUP;
         const name = _.$("#name");
         const email = _.$("#email");
         const password = _.$("#password");
@@ -40,7 +40,7 @@ class UserController {
     logout(e, callback) {
         e.preventDefault();
 
-        const logoutURL = "/api/users/logout";
+        const logoutURL = API.USERS.LOGOUT;
         _.ajax(logoutURL, "POST").then(callback);
     }
 

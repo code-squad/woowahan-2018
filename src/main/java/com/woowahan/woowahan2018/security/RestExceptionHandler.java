@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,8 +42,11 @@ public class RestExceptionHandler {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(Throwable.class)
-	public CommonResponse handleControllerException(HttpServletRequest req, Throwable ex) {
+	public List<CommonResponse> handleControllerException(HttpServletRequest req, Throwable ex) {
+		List<CommonResponse> response = new ArrayList<>();
+		response.add(CommonResponse.error(ex.getMessage()));
+
 		log.debug("Exception raised. {}", ex.getMessage());
-		return CommonResponse.error(ex.getMessage());
+		return response;
 	}
 }

@@ -17,7 +17,7 @@ public class CommonResponse {
 
 	private CommonResponse(ResponseStatus status, String message) {
 		this.status = status;
-		this.field = "";
+		this.field = "common";
 		this.message = message;
 	}
 
