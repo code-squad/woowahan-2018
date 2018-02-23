@@ -167,3 +167,8 @@ header .header-wrapper li a:hover{
   margin-bottom: 7px;
 
 }
+
+.login-notification {
+  color: #ff0000;
+  text-align: center;
+}

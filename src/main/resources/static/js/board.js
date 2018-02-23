@@ -1,189 +1,152 @@
+import { _, boardUtils } from './support/Utils.js'
+
 const params = window.location.search.substr(1);
 const boardId = params.split("=")[1];
-const addDeckButton = document.querySelector(".add-deck-btn");
-const addDeckForm = document.querySelector(".add-deck-form");
-const addDeckArea = document.querySelector(".add-deck-area");
-const closeDeckButton = document.querySelector(".cancel-deck");
-const nameDom = document.querySelector("#add-deck");
-const saveButton = document.querySelector(".save-deck");
-const deckList = document.querySelector(".deck-list");
-const boardUsername = document.querySelector(".board-username");
-const errorMessage = document.querySelector(".error-message");
 
-function openDeckForm() {
-    addDeckForm.classList.add("open");
-}
+class BoardController{
+    domLoaded(callback) {
+        if (window.location.pathname !== "/board.html") {
+            return;
+        }
 
-function closeDeckForm() {
-    addDeckForm.classList.remove("open");
-    nameDom.value = "";
-}
-
-function openCardForm(id) {
-    document.getElementById(`add-card-form-${id}`).classList.add("open");
-    document.getElementById(`add-card-btn-${id}`).classList.add("close");
-}
-
-function closeCardForm(id) {
-    document.getElementById(`add-card-form-${id}`).classList.remove("open");
-    document.getElementById(`add-card-btn-${id}`).classList.remove("close");
-    document.getElementById(`card-title-${id}`).value = "";
-}
-
-function saveDeck() {
-    return new Promise((resolve, timeLimit) => {
-        let xhr = new XMLHttpRequest();
-        xhr.open("post", `/api/boards/${boardId}/decks`, true);
-        xhr.addEventListener("load", (e) => {
-            console.log(xhr);
-            resolve(JSON.parse(xhr.response));
+        document.addEventListener("DOMContentLoaded", () => {
+            this.getBoard(callback);
         });
-        xhr.setRequestHeader("Content-type", "application/json");
-        const data = JSON.stringify(
-        {
+    }
+
+    saveDeck(e, callback) {
+        const nameDom = _.$("#add-deck");
+        e.preventDefault();
+
+        const data = {
             "name": nameDom.value
-        });
+        };
 
-        xhr.send(data);
-    });
-}
+        _.ajax(`/api/boards/${boardId}/decks`, "POST", data).then(callback);
+    }
 
-function saveCard(deckId) {
-    return new Promise((resolve, timeLimit) => {
-        let xhr = new XMLHttpRequest();
-        xhr.open("post", `/api/decks/${deckId}/cards`, true);
-        xhr.addEventListener("load", (e) => {
-            console.log(xhr);
-            resolve([deckId, JSON.parse(xhr.response)]);
-        });
-        xhr.setRequestHeader("Content-type", "application/json");
-        const data = JSON.stringify(
-        {
+    saveCard(deckId, callback) {
+        const data = {
             "text": document.getElementById(`card-title-${deckId}`).value
-        });
-        xhr.send(data);
-    });
-}
+        };
 
-function appendCard(res) {
-    const deckId = res[0]
-    res = res[1]
-    let status = res.status;
+        _.ajax(`/api/decks/${deckId}/cards`, "POST", data).then(callback);
+    }
 
-    if (status === "OK") {
-        document
-            .getElementById(`deck-cards-${deckId}`)
-            .insertAdjacentHTML("beforeend", createTemplate(Template.card, {"value" : res.content.text}));
-    } else {
-        errorMessage.innerHTML = res.message;
+    getBoard(callback) {
+        _.ajax(`/api/boards/${boardId}`, "GET").then(callback);
     }
 }
 
-function appendDeck(res) {
-    let status = res.status;
-    console.log(res);
-
-    if (status === "OK") {
-        deckList.insertAdjacentHTML("beforeend",
-                                    createTemplate(Template.deck, {"id" : res.content.id, "value": res.content.name}));
-        initCardButtons(res.content.id);
-        closeDeckForm();
-        errorMessage.innerHTML = "";
-    } else {
-        errorMessage.innerHTML = res.message;
+class BoardViewHandler {
+    constructor() {
+        this.addDeckForm = _.$(".add-deck-form");
+        this.nameDom = _.$("#add-deck");
+        this.errorMessage = _.$(".error-message");
+        this.boardName = _.$(".board-name");
+        this.deckList = _.$(".deck-list");
     }
-}
 
-function addCardButtonListener(deckId) {
-    openCardForm(deckId);
-}
-
-
-function createTemplate(html, data) {
-    return html.replace(/{{(\w*)}}/g, function (m, key) {
-        return data.hasOwnProperty(key) ? data[key] : "";
-    });
-}
-
-function printBoard(res) {
-    if(res.status === "OK") {
-        board = res.content;
-        printBoardName(board.title);
-        printAllDeck(board.decks);
-    } else {
-        errorMessage.innerHTML = res.message;
+    openDeckForm() {
+        this.addDeckForm.classList.add("open");
     }
-}
 
-function printAllDeck(decks) {
-    decks.forEach((item) => {
-        console.log(item)
-        deckList.insertAdjacentHTML("beforeend", createTemplate(Template.deck, {"id" : item.id, "value" : item.name}));
-        item.cards.forEach((card) => {
+    closeDeckForm() {
+        this.addDeckForm.classList.remove("open");
+        this.nameDom.value = "";
+    }
+
+    openCardForm(id) {
+        _.$(`#add-card-form-${id}`).classList.add("open");
+        _.$(`#add-card-btn-${id}`).classList.add("close");
+    }
+
+    closeCardForm(id) {
+        _.$(`#add-card-form-${id}`).classList.remove("open");
+        _.$(`#add-card-btn-${id}`).classList.remove("close");
+        _.$(`#card-title-${id}`).value = "";
+    }
+
+    appendCard(res) {
+        let status = res.status;
+        const deckId = res.content.deckId;
+        const card = res.content.card
+
+        if (status === "OK") {
             document
-                .getElementById(`deck-cards-${item.id}`)
-                .insertAdjacentHTML("beforeend", createTemplate(Template.card, {"value" : card.text}));
+                .getElementById(`deck-cards-${deckId}`)
+                .insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.card, {"value" : card.text}));
+        } else {
+            errorMessage.innerHTML = res.message;
+        }
+    }
+
+    printBoardName(boardName) {
+        this.boardName.innerHTML = boardName
+        this.errorMessage.innerHTML = "";
+    }
+
+    printBoard(res) {
+        if(res.status === "OK") {
+            const board = res.content;
+            this.printBoardName(board.name);
+            this.printDecks(board.decks);
+        } else {
+            this.errorMessage.innerHTML = res.message;
+        }
+    }
+
+    appendDeck(res) {
+        let status = res.status;
+
+        if (status === "OK") {
+            this.deckList.insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.deck, {"id" : res.content.id, "value": res.content.name}));
+            initCardButtons(res.content.id);
+            this.errorMessage.innerHTML = "";
+        } else {
+            this.errorMessage.innerHTML = res.message;
+        }
+
+        this.closeDeckForm();
+    }
+
+    printDecks(decks) {
+        decks.forEach((deck) => {
+            this.deckList.insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.deck, {"id" : deck.id, "value" : deck.name}));
+            this.printCards(deck.id, deck.cards);
+            initCardButtons(deck.id);
         });
-        initCardButtons(item.id);
-    });
-    errorMessage.innerHTML = "";
+        this.errorMessage.innerHTML = "";
+    }
+
+    printCards(deckId, cards) {
+        cards.forEach((card) => {
+            _.$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.card, {"value" : card.text}));
+        });
+    }
 }
 
 function initCardButtons(deckId) {
+    const boardController = new BoardController();
+    const boardViewHandler = new BoardViewHandler();
     document
         .getElementById(`add-card-btn-${deckId}`)
         .addEventListener("click", () => {
-            addCardButtonListener(deckId);
+            boardViewHandler.openCardForm(deckId);
         });
 
     document
         .getElementById(`save-card-${deckId}`)
         .addEventListener("click", () => {
-            saveCard(deckId).then(appendCard);
-            closeCardForm(deckId);
+            boardController.saveCard(deckId, boardViewHandler.appendCard);
+            boardViewHandler.closeCardForm(deckId);
         });
 
     document
         .getElementById(`cancel-card-${deckId}`)
         .addEventListener("click", () => {
-            closeCardForm(deckId);
+            boardViewHandler.closeCardForm(deckId);
         });
 }
 
-function getBoard() {
-    return new Promise((resolve, timeLimit) => {
-        let xhr = new XMLHttpRequest();
-        xhr.open("get", `/api/boards/${boardId}`, true);
-        xhr.addEventListener("load", (e) => {
-            console.log(xhr);
-            resolve(JSON.parse(xhr.response));
-        });
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.send();
-    });
-}
-
-function printBoardName(boardName) {
-    boardUsername.innerHTML = boardName
-    errorMessage.innerHTML = "";
-}
-
-function initControls() {
-    addDeckButton.addEventListener("click", openDeckForm);
-    closeDeckButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        closeDeckForm();
-    });
-
-    saveButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        saveDeck().then(appendDeck);
-        closeDeckForm();
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
-        getBoard().then(printBoard);
-    });
-}
-
-initControls();
+export { BoardController, BoardViewHandler };

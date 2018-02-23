@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/decks/{deckId}/cards")
@@ -29,6 +31,11 @@ public class CardController {
                                    @RequestBody
                                    @Valid CardDto cardDto) throws DeckNotFoundException {
         Card card = deckService.createCard(deckId, cardDto);
-        return CommonResponse.success("Card 생성", card);
+
+        Map<String, Object> content = new HashMap<>();
+        content.put("card", card);
+        content.put("deckId", deckId);
+
+        return CommonResponse.success("Card 생성", content);
     }
 }

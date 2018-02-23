@@ -17,13 +17,13 @@
   </header>
 
   <div class="board-header-area">
-      <p class="board-username"></p>
+      <p class="board-name"></p>
       <p class="error-message"></p>
       <div class="member-list z-depth-1">
           <ul class="members">
             <li class="member">
                 <img src="./image/profile.png" />
-                <span class="member-username">Javajigi</span>
+                <span class="member-name">Javajigi</span>
             </li>
           </ul>
 
@@ -44,7 +44,7 @@
       <button class="btn waves-effect waves-light add-deck-btn">Add a Deck</button>
       <form class="add-deck-form z-depth-1">
         <div class="input-field col s12">
-          <input id="add-deck" type="text" class="validate" placeholder="Deck's username"/>
+          <input id="add-deck" type="text" class="validate" placeholder="Deck's name"/>
           <div class=btn-area>
             <button type="submit" class="waves-effect waves-light btn save-deck">save</button>
             <button class="waves-effect waves-light btn cancel-deck">cancel</button>
@@ -62,9 +62,9 @@
     <div class="modal-content">
       <span class="card-title-in-modal">{{card-title}}</span>
       <span class="due-date-notification">Due Date</span>
-      <div class="deck-username-and-current-due-date-wrapper">
+      <div class="deck-name-and-current-due-date-wrapper">
         <span class="in-deck">in deck</span>
-        <span class="deck-username">{{deck-username}}</span>
+        <span class="deck-name">{{deck-name}}</span>
         <span class="current-due-date"></span>
       </div>
 
@@ -126,7 +126,7 @@
 
       <div class="modal-for-attachment z-depth-1">
         <div class="attachment-btn-header">Attach</div>
-        <input type="file" id="fileUpload" username="files[]" />
+        <input type="file" id="fileUpload" name="files[]" />
         <div class="attach-from-computer">Computer</div>
         <div class="attach-with-link">Attach a link</div>
         <input type="text" class="link-for-attachment" placeholder="Paste any link here..." />
@@ -153,6 +153,6 @@
   <script type="text/javascript" src="lib/materialize.min.js"></script>
   <script type="text/javascript" src="lib/handlebars-v4.0.5.js"></script>
   <script type="text/javascript" src="./js/template.js"></script>
-  <script type="text/javascript" src="./js/board.js"></script>
+  <script type="text/javascript" src="./js/dist/bundle.js"></script>
 </body>
 </html>

@@ -23,15 +23,15 @@ public class UserDto {
     private String password;
 
     @NotNull(message = "값을 입력해주세요.")
-    private String username;
+    private String name;
 
     public UserDto() {
     }
 
-    public UserDto(String email, String password, String username) {
+    public UserDto(String email, String password, String name) {
         this.email = email;
         this.password = password;
-        this.username = username;
+        this.name = name;
     }
 
     public String getEmail() {
@@ -52,25 +52,25 @@ public class UserDto {
         return this;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public UserDto setUsername(String username) {
-        this.username = username;
+    public UserDto setName(String name) {
+        this.name = name;
         return this;
     }
 
     public User toUser(PasswordEncoder encoder) {
         return new User(email,
                 encoder.encode(this.password),
-                username);
+                name);
     }
 
     @Override
     public String toString() {
         return "UserDto{" +
-                "username='" + username + '\'' +
+                "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
@@ -81,13 +81,13 @@ public class UserDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDto userDto = (UserDto) o;
-        return Objects.equals(username, userDto.username) &&
+        return Objects.equals(name, userDto.name) &&
                 Objects.equals(email, userDto.email) &&
                 Objects.equals(password, userDto.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, email, password);
+        return Objects.hash(name, email, password);
     }
 }

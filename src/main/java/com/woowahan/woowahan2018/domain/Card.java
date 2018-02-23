@@ -1,7 +1,8 @@
 package com.woowahan.woowahan2018.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity

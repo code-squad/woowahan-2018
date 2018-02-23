@@ -19,16 +19,16 @@ public class User extends AbstractEntity {
 
     @Column(nullable = false)
     @Length(max = 30)
-    private String username;
+    private String name;
 
     public User() {
 
     }
 
-    public User(String email, String encryptedPassword, String username) {
+    public User(String email, String encryptedPassword, String name) {
         this.email = email;
         this.encryptedPassword = encryptedPassword;
-        this.username = username;
+        this.name = name;
     }
 
     public boolean isCorrectPassword(String inputPassword, PasswordEncoder encoder) {
@@ -39,8 +39,8 @@ public class User extends AbstractEntity {
         return email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public String getEncryptedPassword() {
@@ -58,13 +58,13 @@ public class User extends AbstractEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, email, encryptedPassword);
+        return Objects.hash(name, email, encryptedPassword);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", encryptedPassword='" + encryptedPassword + '\'' +
                 '}';

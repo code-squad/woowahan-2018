@@ -1,6 +1,7 @@
 package com.woowahan.woowahan2018.dto;
 
 import com.woowahan.woowahan2018.domain.Card;
+import com.woowahan.woowahan2018.domain.Deck;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Objects;

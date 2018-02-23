@@ -1,89 +1,69 @@
-const addBoardBtn = document.querySelector('.add-board-btn');
-const closeModalBtn = document.querySelector('.close-modal');
-const saveBtn = document.querySelector('.save');
-const boardListDom = document.querySelector('.board-list');
-const modalDiv = document.querySelector('#modal');
-const nameDom = document.querySelector('.board-name');
+import { _, boardUtils } from './support/Utils.js';
 
-function openModal() {
-  modalDiv.classList.add('open');
+class BoardsController {
+    domLoaded(callback) {
+        if (window.location.pathname !== "/boards.html") {
+            return;
+        }
+
+        document.addEventListener("DOMcontentLoaded", this.getBoards(callback))
+    }
+
+    getBoards(callback) {
+        _.ajax("/api/boards", "GET").then(callback);
+    }
+
+    saveBoard(callback) {
+        const nameDom = _.$('.board-name');
+        const parameters = {
+            "name": nameDom.value
+        }
+
+        _.ajax("/api/boards", "POST", parameters).then(callback);
+    }
+
 }
 
-function closeModal() {
-  modalDiv.classList.remove('open');
+class BoardsViewHandler {
+    constructor() {
+        this.modalDiv = _.$('#modal');
+    }
+
+    openModal() {
+        this.modalDiv.classList.add('open');
+    }
+
+    closeModal() {
+        this.modalDiv.classList.remove('open');
+    }
+
+    printBoards(res) {
+        const boards = res.content.boards;
+        const boardListDom = _.$('.board-list');
+
+        boards.forEach((item) => {
+            boardListDom.innerHTML += boardUtils.createTemplate(Template.board, {'id': item.id, 'name': item.name});
+        })
+    }
+
+    appendBoard(res) {
+        const status = res.status;
+        const nameDom = _.$('.board-name');
+        const boardListDom = _.$('.board-list');
+
+        if (status === "OK") {
+            console.log(res)
+            boardListDom.insertAdjacentHTML('beforeend', boardUtils.createTemplate(Template.board, {'id' : res.content.id, 'name': res.content.name}));
+            this.closeModal();
+            nameDom.value = "";
+        } else {
+            const warning = _.$('.warning');
+            warning.innerHTML = res.message;
+            warning.style.display = 'block';
+        }
+    }
+
 }
 
-function saveBoard() {
-  let promise;
-  promise = new Promise((resolve, timeLimit) => {
-    let xhr = new XMLHttpRequest();
-    xhr.open("post", "/api/boards", true);
-    xhr.addEventListener("load", (e) => {
-      console.log(xhr);
-      resolve(JSON.parse(xhr.response));
-    });
-    xhr.setRequestHeader("Content-type", "application/json");
-    const data = JSON.stringify(
-      {
-        "name": nameDom.value
-      });
 
-    xhr.send(data);
-  });
-
-  return promise;
-}
-
-function appendBoard(res) {
-  let status = res.status;
-  console.log(res);
-  if (status === "OK") {
-    boardListDom.innerHTML += createTemplate(Template.board, {'id' : res.content.id, 'name': nameDom.value});
-    closeModal();
-    nameDom.value = "";
-  } else {
-    const warning = document.querySelector('.warning');
-    warning.innerHTML = res.message;
-    warning.style.display = 'block';
-  }
-}
-
-function createTemplate(html, data) {
-  return html.replace(/{{(\w*)}}/g, function (m, key) {
-    return data.hasOwnProperty(key) ? data[key] : "";
-  });
-}
-
-function getExistBoards() {
-  let promise;
-  promise = new Promise((resolve, timeLimit) => {
-    let xhr = new XMLHttpRequest();
-    xhr.open("get", "/api/boards", true);
-    xhr.addEventListener("load", (e) => {
-      console.log(xhr);
-      resolve(JSON.parse(xhr.response));
-    });
-    xhr.setRequestHeader("Content-type", "application/json");
-    xhr.send();
-  });
-
-  return promise;
-}
-
-function printAllBoard(res) {
-  const boards = res.content;
-
-  boards.forEach((item) => {
-    boardListDom.innerHTML += createTemplate(Template.board, {'id': item.id, 'name': item.name});
-  });
-}
-
-addBoardBtn.addEventListener('click', openModal);
-closeModalBtn.addEventListener('click', closeModal);
-saveBtn.addEventListener('click', (e) => {
-  saveBoard()
-    .then(appendBoard);
-});
-document.addEventListener('DOMContentLoaded', function () {
-  getExistBoards().then(printAllBoard);
-});
+export { BoardsController, BoardsViewHandler };
