@@ -86,3 +86,9 @@ header .header-wrapper .brand-logo{
   color: red;
   height: 21px;
 }
+
+.error-message {
+    position: absolute;
+    top: 50px;
+    color: red;
+}

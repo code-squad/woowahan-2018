@@ -4,6 +4,7 @@ import * as SIGNUP_MSG from '../message.json'
 class UserController {
     constructor() {
         this.validator = new Validator();
+        this.userViewHandler = new UserViewHandler();
     }
 
     login(e, callback) {
@@ -46,20 +47,13 @@ class UserController {
     validateValue(e) {
         const targetDom = e.target;
         const message = this.validator.manager(targetDom);
-
-        if (message === undefined) {
-            targetDom.className = "validate valid";
-            _.$("." + targetDom.id + "-noti").innerHTML = "";
-        } else {
-            e.target.className = "validate invalid";
-            _.$("." + targetDom.id + "-noti").innerHTML = message;
-        }
+        this.userViewHandler.showErrorMessage(targetDom, message);
 
     }
 
 }
 
-class UserResponseHandler {
+class UserViewHandler {
     login(res) {
         let status = res.status;
         if (status === "OK") {
@@ -76,7 +70,10 @@ class UserResponseHandler {
         if (status === "OK")
             window.location.href = "/login.html";
         else {
-            message.innerHTML = res.message
+            res.forEach((data) => {
+                const targetDom = _.$("#" + data.field);
+                this.showErrorMessage(targetDom, data.message);
+            })
         }
     }
 
@@ -87,6 +84,16 @@ class UserResponseHandler {
             window.location.replace("/index.html");
         } else {
             console.log("logout failed.")
+        }
+    }
+
+    showErrorMessage(targetDom, message) {
+        if (message === undefined) {
+            targetDom.className = "validate valid";
+            _.$("." + targetDom.id + "-noti").innerHTML = "";
+        } else {
+            targetDom.className = "validate invalid";
+            _.$("." + targetDom.id + "-noti").innerHTML = message;
         }
     }
 }
@@ -135,4 +142,4 @@ class Validator {
     }
 }
 
-export { UserController, UserResponseHandler };
+export { UserController, UserViewHandler };

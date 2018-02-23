@@ -1,19 +1,19 @@
 import { _ } from './support/Utils.js';
-import { UserController, UserResponseHandler } from './User.js';
+import { UserController, UserViewHandler } from './User.js';
 import { BoardsController, BoardsViewHandler } from './boards.js';
 import { BoardController, BoardViewHandler } from './board.js';
 
 const userController = new UserController();
-const userResponseHandler = new UserResponseHandler();
+const userViewHandler = new UserViewHandler();
 const boardsController = new BoardsController();
 const boardsViewHandler = new BoardsViewHandler();
 const boardController = new BoardController();
 const boardViewHandler = new BoardViewHandler();
 
 // user관련 이벤트
-_.eventHandler(".login-form", "submit", (e) => userController.login(e, userResponseHandler.login));
-_.eventHandler(".signup-form", "submit", (e) => userController.signup(e, userResponseHandler.signup));
-_.eventHandler(".logout-button", "click", (e) => userController.logout(e, userResponseHandler.logout));
+_.eventHandler(".login-form", "submit", (e) => userController.login(e, userViewHandler.login));
+_.eventHandler(".signup-form", "submit", (e) => userController.signup(e, userViewHandler.signup.bind(userViewHandler)));
+_.eventHandler(".logout-button", "click", (e) => userController.logout(e, userViewHandler.logout));
 
 // 회원가입 유효성 체크
 _.eventHandler(".signup-form", "focusout", userController.validateValue.bind(userController));

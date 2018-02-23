@@ -125,16 +125,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 const userController = new __WEBPACK_IMPORTED_MODULE_1__User_js__["a" /* UserController */]();
-const userResponseHandler = new __WEBPACK_IMPORTED_MODULE_1__User_js__["b" /* UserResponseHandler */]();
+const userViewHandler = new __WEBPACK_IMPORTED_MODULE_1__User_js__["b" /* UserViewHandler */]();
 const boardsController = new __WEBPACK_IMPORTED_MODULE_2__boards_js__["a" /* BoardsController */]();
 const boardsViewHandler = new __WEBPACK_IMPORTED_MODULE_2__boards_js__["b" /* BoardsViewHandler */]();
 const boardController = new __WEBPACK_IMPORTED_MODULE_3__board_js__["a" /* BoardController */]();
 const boardViewHandler = new __WEBPACK_IMPORTED_MODULE_3__board_js__["b" /* BoardViewHandler */]();
 
 // user관련 이벤트
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".login-form", "submit", (e) => userController.login(e, userResponseHandler.login));
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".signup-form", "submit", (e) => userController.signup(e, userResponseHandler.signup));
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".logout-button", "click", (e) => userController.logout(e, userResponseHandler.logout));
+__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".login-form", "submit", (e) => userController.login(e, userViewHandler.login));
+__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".signup-form", "submit", (e) => userController.signup(e, userViewHandler.signup.bind(userViewHandler)));
+__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".logout-button", "click", (e) => userController.logout(e, userViewHandler.logout));
 
 // 회원가입 유효성 체크
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".signup-form", "focusout", userController.validateValue.bind(userController));
@@ -169,7 +169,7 @@ __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".deck
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserController; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UserResponseHandler; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UserViewHandler; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__message_json__);
@@ -179,6 +179,7 @@ __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].eventHandler(".deck
 class UserController {
     constructor() {
         this.validator = new Validator();
+        this.userViewHandler = new UserViewHandler();
     }
 
     login(e, callback) {
@@ -221,20 +222,13 @@ class UserController {
     validateValue(e) {
         const targetDom = e.target;
         const message = this.validator.manager(targetDom);
-
-        if (message === undefined) {
-            targetDom.className = "validate valid";
-            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].$("." + targetDom.id + "-noti").innerHTML = "";
-        } else {
-            e.target.className = "validate invalid";
-            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].$("." + targetDom.id + "-noti").innerHTML = message;
-        }
+        this.userViewHandler.showErrorMessage(targetDom, message);
 
     }
 
 }
 
-class UserResponseHandler {
+class UserViewHandler {
     login(res) {
         let status = res.status;
         if (status === "OK") {
@@ -251,7 +245,10 @@ class UserResponseHandler {
         if (status === "OK")
             window.location.href = "/login.html";
         else {
-            message.innerHTML = res.message
+            res.forEach((data) => {
+                const targetDom = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].$("#" + data.field);
+                this.showErrorMessage(targetDom, data.message);
+            })
         }
     }
 
@@ -262,6 +259,16 @@ class UserResponseHandler {
             window.location.replace("/index.html");
         } else {
             console.log("logout failed.")
+        }
+    }
+
+    showErrorMessage(targetDom, message) {
+        if (message === undefined) {
+            targetDom.className = "validate valid";
+            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].$("." + targetDom.id + "-noti").innerHTML = "";
+        } else {
+            targetDom.className = "validate invalid";
+            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* _ */].$("." + targetDom.id + "-noti").innerHTML = message;
         }
     }
 }
