@@ -1,4 +1,4 @@
-import { _, boardUtils } from './support/Utils.js'
+import { _, boardUtils, API } from './support/Utils.js'
 
 const params = window.location.search.substr(1);
 const boardId = params.split("=")[1];
@@ -22,7 +22,7 @@ class BoardController{
             "name": nameDom.value
         };
 
-        _.ajax(`/api/boards/${boardId}/decks`, "POST", data).then(callback);
+        _.ajax(API.BOARDS.DECKS(boardId), "POST", data).then(callback);
     }
 
     saveCard(deckId, callback) {
@@ -30,11 +30,11 @@ class BoardController{
             "text": document.getElementById(`card-title-${deckId}`).value
         };
 
-        _.ajax(`/api/decks/${deckId}/cards`, "POST", data).then(callback);
+        _.ajax(API.BOARDS.CARDS(deckId), "POST", data).then(callback);
     }
 
     getBoard(callback) {
-        _.ajax(`/api/boards/${boardId}`, "GET").then(callback);
+        _.ajax(API.BOARDS.BOARD(boardId), "GET").then(callback);
     }
 }
 

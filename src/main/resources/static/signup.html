@@ -17,14 +17,16 @@
 <div class="signup-box z-depth-2">
 
     <h4>Create a Account</h4>
-    <div id="message"></div>
+    <div id="common">
+        <div class="common-noti"></div>
+    </div>
 
     <form class="signup-form" action="/api/users" method="POST">
         <div class="row">
             <div class="input-field col s12">
                 <input id="name" name="name" type="text">
                 <label for="name">Username</label>
-                <div class="name-noti"></div>
+                <div class="name-noti error-message"></div>
             </div>
         </div>
 
@@ -32,7 +34,7 @@
             <div class="input-field col s12">
                 <input id="email" name="email" type="email">
                 <label for="email">Email</label>
-                <div class="email-noti"></div>
+                <div class="email-noti error-message"></div>
             </div>
         </div>
 
@@ -40,7 +42,7 @@
             <div class="input-field col s12">
                 <input id="password" name="password" type="password">
                 <label for="password">Password</label>
-                <div class="password-noti"></div>
+                <div class="password-noti error-message"></div>
             </div>
         </div>
         <input class="signup-btn waves-effect waves-light btn" type="submit" value="가입하기"/>
