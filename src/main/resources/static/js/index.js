@@ -20,8 +20,8 @@ _.eventHandler(".signup-form", "focusout", userController.validateValue.bind(use
 
 // myBoards 관련 이벤트
 boardsController.domLoaded(boardsViewHandler.printBoards);
-_.eventHandler(".add-board-btn", "click", boardsViewHandler.openModal.bind(boardsViewHandler));
-_.eventHandler(".close-modal", "click", boardsViewHandler.closeModal.bind(boardsViewHandler));
+_.eventHandler(".add-board-btn", "click", boardsViewHandler.toggleModal.bind(boardsViewHandler));
+_.eventHandler(".close-modal", "click", boardsViewHandler.toggleModal.bind(boardsViewHandler));
 _.eventHandler(".save-board", "click", (e) => boardsController.saveBoard(boardsViewHandler.appendBoard.bind(boardsViewHandler)));
 
 // board 관련 이벤트
@@ -32,12 +32,3 @@ _.eventHandler(".cancel-deck", "click", (e) => {
     boardViewHandler.closeDeckForm();
 })
 _.eventHandler(".save-deck", "click", (e) => boardController.saveDeck(e, boardViewHandler.appendDeck.bind(boardViewHandler)))
-
-
-
-
-
-
-_.eventHandler(".deck-list", "click", (e) => {
-    console.log(e)
-})

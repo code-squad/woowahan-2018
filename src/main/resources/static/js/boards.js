@@ -29,20 +29,14 @@ class BoardsViewHandler {
         this.modalDiv = _.$('#modal');
     }
 
-    openModal() {
-        this.modalDiv.classList.add('open');
-    }
-
-    closeModal() {
-        this.modalDiv.classList.remove('open');
+    toggleModal() {
+        this.modalDiv.classList.toggle('open');
     }
 
     printBoards(res) {
         const boards = res.content.boards;
         const boardListDom = _.$('.board-list');
-        console.log(boards)
         boards.forEach((item) => {
-            console.log(item)
             boardListDom.innerHTML += boardUtils.createTemplate(Template.board, {'id': item.id, 'name': item.name});
         })
     }
@@ -53,9 +47,8 @@ class BoardsViewHandler {
         const boardListDom = _.$('.board-list');
 
         if (status === "OK") {
-            console.log(res)
             boardListDom.insertAdjacentHTML('beforeend', boardUtils.createTemplate(Template.board, {'id' : res.content.id, 'name': res.content.name}));
-            this.closeModal();
+            this.toggleModal();
             nameDom.value = "";
         } else {
             const warning = _.$('.warning');

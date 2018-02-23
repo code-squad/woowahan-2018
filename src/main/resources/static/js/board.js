@@ -45,6 +45,7 @@ class BoardViewHandler {
         this.errorMessage = _.$(".error-message");
         this.boardName = _.$(".board-name");
         this.deckList = _.$(".deck-list");
+        this.cardViewHandler = new CardViewHandler();
     }
 
     openDeckForm() {
@@ -54,31 +55,6 @@ class BoardViewHandler {
     closeDeckForm() {
         this.addDeckForm.classList.remove("open");
         this.nameDom.value = "";
-    }
-
-    openCardForm(id) {
-        _.$(`#add-card-form-${id}`).classList.add("open");
-        _.$(`#add-card-btn-${id}`).classList.add("close");
-    }
-
-    closeCardForm(id) {
-        _.$(`#add-card-form-${id}`).classList.remove("open");
-        _.$(`#add-card-btn-${id}`).classList.remove("close");
-        _.$(`#card-title-${id}`).value = "";
-    }
-
-    appendCard(res) {
-        let status = res.status;
-        const deckId = res.content.deckId;
-        const card = res.content.card
-
-        if (status === "OK") {
-            document
-                .getElementById(`deck-cards-${deckId}`)
-                .insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.card, {"value" : card.text}));
-        } else {
-            errorMessage.innerHTML = res.message;
-        }
     }
 
     printBoardName(boardName) {
@@ -101,7 +77,7 @@ class BoardViewHandler {
 
         if (status === "OK") {
             this.deckList.insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.deck, {"id" : res.content.id, "value": res.content.name}));
-            initCardButtons(res.content.id);
+            this.cardViewHandler.initCardButtons(res.content.id);
             this.errorMessage.innerHTML = "";
         } else {
             this.errorMessage.innerHTML = res.message;
@@ -113,10 +89,33 @@ class BoardViewHandler {
     printDecks(decks) {
         decks.forEach((deck) => {
             this.deckList.insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.deck, {"id" : deck.id, "value" : deck.name}));
-            this.printCards(deck.id, deck.cards);
-            initCardButtons(deck.id);
+            this.cardViewHandler.printCards(deck.id, deck.cards);
+            this.cardViewHandler.initCardButtons(deck.id);
         });
         this.errorMessage.innerHTML = "";
+    }
+
+
+}
+
+class CardViewHandler {
+    toggleCardForm(id) {
+        _.$(`#add-card-form-${id}`).classList.toggle("open");
+        _.$(`#add-card-btn-${id}`).classList.toggle("close");
+        _.$(`#card-title-${id}`).value = "";
+    }
+
+    appendCard(res) {
+        const status = res.status;
+        const deckId = res.content.deckId;
+        const card = res.content.card
+        const errorMessage = _.$(".error-message");
+
+        if (status === "OK") {
+            _.$(`deck-cards-${deckId}`).insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.card, {"value": card.text}));
+        } else {
+            errorMessage.innerHTML = res.message;
+        }
     }
 
     printCards(deckId, cards) {
@@ -124,29 +123,31 @@ class BoardViewHandler {
             _.$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.card, {"value" : card.text}));
         });
     }
-}
 
-function initCardButtons(deckId) {
-    const boardController = new BoardController();
-    const boardViewHandler = new BoardViewHandler();
-    document
-        .getElementById(`add-card-btn-${deckId}`)
-        .addEventListener("click", () => {
-            boardViewHandler.openCardForm(deckId);
-        });
+    initCardButtons(deckId) {
+        const boardController = new BoardController();
+        const boardViewHandler = new BoardViewHandler();
 
-    document
-        .getElementById(`save-card-${deckId}`)
-        .addEventListener("click", () => {
-            boardController.saveCard(deckId, boardViewHandler.appendCard);
-            boardViewHandler.closeCardForm(deckId);
-        });
+        const handler = {
+            "add-card-btn"() {
+                this.toggleCardForm(deckId).bind(cardViewHandler);
+            },
+            "btn waves-effect waves-light cancel-card"() {
+                this.toggleCardForm(deckId).bind(cardViewHandler);
+            },
+            "btn waves-effect waves-light save-card"() {
+                boardController.saveCard(deckId, this.appendCard);
+                this.toggleCardForm(deckId).bind(cardViewHandler);
+            }
+        }
 
-    document
-        .getElementById(`cancel-card-${deckId}`)
-        .addEventListener("click", () => {
-            boardViewHandler.closeCardForm(deckId);
-        });
+        _.$(".deck-list").addEventListener("click", (e) => {
+            if (handler[e.target.className]) {
+                handler[e.target.className]();
+            }
+        })
+    }
+
 }
 
 export { BoardController, BoardViewHandler };
