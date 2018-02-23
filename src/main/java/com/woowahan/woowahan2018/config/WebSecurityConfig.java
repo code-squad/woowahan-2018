@@ -70,6 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/fonts/**",
 						"/lib/**",
 						"/",
+						"/message.json",
 						"/index.html",
 						"/signup.html",
 						"/api/users/**").permitAll()
