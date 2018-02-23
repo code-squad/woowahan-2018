@@ -1,4 +1,4 @@
-import { _, boardUtils } from './support/Utils.js'
+import { _, boardUtils, API } from './support/Utils.js'
 
 const params = window.location.search.substr(1);
 const boardId = params.split("=")[1];

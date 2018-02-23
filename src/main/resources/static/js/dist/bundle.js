@@ -458,7 +458,7 @@ class BoardController{
             "name": nameDom.value
         };
 
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(API.BOARDS.DECKS(boardId), "POST", data).then(callback);
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.DECKS(boardId), "POST", data).then(callback);
     }
 
     saveCard(deckId, callback) {
@@ -466,11 +466,11 @@ class BoardController{
             "text": document.getElementById(`card-title-${deckId}`).value
         };
 
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(API.BOARDS.CARDS(deckId), "POST", data).then(callback);
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARDS(deckId), "POST", data).then(callback);
     }
 
     getBoard(callback) {
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(API.BOARDS.BOARD(boardId), "GET").then(callback);
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.BOARD(boardId), "GET").then(callback);
     }
 }
 
