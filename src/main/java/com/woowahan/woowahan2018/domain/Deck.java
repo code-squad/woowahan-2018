@@ -24,6 +24,9 @@ public class Deck extends AbstractEntity {
     @JoinColumn(name = "board_id", foreignKey = @ForeignKey(name = "fk_board_decks"))
     private Board board;
 
+    public Deck() {
+    }
+
     public Deck(String name, Board board) {
         this.name = name;
         this.board = board;
@@ -81,7 +84,7 @@ public class Deck extends AbstractEntity {
     }
 
     public void checkBoard(long boardId) {
-        if (board.matchId(boardId))
+        if (!board.matchId(boardId))
             throw new IllegalArgumentException("잘못된 접근입니다.");
     }
 }

@@ -121,8 +121,8 @@ const API = {
         DECKS(boardId) {
             return `/api/boards/${boardId}/decks`;
         },
-        CARDS(deckId) {
-            return `/api/decks/${deckId}/cards`;
+        CARDS(boardId, deckId) {
+            return `/api/boards/${boardId}/decks/${deckId}/cards`;
         }
     }
 
@@ -140,7 +140,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__User_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__boards_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__board_BoardController_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__board_BoardController_js__ = __webpack_require__(5);
 
 
 
@@ -404,13 +404,12 @@ class BoardsViewHandler {
 
 
 /***/ }),
-/* 5 */,
-/* 6 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BoardHandler_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BoardHandler_js__ = __webpack_require__(6);
 
 
 
@@ -436,11 +435,11 @@ class BoardController {
 /* harmony default export */ __webpack_exports__["a"] = (BoardController);
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DeckHandler_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DeckHandler_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__ = __webpack_require__(0);
 
 
@@ -459,6 +458,7 @@ class BoardHandler {
     }
 
     printBoard(res) {
+        console.log(res)
         if(res.status === "OK") {
             const board = res.content;
             this.printBoardName(board.name);
@@ -473,18 +473,18 @@ class BoardHandler {
 /* harmony default export */ __webpack_exports__["a"] = (BoardHandler);
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__CardHandler_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__CardHandler_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__ = __webpack_require__(0);
 
 
 
 class DeckHandler {
     constructor(boardId) {
-        this.cardHandler = new __WEBPACK_IMPORTED_MODULE_0__CardHandler_js__["a" /* default */]();
+        this.cardHandler = new __WEBPACK_IMPORTED_MODULE_0__CardHandler_js__["a" /* default */](boardId);
         this.deckList = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".deck-list");
         this.errorMessage = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".error-message");
         this.boardId = boardId;
@@ -546,7 +546,7 @@ class DeckHandler {
 /* harmony default export */ __webpack_exports__["a"] = (DeckHandler);
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -554,6 +554,10 @@ class DeckHandler {
 
 
 class CardHandler {
+    constructor(boardId) {
+        this.boardId = boardId;
+    }
+
     toggleCardForm(id) {
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#add-card-form-${id}`).classList.toggle("open");
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#add-card-btn-${id}`).classList.toggle("close");
@@ -565,7 +569,7 @@ class CardHandler {
             "text": document.getElementById(`card-title-${deckId}`).value
         };
 
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARDS(deckId), "POST", data).then(callback);
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARDS(this.boardId, deckId), "POST", data).then(callback);
     }
 
     appendCard(res) {

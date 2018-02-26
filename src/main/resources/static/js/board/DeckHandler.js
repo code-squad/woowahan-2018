@@ -3,7 +3,7 @@ import { _, boardUtils, API } from '../support/Utils.js';
 
 class DeckHandler {
     constructor(boardId) {
-        this.cardHandler = new CardHandler();
+        this.cardHandler = new CardHandler(boardId);
         this.deckList = _.$(".deck-list");
         this.errorMessage = _.$(".error-message");
         this.boardId = boardId;

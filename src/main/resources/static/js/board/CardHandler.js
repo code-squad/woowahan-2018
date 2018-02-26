@@ -1,6 +1,10 @@
 import { _, boardUtils, API } from '../support/Utils.js';
 
 class CardHandler {
+    constructor(boardId) {
+        this.boardId = boardId;
+    }
+
     toggleCardForm(id) {
         _.$(`#add-card-form-${id}`).classList.toggle("open");
         _.$(`#add-card-btn-${id}`).classList.toggle("close");
@@ -12,7 +16,7 @@ class CardHandler {
             "text": document.getElementById(`card-title-${deckId}`).value
         };
 
-        _.ajax(API.BOARDS.CARDS(deckId), "POST", data).then(callback);
+        _.ajax(API.BOARDS.CARDS(this.boardId, deckId), "POST", data).then(callback);
     }
 
     appendCard(res) {
