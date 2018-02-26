@@ -30,7 +30,7 @@ class BoardController{
             "text": document.getElementById(`card-title-${deckId}`).value
         };
 
-        _.ajax(API.BOARDS.CARDS(deckId), "POST", data).then(callback);
+        _.ajax(API.BOARDS.CARDS(boardId, deckId), "POST", data).then(callback);
     }
 
     getBoard(callback) {

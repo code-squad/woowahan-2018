@@ -48,8 +48,8 @@ const API = {
         DECKS(boardId) {
             return `/api/boards/${boardId}/decks`;
         },
-        CARDS(deckId) {
-            return `/api/decks/${deckId}/cards`;
+        CARDS(boardId, deckId) {
+            return `/api/boards/${boardId}/decks/${deckId}/cards`;
         }
     }
 

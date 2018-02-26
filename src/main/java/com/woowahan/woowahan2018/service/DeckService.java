@@ -23,11 +23,11 @@ public class DeckService {
     private CardRepository cardRepository;
 
     @Transactional
-    public Card createCard(long deckId, CardDto cardDto) throws DeckNotFoundException {
+    public Card createCard(long deckId, long boardId, CardDto cardDto) throws DeckNotFoundException {
         Card card = cardRepository.save(cardDto.toCard());
 
         Deck deck = findOneDeck(deckId);
-        deck.addCard(card);
+        deck.addCard(boardId, card);
 
         return card;
     }
@@ -35,10 +35,5 @@ public class DeckService {
     public Deck findOneDeck(long deckId) throws DeckNotFoundException {
         return Optional.ofNullable(deckRepository.findOne(deckId))
                 .orElseThrow(DeckNotFoundException::new);
-    }
-
-    public List<Card> findAllCards(long deckId) throws DeckNotFoundException {
-        Deck deck = findOneDeck(deckId);
-        return deck.getCards();
     }
 }

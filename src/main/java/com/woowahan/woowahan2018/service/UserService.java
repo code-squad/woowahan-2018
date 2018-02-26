@@ -1,12 +1,12 @@
 package com.woowahan.woowahan2018.service;
 
+import com.woowahan.woowahan2018.domain.Board;
 import com.woowahan.woowahan2018.domain.LoginUser;
 import com.woowahan.woowahan2018.domain.User;
 import com.woowahan.woowahan2018.domain.UserRepository;
-import com.woowahan.woowahan2018.dto.AccountType;
 import com.woowahan.woowahan2018.dto.UserDto;
 import com.woowahan.woowahan2018.exception.DuplicatedEmailException;
-import com.woowahan.woowahan2018.exception.UnAuthenticationException;
+import com.woowahan.woowahan2018.exception.UserNotFoundException;
 import com.woowahan.woowahan2018.exception.UnAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +42,6 @@ public class UserService implements UserDetailsService {
 
 	public Optional<User> findUserById(long id) {
 		return Optional.ofNullable(userRepository.findOne(id));
-	}
-
-	public Optional<User> findUserByEmail(String email) {
-		return userRepository.findByEmail(email);
 	}
 
 	public void createUser(UserDto userDto) throws DuplicatedEmailException {
@@ -84,6 +80,16 @@ public class UserService implements UserDetailsService {
         }
         return maybeUser.get().toLoginUser(buildUserAuthority());
     }
+
+	public List<Board> getBoardList(String email) throws UserNotFoundException {
+		User user = findUserByEmail(email);
+		return user.getBoards();
+	}
+
+	public User findUserByEmail(String email) throws UserNotFoundException {
+		return userRepository.findByEmail(email)
+				.orElseThrow(UserNotFoundException::new);
+	}
 
 	private LoginUser registerAuthentication(User user) {
 		LoginUser loginUser = user.toLoginUser(buildUserAuthority());

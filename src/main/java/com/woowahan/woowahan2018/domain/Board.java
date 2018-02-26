@@ -1,29 +1,37 @@
 package com.woowahan.woowahan2018.domain;
 
 import com.woowahan.woowahan2018.dto.BoardDto;
+import com.woowahan.woowahan2018.dto.UserDto;
+import com.woowahan.woowahan2018.exception.UnAuthorizedException;
 
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
-public class Board extends AbstractEntity{
+public class Board extends AbstractEntity {
     private String name;
 
-    @OneToMany
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_board_decks"))
+    @OneToMany(mappedBy = "board")
     private List<Deck> decks = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "tbl_board_members",
+            joinColumns = @JoinColumn(name = "board_id"),
+            inverseJoinColumns = @JoinColumn(name = "member_id"))
+    private List<User> members = new ArrayList<>();
 
     public Board() {
     }
 
     public Board(String name) {
         this.name = name;
+    }
+
+    public List<User> getMembers() {
+        return members;
     }
 
     public String getName() {
@@ -47,6 +55,14 @@ public class Board extends AbstractEntity{
         return Objects.equals(name, board.name);
     }
 
+    public void addMember(User user) {
+        members.add(user);
+    }
+
+    public void addMember(UserDto userDto) {
+        members.add(userDto.toUser());
+    }
+
     @Override
     public int hashCode() {
 
@@ -60,13 +76,13 @@ public class Board extends AbstractEntity{
                 '}';
     }
 
-    public void deleteDeck(long deckId) {
-        decks = decks.stream()
-                .filter(deck -> deck.getId() != deckId)
-                .collect(Collectors.toList());
+    public void checkMember(User member) {
+        if (!members.contains(member)) {
+            throw new UnAuthorizedException("멤버가 아닙니다.");
+        }
     }
 
-    public void addDeck(Deck deck) {
-        decks.add(deck);
+    public boolean matchId(long boardId) {
+        return getId() == boardId;
     }
 }

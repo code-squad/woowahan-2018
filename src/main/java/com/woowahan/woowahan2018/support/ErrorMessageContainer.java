@@ -8,22 +8,28 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
+@Component
 public class ErrorMessageContainer {
 	private static final Logger log = LoggerFactory.getLogger(ErrorMessageContainer.class);
 	private JSONObject messages;
 
-	public ErrorMessageContainer(ResourceLoader resourceLoader) {
+	public ErrorMessageContainer() {
 		JSONParser jsonParser = new JSONParser();
-		Resource resource = resourceLoader.getResource("classpath:static/message.json");
+		ClassPathResource classPathResource = new ClassPathResource("static/message.json");
 
 		try {
-			messages = (JSONObject) jsonParser.parse(new FileReader(resource.getFile()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(classPathResource.getInputStream()));
+			messages = (JSONObject) jsonParser.parse(reader);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (JsonParseException e) {

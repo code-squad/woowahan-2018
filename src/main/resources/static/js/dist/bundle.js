@@ -121,8 +121,8 @@ const API = {
         DECKS(boardId) {
             return `/api/boards/${boardId}/decks`;
         },
-        CARDS(deckId) {
-            return `/api/decks/${deckId}/cards`;
+        CARDS(boardId, deckId) {
+            return `/api/boards/${boardId}/decks/${deckId}/cards`;
         }
     }
 
@@ -466,7 +466,7 @@ class BoardController{
             "text": document.getElementById(`card-title-${deckId}`).value
         };
 
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARDS(deckId), "POST", data).then(callback);
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARDS(boardId, deckId), "POST", data).then(callback);
     }
 
     getBoard(callback) {
