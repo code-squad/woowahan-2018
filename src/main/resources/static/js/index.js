@@ -26,9 +26,9 @@ _.eventHandler(".save-board", "click", (e) => boardsController.saveBoard(boardsV
 
 // board 관련 이벤트
 boardController.domLoaded(boardViewHandler.printBoard.bind(boardViewHandler));
-_.eventHandler(".add-deck-btn", "click", boardViewHandler.openDeckForm.bind(boardViewHandler));
-_.eventHandler(".cancel-deck", "click", (e) => {
-    e.preventDefault();
-    boardViewHandler.closeDeckForm();
-})
-_.eventHandler(".save-deck", "click", (e) => boardController.saveDeck(e, boardViewHandler.appendDeck.bind(boardViewHandler)))
+//_.eventHandler(".add-deck-btn", "click", boardViewHandler.toggleDeckForm.bind(boardViewHandler));
+//_.eventHandler(".cancel-deck", "click", (e) => {
+//    e.preventDefault();
+//    boardViewHandler.toggleDeckForm();
+//})
+//_.eventHandler(".save-deck", "click", (e) => boardController.saveDeck(e, boardViewHandler.appendDeck.bind(boardViewHandler)))

@@ -169,12 +169,12 @@ __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".save
 
 // board 관련 이벤트
 boardController.domLoaded(boardViewHandler.printBoard.bind(boardViewHandler));
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".add-deck-btn", "click", boardViewHandler.openDeckForm.bind(boardViewHandler));
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".cancel-deck", "click", (e) => {
-    e.preventDefault();
-    boardViewHandler.closeDeckForm();
-})
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".save-deck", "click", (e) => boardController.saveDeck(e, boardViewHandler.appendDeck.bind(boardViewHandler)))
+//_.eventHandler(".add-deck-btn", "click", boardViewHandler.toggleDeckForm.bind(boardViewHandler));
+//_.eventHandler(".cancel-deck", "click", (e) => {
+//    e.preventDefault();
+//    boardViewHandler.toggleDeckForm();
+//})
+//_.eventHandler(".save-deck", "click", (e) => boardController.saveDeck(e, boardViewHandler.appendDeck.bind(boardViewHandler)))
 
 /***/ }),
 /* 2 */
@@ -460,21 +460,11 @@ class BoardController{
 
 class BoardViewHandler {
     constructor() {
-        this.addDeckForm = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".add-deck-form");
-        this.nameDom = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("#add-deck");
+
+
         this.errorMessage = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".error-message");
         this.boardName = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".board-name");
-        this.deckList = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".deck-list");
-        this.cardViewHandler = new CardViewHandler();
-    }
-
-    openDeckForm() {
-        this.addDeckForm.classList.add("open");
-    }
-
-    closeDeckForm() {
-        this.addDeckForm.classList.remove("open");
-        this.nameDom.value = "";
+        this.deckViewHandler = new DeckViewHandler();
     }
 
     printBoardName(boardName) {
@@ -486,39 +476,67 @@ class BoardViewHandler {
         if(res.status === "OK") {
             const board = res.content;
             this.printBoardName(board.name);
-            this.printDecks(board.decks);
+            this.deckViewHandler.printDecks(board.decks);
+
+
+            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".add-deck-btn", "click", this.deckViewHandler.toggleDeckForm.bind(this.deckViewHandler));
+            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".cancel-deck", "click", (e) => {
+                e.preventDefault();
+                this.deckViewHandler.toggleDeckForm().bind(this.deckViewHandler);
+            })
+            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".save-deck", "click", (e) => this.deckViewHandler.saveDeck(e, this.deckViewHandler.appendDeck.bind(this.deckViewHandler)))
+
+
+
         } else {
             this.errorMessage.innerHTML = res.message;
         }
     }
 
+
+}
+
+class DeckViewHandler {
+    constructor() {
+        this.cardViewHandler = new CardViewHandler();
+        this.deckList = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".deck-list");
+        this.errorMessage = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".error-message");
+    }
+
+    toggleDeckForm() {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".add-deck-form").classList.toggle("open");
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("#add-deck").value = "";
+    }
+
     appendDeck(res) {
-        let status = res.status;
+        const status = res.status;
 
         if (status === "OK") {
             this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.deck, {"id" : res.content.id, "value": res.content.name}));
-            this.cardViewHandler.initCardButtons(res.content.id);
+            this.cardViewHandler.cardEventHandler(res.content.id);
             this.errorMessage.innerHTML = "";
         } else {
             this.errorMessage.innerHTML = res.message;
         }
 
-        this.closeDeckForm();
+        this.toggleDeckForm();
     }
 
     printDecks(decks) {
         decks.forEach((deck) => {
             this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.deck, {"id" : deck.id, "value" : deck.name}));
             this.cardViewHandler.printCards(deck.id, deck.cards);
-            this.cardViewHandler.initCardButtons(deck.id);
+            this.cardViewHandler.cardEventHandler(deck.id);
         });
         this.errorMessage.innerHTML = "";
     }
-
-
 }
 
 class CardViewHandler {
+    constructor() {
+        this.boardController = new BoardController();
+    }
+
     toggleCardForm(id) {
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#add-card-form-${id}`).classList.toggle("open");
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#add-card-btn-${id}`).classList.toggle("close");
@@ -532,7 +550,7 @@ class CardViewHandler {
         const errorMessage = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".error-message");
 
         if (status === "OK") {
-            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`deck-cards-${deckId}`).insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.card, {"value": card.text}));
+            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.card, {"value": card.text}));
         } else {
             errorMessage.innerHTML = res.message;
         }
@@ -544,26 +562,23 @@ class CardViewHandler {
         });
     }
 
-    initCardButtons(deckId) {
-        const boardController = new BoardController();
-        const boardViewHandler = new BoardViewHandler();
-
+    cardEventHandler(deckId) {
         const handler = {
             "add-card-btn"() {
-                this.toggleCardForm(deckId).bind(cardViewHandler);
+                this.toggleCardForm(deckId);
             },
             "btn waves-effect waves-light cancel-card"() {
-                this.toggleCardForm(deckId).bind(cardViewHandler);
+                this.toggleCardForm(deckId);
             },
             "btn waves-effect waves-light save-card"() {
-                boardController.saveCard(deckId, this.appendCard);
-                this.toggleCardForm(deckId).bind(cardViewHandler);
+                this.boardController.saveCard(deckId, this.appendCard);
+                this.toggleCardForm(deckId);
             }
         }
 
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".deck-list").addEventListener("click", (e) => {
             if (handler[e.target.className]) {
-                handler[e.target.className]();
+                handler[e.target.className].call(this);
             }
         })
     }
