@@ -1,30 +1,7 @@
-import { _, boardUtils, API } from './support/Utils.js';
+import Template from '../support/template.js';
+import { _, boardUtils, API } from '../support/Utils.js';
 
-class BoardsController {
-    domLoaded(callback) {
-        if (window.location.pathname !== "/boards.html") {
-            return;
-        }
-
-        document.addEventListener("DOMcontentLoaded", this.getBoards(callback))
-    }
-
-    getBoards(callback) {
-        _.ajax(API.BOARDS.MYBOARD, "GET").then(callback);
-    }
-
-    saveBoard(callback) {
-        const nameDom = _.$('.board-name');
-        const parameters = {
-            "name": nameDom.value
-        }
-
-        _.ajax(API.BOARDS.MYBOARD, "POST", parameters).then(callback);
-    }
-
-}
-
-class BoardsViewHandler {
+class BoardsHandler {
     constructor() {
         this.modalDiv = _.$('#modal');
     }
@@ -33,12 +10,24 @@ class BoardsViewHandler {
         this.modalDiv.classList.toggle('open');
     }
 
+    saveBoard() {
+        const nameDom = _.$('.board-name');
+        const parameters = {
+            "name": nameDom.value
+        }
+
+        _.ajax(API.BOARDS.MYBOARD, "POST", parameters).then(this.appendBoard.bind(this));
+    }
+
     printBoards(res) {
         const boards = res.content.boards;
         const boardListDom = _.$('.board-list');
+
         boards.forEach((item) => {
             boardListDom.innerHTML += boardUtils.createTemplate(Template.board, {'id': item.id, 'name': item.name});
         })
+
+        this.boardsEventHandler();
     }
 
     appendBoard(res) {
@@ -57,7 +46,12 @@ class BoardsViewHandler {
         }
     }
 
+    boardsEventHandler() {
+        _.eventHandler(".add-board-btn", "click", this.toggleModal.bind(this));
+        _.eventHandler(".close-modal", "click", this.toggleModal.bind(this));
+        _.eventHandler(".save-board", "click", this.saveBoard.bind(this));
+    }
+
 }
 
-
-export { BoardsController, BoardsViewHandler };
+export default BoardsHandler;

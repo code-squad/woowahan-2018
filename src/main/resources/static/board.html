@@ -11,7 +11,7 @@
     <div class="header-wrapper">
       <a href="#" class="brand-logo">JWP Trello</a>
       <ul>
-        <li><a href="#">logout</a></li>
+        <li><a class="button-logout" href="#">logout</a></li>
       </ul>
     </div>
   </header>
@@ -41,13 +41,13 @@
 
     </div>
     <div class="add-deck-area">
-      <button class="btn waves-effect waves-light add-deck-btn" id="add-deck-btn">Add a Deck</button>
+      <button class="btn waves-effect waves-light add-deck-btn" id="button-deck-add">Add a Deck</button>
       <form class="add-deck-form z-depth-1">
         <div class="input-field col s12">
           <input id="add-deck" type="text" class="validate" placeholder="Deck's name"/>
           <div class=btn-area>
-            <button type="submit" class="waves-effect waves-light btn save-deck" id="save-deck-btn">save</button>
-            <button class="waves-effect waves-light btn cancel-deck" id="cancel-deck-btn">cancel</button>
+            <button type="submit" class="waves-effect waves-light btn save-deck" id="button-deck-save">save</button>
+            <button class="waves-effect waves-light btn cancel-deck" id="button-deck-cancel">cancel</button>
           </div>
         </div>
       </form>
@@ -152,7 +152,6 @@
   <script type="text/javascript" src="lib/jquery-2.2.0.min.js"></script>
   <script type="text/javascript" src="lib/materialize.min.js"></script>
   <script type="text/javascript" src="lib/handlebars-v4.0.5.js"></script>
-  <script type="text/javascript" src="js/support/template.js"></script>
   <script type="text/javascript" src="./js/dist/bundle.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
-import CardHandler from './CardHandler.js';
+import Template from '../support/template.js';
 import { _, boardUtils, API } from '../support/Utils.js';
+import CardHandler from './CardHandler.js';
 
 class DeckHandler {
     constructor(boardId) {
@@ -51,11 +52,11 @@ class DeckHandler {
         _.eventHandler(".add-deck-area", "click", (e, callback) => {
             e.preventDefault();
 
-            if (e.target.id === "save-deck-btn") {
+            if (e.target.id === "button-deck-save") {
                 this.saveDeck(e, this.appendDeck.bind(this))
-            } else if (e.target.id === "add-deck-btn") {
+            } else if (e.target.id === "button-deck-add") {
                 this.toggleDeckForm();
-            } else if (e.target.id === "cancel-deck-btn") {
+            } else if (e.target.id === "button-deck-cancel") {
                 this.toggleDeckForm();
             }
         })

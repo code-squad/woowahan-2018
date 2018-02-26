@@ -36,3 +36,5 @@ var Template = {
     			  "</div>"
 
 };
+
+export default Template;

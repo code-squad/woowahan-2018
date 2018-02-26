@@ -1,3 +1,4 @@
+import Template from '../support/template.js';
 import { _, boardUtils, API } from '../support/Utils.js';
 
 class CardHandler {
@@ -13,7 +14,7 @@ class CardHandler {
 
     saveCard(deckId, callback) {
         const data = {
-            "text": document.getElementById(`card-title-${deckId}`).value
+            "text": _.$(`#card-title-${deckId}`).value
         };
 
         _.ajax(API.BOARDS.CARDS(this.boardId, deckId), "POST", data).then(callback);
@@ -33,9 +34,11 @@ class CardHandler {
     }
 
     printCards(deckId, cards) {
-        cards.forEach((card) => {
-            _.$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.card, {"value" : card.text}));
-        });
+        const html = cards.reduce((html, card) => {
+            return html + boardUtils.createTemplate(Template.card, {"value" : card.text})
+        }, "")
+
+        _.$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", html);
     }
 
     cardEventHandler(deckId) {
