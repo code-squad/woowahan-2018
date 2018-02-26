@@ -15,6 +15,7 @@ class BoardHandler {
     }
 
     printBoard(res) {
+        console.log(res)
         if(res.status === "OK") {
             const board = res.content;
             this.printBoardName(board.name);
