@@ -33,7 +33,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;
@@ -63,39 +62,40 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		CustomLogoutHandler customLogoutHandler = new CustomLogoutHandler();
 		http
-				.authorizeRequests()
-				.antMatchers("/css/**",
-						"/js/**",
-						"/image/**",
-						"/fonts/**",
-						"/lib/**",
-						"/",
-						"/message.json",
-						"/index.html",
-						"/signup.html",
-						"/api/users/**").permitAll()
-				.antMatchers("/**").hasRole("LOGIN_USER")
-				.anyRequest().authenticated();
+			.authorizeRequests()
+			.antMatchers("/css/**",
+					"/js/**",
+					"/image/**",
+					"/fonts/**",
+					"/lib/**",
+					"/",
+					"/message.json",
+					"/index.html",
+					"/signup.html",
+					"/api/users/**",
+					"/h2-console/**").permitAll()
+			.antMatchers("/**").hasRole("LOGIN_USER")
+			.anyRequest().authenticated();
 
 		http
-				.formLogin()
-				.loginPage("/login.html")
-				.loginProcessingUrl("/api/users/login")
-				.permitAll();
+			.formLogin()
+			.loginPage("/login.html")
+			.loginProcessingUrl("/api/users/login")
+			.permitAll();
 
 		http
-				.logout()
-				.addLogoutHandler(customLogoutHandler)
-				.logoutSuccessHandler(customLogoutHandler)
-				.logoutUrl("/api/users/logout")
-				.permitAll();
+			.logout()
+			.addLogoutHandler(customLogoutHandler)
+			.logoutSuccessHandler(customLogoutHandler)
+			.logoutUrl("/api/users/logout")
+			.permitAll();
 
 		http
-				.csrf()
-				.disable()
-				.headers()
-				.frameOptions()
-				.disable();
+			.csrf()
+			.disable()
+			.headers()
+			.frameOptions()
+			.disable();
 
 		http.addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);

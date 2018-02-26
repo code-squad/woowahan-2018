@@ -8,12 +8,10 @@ import com.woowahan.woowahan2018.dto.group.name.NameFirstGroup;
 import com.woowahan.woowahan2018.dto.group.password.PasswordFirstGroup;
 import com.woowahan.woowahan2018.dto.group.password.PasswordSecondGroup;
 import com.woowahan.woowahan2018.dto.group.password.PasswordThirdGroup;
-import com.woowahan.woowahan2018.support.ErrorMessageContainer;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Objects;

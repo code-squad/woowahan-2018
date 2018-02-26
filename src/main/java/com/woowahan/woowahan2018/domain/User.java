@@ -1,14 +1,13 @@
 package com.woowahan.woowahan2018.domain;
 
-import com.woowahan.woowahan2018.dto.AccountType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +23,10 @@ public class User extends AbstractEntity {
     @Column(nullable = false)
     @Length(max = 30)
     private String name;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "members")
+    private List<Board> boards = new ArrayList<>();
 
     public User() {
 
@@ -41,6 +44,10 @@ public class User extends AbstractEntity {
 
     public boolean isCorrectPassword(String inputPassword, PasswordEncoder encoder) {
         return encoder.matches(inputPassword, this.encryptedPassword);
+    }
+
+    public List<Board> getBoards() {
+        return Collections.unmodifiableList(boards);
     }
 
     public String getEmail() {

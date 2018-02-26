@@ -1,5 +1,8 @@
 package com.woowahan.woowahan2018.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.woowahan.woowahan2018.exception.UnAuthorizedException;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +19,14 @@ public class Deck extends AbstractEntity {
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_deck_cards"))
     private List<Card> cards = new ArrayList<>();
 
-    public Deck() {
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "board_id", foreignKey = @ForeignKey(name = "fk_board_decks"))
+    private Board board;
 
+    public Deck(String name, Board board) {
+        this.name = name;
+        this.board = board;
     }
 
     public Deck(String name) {
@@ -26,6 +35,10 @@ public class Deck extends AbstractEntity {
 
     public String getName() {
         return name;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public List<Card> getCards() {
@@ -38,7 +51,8 @@ public class Deck extends AbstractEntity {
                 .collect(Collectors.toList());
     }
 
-    public void addCard(Card card) {
+    public void addCard(long boardId, Card card) {
+        checkBoard(boardId);
         cards.add(card);
     }
 
@@ -64,5 +78,10 @@ public class Deck extends AbstractEntity {
                 "name='" + name + '\'' +
                 ", cards=" + cards +
                 '}';
+    }
+
+    public void checkBoard(long boardId) {
+        if (board.matchId(boardId))
+            throw new IllegalArgumentException("잘못된 접근입니다.");
     }
 }

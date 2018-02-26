@@ -1,5 +1,6 @@
 package com.woowahan.woowahan2018.dto;
 
+import com.woowahan.woowahan2018.domain.Board;
 import com.woowahan.woowahan2018.domain.Card;
 import com.woowahan.woowahan2018.domain.Deck;
 import org.hibernate.validator.constraints.NotBlank;
@@ -17,6 +18,7 @@ public class DeckDto {
     private String name;
 
     private List<Card> cards;
+    private Board board;
 
     public DeckDto() {
 
@@ -36,8 +38,20 @@ public class DeckDto {
         return this;
     }
 
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
     public Deck toDeck() {
-        return new Deck(name);
+        return new Deck(name, board);
     }
 
     @Override
