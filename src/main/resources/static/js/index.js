@@ -1,14 +1,13 @@
 import { _ } from './support/Utils.js';
 import { UserController, UserViewHandler } from './User.js';
 import { BoardsController, BoardsViewHandler } from './boards.js';
-import { BoardController, BoardViewHandler } from './board.js';
+import BoardController from './board/BoardController.js';
 
 const userController = new UserController();
 const userViewHandler = new UserViewHandler();
 const boardsController = new BoardsController();
 const boardsViewHandler = new BoardsViewHandler();
 const boardController = new BoardController();
-const boardViewHandler = new BoardViewHandler();
 
 // user관련 이벤트
 _.eventHandler(".login-form", "submit", (e) => userController.login(e, userViewHandler.login));
@@ -25,4 +24,4 @@ _.eventHandler(".close-modal", "click", boardsViewHandler.toggleModal.bind(board
 _.eventHandler(".save-board", "click", (e) => boardsController.saveBoard(boardsViewHandler.appendBoard.bind(boardsViewHandler)));
 
 // board 관련 이벤트
-boardController.domLoaded(boardViewHandler.printBoard.bind(boardViewHandler));
+boardController.domLoaded();
