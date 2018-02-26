@@ -121,8 +121,8 @@ const API = {
         DECKS(boardId) {
             return `/api/boards/${boardId}/decks`;
         },
-        CARDS(boardId, deckId) {
-            return `/api/boards/${boardId}/decks/${deckId}/cards`;
+        CARDS(deckId) {
+            return `/api/decks/${deckId}/cards`;
         }
     }
 
@@ -140,7 +140,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__User_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__boards_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__board_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__board_BoardController_js__ = __webpack_require__(6);
 
 
 
@@ -150,8 +150,7 @@ const userController = new __WEBPACK_IMPORTED_MODULE_1__User_js__["a" /* UserCon
 const userViewHandler = new __WEBPACK_IMPORTED_MODULE_1__User_js__["b" /* UserViewHandler */]();
 const boardsController = new __WEBPACK_IMPORTED_MODULE_2__boards_js__["a" /* BoardsController */]();
 const boardsViewHandler = new __WEBPACK_IMPORTED_MODULE_2__boards_js__["b" /* BoardsViewHandler */]();
-const boardController = new __WEBPACK_IMPORTED_MODULE_3__board_js__["a" /* BoardController */]();
-const boardViewHandler = new __WEBPACK_IMPORTED_MODULE_3__board_js__["b" /* BoardViewHandler */]();
+const boardController = new __WEBPACK_IMPORTED_MODULE_3__board_BoardController_js__["a" /* default */]();
 
 // user관련 이벤트
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".login-form", "submit", (e) => userController.login(e, userViewHandler.login));
@@ -163,27 +162,12 @@ __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".sign
 
 // myBoards 관련 이벤트
 boardsController.domLoaded(boardsViewHandler.printBoards);
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".add-board-btn", "click", boardsViewHandler.openModal.bind(boardsViewHandler));
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".close-modal", "click", boardsViewHandler.closeModal.bind(boardsViewHandler));
+__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".add-board-btn", "click", boardsViewHandler.toggleModal.bind(boardsViewHandler));
+__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".close-modal", "click", boardsViewHandler.toggleModal.bind(boardsViewHandler));
 __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".save-board", "click", (e) => boardsController.saveBoard(boardsViewHandler.appendBoard.bind(boardsViewHandler)));
 
 // board 관련 이벤트
-boardController.domLoaded(boardViewHandler.printBoard.bind(boardViewHandler));
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".add-deck-btn", "click", boardViewHandler.openDeckForm.bind(boardViewHandler));
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".cancel-deck", "click", (e) => {
-    e.preventDefault();
-    boardViewHandler.closeDeckForm();
-})
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".save-deck", "click", (e) => boardController.saveDeck(e, boardViewHandler.appendDeck.bind(boardViewHandler)))
-
-
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".deck-list", "click", (e) => {
-    console.log(e)
-})
+boardController.domLoaded();
 
 /***/ }),
 /* 2 */
@@ -386,20 +370,14 @@ class BoardsViewHandler {
         this.modalDiv = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$('#modal');
     }
 
-    openModal() {
-        this.modalDiv.classList.add('open');
-    }
-
-    closeModal() {
-        this.modalDiv.classList.remove('open');
+    toggleModal() {
+        this.modalDiv.classList.toggle('open');
     }
 
     printBoards(res) {
         const boards = res.content.boards;
         const boardListDom = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$('.board-list');
-        console.log(boards)
         boards.forEach((item) => {
-            console.log(item)
             boardListDom.innerHTML += __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.board, {'id': item.id, 'name': item.name});
         })
     }
@@ -410,9 +388,8 @@ class BoardsViewHandler {
         const boardListDom = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$('.board-list');
 
         if (status === "OK") {
-            console.log(res)
             boardListDom.insertAdjacentHTML('beforeend', __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.board, {'id' : res.content.id, 'name': res.content.name}));
-            this.closeModal();
+            this.toggleModal();
             nameDom.value = "";
         } else {
             const warning = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$('.warning');
@@ -427,98 +404,57 @@ class BoardsViewHandler {
 
 
 /***/ }),
-/* 5 */
+/* 5 */,
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BoardController; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return BoardViewHandler; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__BoardHandler_js__ = __webpack_require__(7);
 
 
-const params = window.location.search.substr(1);
-const boardId = params.split("=")[1];
 
-class BoardController{
+class BoardController {
     domLoaded(callback) {
         if (window.location.pathname !== "/board.html") {
             return;
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            this.getBoard(callback);
+            const params = new URLSearchParams(document.location.search.substring(1));
+            const boardId = params.get("boardId");
+            const boardHandler = new __WEBPACK_IMPORTED_MODULE_1__BoardHandler_js__["a" /* default */](boardId);
+            this.getBoard(boardId, boardHandler.printBoard.bind(boardHandler));
         });
     }
 
-    saveDeck(e, callback) {
-        const nameDom = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("#add-deck");
-        e.preventDefault();
-
-        const data = {
-            "name": nameDom.value
-        };
-
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.DECKS(boardId), "POST", data).then(callback);
-    }
-
-    saveCard(deckId, callback) {
-        const data = {
-            "text": document.getElementById(`card-title-${deckId}`).value
-        };
-
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARDS(boardId, deckId), "POST", data).then(callback);
-    }
-
-    getBoard(callback) {
+    getBoard(boardId, callback) {
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.BOARD(boardId), "GET").then(callback);
     }
 }
 
-class BoardViewHandler {
-    constructor() {
-        this.addDeckForm = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".add-deck-form");
-        this.nameDom = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("#add-deck");
-        this.errorMessage = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".error-message");
-        this.boardName = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".board-name");
-        this.deckList = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".deck-list");
-    }
+/* harmony default export */ __webpack_exports__["a"] = (BoardController);
 
-    openDeckForm() {
-        this.addDeckForm.classList.add("open");
-    }
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-    closeDeckForm() {
-        this.addDeckForm.classList.remove("open");
-        this.nameDom.value = "";
-    }
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DeckHandler_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__ = __webpack_require__(0);
 
-    openCardForm(id) {
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#add-card-form-${id}`).classList.add("open");
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#add-card-btn-${id}`).classList.add("close");
-    }
 
-    closeCardForm(id) {
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#add-card-form-${id}`).classList.remove("open");
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#add-card-btn-${id}`).classList.remove("close");
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#card-title-${id}`).value = "";
-    }
 
-    appendCard(res) {
-        let status = res.status;
-        const deckId = res.content.deckId;
-        const card = res.content.card
-
-        if (status === "OK") {
-            document
-                .getElementById(`deck-cards-${deckId}`)
-                .insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.card, {"value" : card.text}));
-        } else {
-            errorMessage.innerHTML = res.message;
-        }
+class BoardHandler {
+    constructor(boardId) {
+        this.deckHandler = new __WEBPACK_IMPORTED_MODULE_0__DeckHandler_js__["a" /* default */](boardId);
+        this.errorMessage = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".error-message");
+        this.boardId = boardId;
     }
 
     printBoardName(boardName) {
-        this.boardName.innerHTML = boardName
+        const boardNameDom = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".board-name");
+        boardNameDom.innerHTML = boardName;
         this.errorMessage.innerHTML = "";
     }
 
@@ -526,33 +462,123 @@ class BoardViewHandler {
         if(res.status === "OK") {
             const board = res.content;
             this.printBoardName(board.name);
-            this.printDecks(board.decks);
+            this.deckHandler.printDecks(board.decks);
+            this.deckHandler.deckEventHandler();
         } else {
             this.errorMessage.innerHTML = res.message;
         }
     }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (BoardHandler);
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__CardHandler_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__ = __webpack_require__(0);
+
+
+
+class DeckHandler {
+    constructor(boardId) {
+        this.cardHandler = new __WEBPACK_IMPORTED_MODULE_0__CardHandler_js__["a" /* default */]();
+        this.deckList = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".deck-list");
+        this.errorMessage = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".error-message");
+        this.boardId = boardId;
+    }
+
+    toggleDeckForm() {
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".add-deck-form").classList.toggle("open");
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$("#add-deck").value = "";
+    }
+
+    saveDeck(e, callback) {
+        const nameDom = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$("#add-deck");
+
+        const data = {
+            "name": nameDom.value
+        };
+
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["a" /* API */].BOARDS.DECKS(this.boardId), "POST", data).then(callback);
+    }
 
     appendDeck(res) {
-        let status = res.status;
+        const status = res.status;
 
         if (status === "OK") {
-            this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.deck, {"id" : res.content.id, "value": res.content.name}));
-            initCardButtons(res.content.id);
+            this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.deck, {"id" : res.content.id, "value": res.content.name}));
+            this.cardHandler.cardEventHandler(res.content.id);
             this.errorMessage.innerHTML = "";
         } else {
             this.errorMessage.innerHTML = res.message;
         }
 
-        this.closeDeckForm();
+        this.toggleDeckForm();
     }
 
     printDecks(decks) {
         decks.forEach((deck) => {
-            this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.deck, {"id" : deck.id, "value" : deck.name}));
-            this.printCards(deck.id, deck.cards);
-            initCardButtons(deck.id);
+            this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.deck, {"id" : deck.id, "value" : deck.name}));
+            this.cardHandler.printCards(deck.id, deck.cards);
+            this.cardHandler.cardEventHandler(deck.id);
         });
         this.errorMessage.innerHTML = "";
+    }
+
+    deckEventHandler() {
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].eventHandler(".add-deck-area", "click", (e, callback) => {
+            e.preventDefault();
+
+            if (e.target.id === "save-deck-btn") {
+                this.saveDeck(e, this.appendDeck.bind(this))
+            } else if (e.target.id === "add-deck-btn") {
+                this.toggleDeckForm();
+            } else if (e.target.id === "cancel-deck-btn") {
+                this.toggleDeckForm();
+            }
+        })
+    }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (DeckHandler);
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
+
+
+class CardHandler {
+    toggleCardForm(id) {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#add-card-form-${id}`).classList.toggle("open");
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#add-card-btn-${id}`).classList.toggle("close");
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#card-title-${id}`).value = "";
+    }
+
+    saveCard(deckId, callback) {
+        const data = {
+            "text": document.getElementById(`card-title-${deckId}`).value
+        };
+
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARDS(deckId), "POST", data).then(callback);
+    }
+
+    appendCard(res) {
+        const status = res.status;
+        const deckId = res.content.deckId;
+        const card = res.content.card
+        const errorMessage = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".error-message");
+
+        if (status === "OK") {
+            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.card, {"value": card.text}));
+        } else {
+            errorMessage.innerHTML = res.message;
+        }
     }
 
     printCards(deckId, cards) {
@@ -560,32 +586,22 @@ class BoardViewHandler {
             __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(Template.card, {"value" : card.text}));
         });
     }
+
+    cardEventHandler(deckId) {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".deck-list", "click", (e) => {
+            if (e.target.id === "add-card-btn-" + deckId) {
+                this.toggleCardForm(deckId);
+            } else if (e.target.id === "cancel-card-" + deckId) {
+                this.toggleCardForm(deckId);
+            } else if (e.target.id === "save-card-" + deckId) {
+                this.saveCard(deckId, this.appendCard);
+                this.toggleCardForm(deckId);
+            }
+        })
+    }
 }
 
-function initCardButtons(deckId) {
-    const boardController = new BoardController();
-    const boardViewHandler = new BoardViewHandler();
-    document
-        .getElementById(`add-card-btn-${deckId}`)
-        .addEventListener("click", () => {
-            boardViewHandler.openCardForm(deckId);
-        });
-
-    document
-        .getElementById(`save-card-${deckId}`)
-        .addEventListener("click", () => {
-            boardController.saveCard(deckId, boardViewHandler.appendCard);
-            boardViewHandler.closeCardForm(deckId);
-        });
-
-    document
-        .getElementById(`cancel-card-${deckId}`)
-        .addEventListener("click", () => {
-            boardViewHandler.closeCardForm(deckId);
-        });
-}
-
-
+/* harmony default export */ __webpack_exports__["a"] = (CardHandler);
 
 /***/ })
 /******/ ]);
