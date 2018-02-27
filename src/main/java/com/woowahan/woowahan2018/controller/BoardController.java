@@ -7,6 +7,7 @@ import com.woowahan.woowahan2018.dto.BoardsDto;
 import com.woowahan.woowahan2018.dto.CommonResponse;
 import com.woowahan.woowahan2018.dto.UserDto;
 import com.woowahan.woowahan2018.exception.BoardNotFoundException;
+import com.woowahan.woowahan2018.exception.ExistMemberExeption;
 import com.woowahan.woowahan2018.exception.UserNotFoundException;
 import com.woowahan.woowahan2018.service.BoardService;
 import com.woowahan.woowahan2018.service.UserService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -63,9 +65,12 @@ public class BoardController {
     }
 
     @PostMapping("/{boardId}/members")
-    public CommonResponse addMember(@PathVariable long boardId,
-                                    @RequestBody UserDto userDto) throws BoardNotFoundException {
-        boardService.addMember(boardId, userDto);
-        return CommonResponse.success("Member를 성공적으로 추가했습니다.");
+    public CommonResponse addMember(Principal principal,
+                                    @PathVariable long boardId,
+                                    @RequestBody Map<String, String> params) throws BoardNotFoundException, UserNotFoundException, ExistMemberExeption {
+        Board board = boardService.addMember(boardId, principal.getName(), params.get("email"));
+
+        return CommonResponse.success("Member를 성공적으로 추가했습니다.", board.getMembers());
     }
+
 }

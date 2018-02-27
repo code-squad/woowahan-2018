@@ -42,11 +42,8 @@ public class RestExceptionHandler {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(Throwable.class)
-	public List<CommonResponse> handleControllerException(HttpServletRequest req, Throwable ex) {
-		List<CommonResponse> response = new ArrayList<>();
-		response.add(CommonResponse.error(ex.getMessage()));
-
+	public CommonResponse handleControllerException(HttpServletRequest req, Throwable ex) {
 		log.debug("Exception raised. {}", ex.getMessage());
-		return response;
+		return CommonResponse.error(ex.getMessage());
 	}
 }

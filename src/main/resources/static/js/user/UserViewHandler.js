@@ -17,6 +17,12 @@ class UserViewHandler {
         if (status === "OK")
             window.location.href = "/login.html";
         else {
+            if (!Array.isArray(res)) {
+                const targetDom = _.$("#" + res.field);
+                this.showErrorMessage(targetDom, res.message);
+                return;
+            }
+
             res.forEach((data) => {
                 const targetDom = _.$("#" + data.field);
                 this.showErrorMessage(targetDom, data.message);

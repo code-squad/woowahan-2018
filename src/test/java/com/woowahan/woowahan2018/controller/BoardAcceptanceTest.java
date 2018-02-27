@@ -49,4 +49,5 @@ public class BoardAcceptanceTest extends AcceptanceTest {
 		List<LinkedHashMap<String, String>> boards = content.get("boards");
 		assertThat(boards.get(1).containsValue("Test Board!!"), is(true));
 	}
+
 }

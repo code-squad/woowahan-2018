@@ -3,9 +3,9 @@ package com.woowahan.woowahan2018.service;
 import com.woowahan.woowahan2018.domain.*;
 import com.woowahan.woowahan2018.dto.BoardDto;
 import com.woowahan.woowahan2018.dto.DeckDto;
-import com.woowahan.woowahan2018.dto.UserDto;
 import com.woowahan.woowahan2018.exception.BoardNotFoundException;
-import com.woowahan.woowahan2018.exception.UnAuthorizedException;
+import com.woowahan.woowahan2018.exception.ExistMemberExeption;
+import com.woowahan.woowahan2018.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,12 @@ public class BoardService {
 
     @Autowired
     private DeckRepository deckRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Transactional
     public Board createBoard(User user, BoardDto boardDto) {
@@ -49,7 +55,7 @@ public class BoardService {
 
     public Board findOneBoardForMember(User member, long boardId) throws BoardNotFoundException {
         Board board = findOneBoard(boardId);
-        board.checkMember(member);
+        board.checkOwner(member);
 
         return board;
     }
@@ -59,8 +65,14 @@ public class BoardService {
                 .orElseThrow(BoardNotFoundException::new);
     }
 
-    public void addMember(long boardId, UserDto userDto) throws BoardNotFoundException {
-        Board board = findOneBoard(boardId);
-        board.addMember(userDto);
+    @Transactional
+    public Board addMember(long boardId, String ownerEmail, String memberEmail) throws BoardNotFoundException, UserNotFoundException, ExistMemberExeption {
+        User signedInUser = userService.findUserByEmail(ownerEmail);
+        Board board = findOneBoardForMember(signedInUser, boardId);
+        User user = userRepository.findByEmail(memberEmail)
+                .orElseThrow(UserNotFoundException::new);
+        board.checkMember(user);
+
+        return board.addMember(user);
     }
 }

@@ -26,14 +26,16 @@
                 <span class="member-name">Javajigi</span>
             </li>
           </ul>
-
-          <div class="add-member-form">
-              <input class="email-for-invitation" type="text" placeholder="e.g. taco@trello.com"/>
-              <div class="add-member-btn btn waves-effect waves-light" type="submit">submit</div>
-          </div>
+          <div class="error-member-message"></div>
+          <form class="add-member-form">
+              <input id="button-member-add" class="email-for-invitation" type="text" placeholder="e.g. taco@trello.com"/>
+              <input class="add-member-btn btn waves-effect waves-light" type="submit" value="submit"></input>
+          </form>
+        <ul class="exist-member-list">
+        </ul>
       </div>
 
-      <div class="members-btn waves-effect waves-light btn">members</div>
+      <div class="members-btn waves-effect waves-light btn" id="button-board-members">members</div>
   </div>
 
   <div id="board-canvas" class="deck-sortable">

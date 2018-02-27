@@ -123,6 +123,9 @@ const API = {
         },
         CARDS(boardId, deckId) {
             return `/api/boards/${boardId}/decks/${deckId}/cards`;
+        },
+        ADDMEMBER(boardId) {
+            return `/api/boards/${boardId}/members`;
         }
     }
 
@@ -220,21 +223,69 @@ class BoardHandler {
         this.boardId = boardId;
     }
 
+    toggleMembersForm() {
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".member-list").classList.toggle("open");
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$("#button-member-add").value = "";
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".error-member-message").innerHTML = "";
+    }
+
+    addMembers() {
+        const email = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$("#button-member-add").value;
+        const data = {
+            "email": email
+        }
+
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].ajax(__WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["a" /* API */].BOARDS.ADDMEMBER(this.boardId), "POST", data).then(this.addMembersResponseHandler.bind(this));
+    }
+
+    addMembersResponseHandler(res) {
+        if (res.status === "OK") {
+            this.toggleMembersForm();
+            this.board.members = res.content;
+        } else {
+            __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".error-member-message").innerHTML = res.message;
+        }
+    }
+
     printBoardName(boardName) {
         const boardNameDom = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".board-name");
         boardNameDom.innerHTML = boardName;
+
         this.errorMessage.innerHTML = "";
     }
 
     printBoard(res) {
         if(res.status === "OK") {
             const board = res.content;
+
+            this.board = res.content;
             this.printBoardName(board.name);
             this.deckHandler.printDecks(board.decks);
+            this.boardEventHandler();
             this.deckHandler.deckEventHandler();
         } else {
             this.errorMessage.innerHTML = res.message;
         }
+    }
+
+    printMembers() {
+        const html = this.board.members.reduce((html, member) => {
+            return html + `<li><span>email: ${member.email}</span></br><span>name: ${member.name}</span></li>`
+        }, "")
+
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".exist-member-list").innerHTML = html;
+    }
+
+    boardEventHandler() {
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].eventHandler("#button-board-members", "click", (e) => {
+            this.toggleMembersForm();
+            this.printMembers();
+        })
+
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].eventHandler(".add-member-form", "submit", (e) => {
+            e.preventDefault();
+            this.addMembers();
+        })
     }
 }
 
@@ -622,6 +673,12 @@ class UserViewHandler {
         if (status === "OK")
             window.location.href = "/login.html";
         else {
+            if (!Array.isArray(res)) {
+                const targetDom = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("#" + res.field);
+                this.showErrorMessage(targetDom, res.message);
+                return;
+            }
+
             res.forEach((data) => {
                 const targetDom = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("#" + data.field);
                 this.showErrorMessage(targetDom, data.message);

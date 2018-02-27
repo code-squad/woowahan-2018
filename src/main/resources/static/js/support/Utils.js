@@ -50,6 +50,9 @@ const API = {
         },
         CARDS(boardId, deckId) {
             return `/api/boards/${boardId}/decks/${deckId}/cards`;
+        },
+        ADDMEMBER(boardId) {
+            return `/api/boards/${boardId}/members`;
         }
     }
 

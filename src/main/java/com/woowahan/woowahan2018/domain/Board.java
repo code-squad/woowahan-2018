@@ -2,13 +2,13 @@ package com.woowahan.woowahan2018.domain;
 
 import com.woowahan.woowahan2018.dto.BoardDto;
 import com.woowahan.woowahan2018.dto.UserDto;
+import com.woowahan.woowahan2018.exception.ExistMemberExeption;
 import com.woowahan.woowahan2018.exception.UnAuthorizedException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Entity
 public class Board extends AbstractEntity {
@@ -55,8 +55,9 @@ public class Board extends AbstractEntity {
         return Objects.equals(name, board.name);
     }
 
-    public void addMember(User user) {
+    public Board addMember(User user) {
         members.add(user);
+        return this;
     }
 
     public void addMember(UserDto userDto) {
@@ -76,9 +77,15 @@ public class Board extends AbstractEntity {
                 '}';
     }
 
-    public void checkMember(User member) {
+    public void checkOwner(User member) {
         if (!members.contains(member)) {
             throw new UnAuthorizedException("멤버가 아닙니다.");
+        }
+    }
+
+    public void checkMember(User user) throws ExistMemberExeption {
+        if (members.contains(user)) {
+            throw new ExistMemberExeption();
         }
     }
 

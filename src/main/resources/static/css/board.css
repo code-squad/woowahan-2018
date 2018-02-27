@@ -1215,9 +1215,27 @@ body #warning-modal {
 
 }
 
-#warning-modal .modal-content h5{
+#warning-modal .modal-content h5 {
 
   margin: 0 auto;
   text-align: center;
+
+}
+
+.error-member-message {
+
+    position: absolute;
+    width: 100%;
+    color: red;
+    top: 65px;
+    text-align: center;
+
+}
+
+.exist-member-list {
+
+    width: 100%;
+    max-height: 50vh;
+    overflow: scroll;
 
 }
