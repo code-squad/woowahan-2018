@@ -24,7 +24,7 @@ var Template = {
               "</div>",
   card : "<div class='deck-card'>" +
   						"<div class='deck-card-detail'>" +
-                  "<a class='deck-card-title modal-trigger modalLink' dir='auto' href='#'>{{value}}</a>" +
+                  "<a class='deck-card-title modal-trigger modalLink' id='{{id}}' dir='auto' href='#'>{{value}}</a>" +
               "</div>" +
           "</div>",
 

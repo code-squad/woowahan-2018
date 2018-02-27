@@ -17,8 +17,7 @@ public class DeckDto {
     @Size(min = 1, max = 20, message = "길이제한: 1~20자")
     private String name;
 
-    private List<Card> cards;
-    private Board board;
+    private long boardId;
 
     public DeckDto() {
 
@@ -33,24 +32,16 @@ public class DeckDto {
         return this;
     }
 
-    public DeckDto setCards(List<Card> cards) {
-        this.cards = cards;
+    public long getBoardId() {
+        return boardId;
+    }
+
+    public DeckDto setBoardId(long boardId) {
+        this.boardId = boardId;
         return this;
     }
 
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    public Deck toDeck() {
+    public Deck toDeck(Board board) {
         return new Deck(name, board);
     }
 
@@ -59,20 +50,21 @@ public class DeckDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DeckDto deckDto = (DeckDto) o;
-        return Objects.equals(name, deckDto.name);
+        return boardId == deckDto.boardId &&
+                Objects.equals(name, deckDto.name);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(name);
+        return Objects.hash(name, boardId);
     }
 
     @Override
-    public String
-    toString() {
+    public String toString() {
         return "DeckDto{" +
                 "name='" + name + '\'' +
+                ", boardId=" + boardId +
                 '}';
     }
 }

@@ -4,7 +4,7 @@ const _ = {
             let xhr = new XMLHttpRequest();
             xhr.open(httpMethod, url, true);
             xhr.addEventListener("load", () => {
-            	resolve(JSON.parse(xhr.response));
+                resolve(JSON.parse(xhr.response));
             });
             xhr.setRequestHeader("Content-type", "application/json");
             xhr.send(JSON.stringify(parameters));
@@ -18,13 +18,13 @@ const _ = {
     eventHandler(selector, event, callback) {
         const dom = this.$(selector);
 
-        if(dom === null) {
+        if (dom === null) {
             return;
         }
 
         dom.addEventListener(event, callback);
     }
-}
+};
 
 const boardUtils = {
     createTemplate(html, data) {
@@ -32,7 +32,7 @@ const boardUtils = {
             return data.hasOwnProperty(key) ? data[key] : "";
         })
     }
-}
+};
 
 const API = {
     USERS: {
@@ -45,17 +45,22 @@ const API = {
         BOARD(boardId) {
             return `/api/boards/${boardId}`;
         },
-        DECKS(boardId) {
-            return `/api/boards/${boardId}/decks`;
+        DECKS() {
+            return `/api/decks`;
         },
-        CARDS(boardId, deckId) {
-            return `/api/boards/${boardId}/decks/${deckId}/cards`;
+        CARDS() {
+            return `/api/cards`;
+        },
+        CARD(cardId) {
+            return API.BOARDS.CARDS() + `/${cardId}`;
+        },
+        CARD_DESCRIPTION(cardId) {
+            return API.BOARDS.CARD(cardId) + `/description`;
         },
         ADDMEMBER(boardId) {
             return `/api/boards/${boardId}/members`;
         }
     }
+};
 
-}
-
-export { _, boardUtils, API };
+export {_, boardUtils, API};

@@ -15,8 +15,7 @@ public class Deck extends AbstractEntity {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_deck_cards"))
+    @OneToMany(mappedBy = "deck")
     private List<Card> cards = new ArrayList<>();
 
     @JsonIgnore
@@ -54,8 +53,7 @@ public class Deck extends AbstractEntity {
                 .collect(Collectors.toList());
     }
 
-    public void addCard(long boardId, Card card) {
-        checkBoard(boardId);
+    public void addCard(Card card) {
         cards.add(card);
     }
 
@@ -83,8 +81,12 @@ public class Deck extends AbstractEntity {
                 '}';
     }
 
-    public void checkBoard(long boardId) {
-        if (!board.matchId(boardId))
-            throw new IllegalArgumentException("잘못된 접근입니다.");
+    public void checkMember(User signedInUser) {
+        board.checkOwner(signedInUser);
+    }
+
+    public boolean containsCard(long cardId) {
+        return cards.stream()
+                .anyMatch(card -> card.getId() == cardId);
     }
 }

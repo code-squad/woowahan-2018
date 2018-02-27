@@ -11,16 +11,42 @@ public class Card extends AbstractEntity {
     @Column(nullable = false)
     private String text;
 
+    private String description;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "deck_id", foreignKey = @ForeignKey(name = "fk_deck_cards"))
+    private Deck deck;
+
     public Card() {
 
     }
 
-    public Card(String text) {
+    public Card(String text, String description, Deck deck) {
         this.text = text;
+        this.description = description;
+        this.deck = deck;
     }
 
     public String getText() {
         return text;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public String getDeckName() {
+        return deck.getName();
+    }
+
+    public Card setDescription(String description) {
+        this.description = description;
+        return this;
     }
 
     @Override
@@ -29,19 +55,27 @@ public class Card extends AbstractEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Card card = (Card) o;
-        return Objects.equals(text, card.text);
+        return Objects.equals(text, card.text) &&
+                Objects.equals(description, card.description) &&
+                Objects.equals(deck, card.deck);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(super.hashCode(), text);
+        return Objects.hash(super.hashCode(), text, description, deck);
     }
 
     @Override
     public String toString() {
         return "Card{" +
                 "text='" + text + '\'' +
+                ", description='" + description + '\'' +
+                ", deck=" + deck +
                 '}';
+    }
+
+    public void checkMember(User signedInUser) {
+        this.deck.checkMember(signedInUser);
     }
 }

@@ -1,4 +1,4 @@
-import { _ } from '../support/Utils.js';
+import {_} from '../support/Utils.js';
 
 class UserViewHandler {
     login(res) {
@@ -17,6 +17,7 @@ class UserViewHandler {
         if (status === "OK")
             window.location.href = "/login.html";
         else {
+
             if (!Array.isArray(res)) {
                 const targetDom = _.$("#" + res.field);
                 this.showErrorMessage(targetDom, res.message);

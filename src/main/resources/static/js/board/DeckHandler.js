@@ -19,10 +19,11 @@ class DeckHandler {
         const nameDom = _.$("#add-deck");
 
         const data = {
-            "name": nameDom.value
+            "name": nameDom.value,
+            "boardId" : this.boardId
         };
 
-        _.ajax(API.BOARDS.DECKS(this.boardId), "POST", data).then(callback);
+        _.ajax(API.BOARDS.DECKS(), "POST", data).then(callback);
     }
 
     appendDeck(res) {

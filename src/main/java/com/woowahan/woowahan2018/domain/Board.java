@@ -1,6 +1,5 @@
 package com.woowahan.woowahan2018.domain;
 
-import com.woowahan.woowahan2018.dto.BoardDto;
 import com.woowahan.woowahan2018.dto.UserDto;
 import com.woowahan.woowahan2018.exception.ExistMemberExeption;
 import com.woowahan.woowahan2018.exception.UnAuthorizedException;
@@ -40,10 +39,6 @@ public class Board extends AbstractEntity {
 
     public List<Deck> getDecks() {
         return this.decks;
-    }
-
-    public BoardDto toBoardDto() {
-        return new BoardDto(super.getId(), name);
     }
 
     @Override

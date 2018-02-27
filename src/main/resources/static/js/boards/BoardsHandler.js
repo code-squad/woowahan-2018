@@ -20,7 +20,7 @@ class BoardsHandler {
     }
 
     printBoards(res) {
-        const boards = res.content.boards;
+        const boards = res.content;
         const boardListDom = _.$('.board-list');
 
         boards.forEach((item) => {

@@ -24,9 +24,6 @@ public class BoardService {
     private BoardRepository boardRepository;
 
     @Autowired
-    private DeckRepository deckRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -37,20 +34,6 @@ public class BoardService {
         Board board= boardDto.toBoard();
         board.addMember(user);
         return boardRepository.save(board);
-    }
-
-    public List<Deck> findAllDecks(long boardId) throws BoardNotFoundException {
-        Board board = findOneBoard(boardId);
-        return board.getDecks();
-    }
-
-    @Transactional
-    public Deck createDeck(long boardId, DeckDto deckDto) throws BoardNotFoundException {
-        Board board = findOneBoard(boardId);
-        deckDto.setBoard(board);
-        Deck deck = deckRepository.save(deckDto.toDeck());
-
-        return deck;
     }
 
     public Board findOneBoardForMember(User member, long boardId) throws BoardNotFoundException {

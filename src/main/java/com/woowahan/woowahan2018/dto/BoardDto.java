@@ -7,9 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class BoardDto {
-    private Long id;
 
-    @NotNull(message = "이름을 입력하세요.")
     @NotBlank(message = "이름을 입력하세요.")
     private String name;
 
@@ -18,19 +16,6 @@ public class BoardDto {
 
     public BoardDto(String name) {
         this.name = name;
-    }
-
-    public BoardDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -62,8 +47,7 @@ public class BoardDto {
     @Override
     public String toString() {
         return "BoardDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 '}';
     }
 }

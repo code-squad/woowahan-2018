@@ -1,9 +1,11 @@
 import Template from '../support/template.js';
+import CardModalHandler from './CardModalHandler.js';
 import { _, boardUtils, API } from '../support/Utils.js';
 
 class CardHandler {
     constructor(boardId) {
         this.boardId = boardId;
+        this.cardModalHandler = new CardModalHandler();
     }
 
     toggleCardForm(id) {
@@ -14,20 +16,23 @@ class CardHandler {
 
     saveCard(deckId, callback) {
         const data = {
-            "text": _.$(`#card-title-${deckId}`).value
+            "text": _.$(`#card-title-${deckId}`).value,
+            "deckId" : deckId
+
         };
 
-        _.ajax(API.BOARDS.CARDS(this.boardId, deckId), "POST", data).then(callback);
+        _.ajax(API.BOARDS.CARDS(), "POST", data).then(callback);
     }
 
     appendCard(res) {
         const status = res.status;
         const deckId = res.content.deckId;
-        const card = res.content.card
+        const card = res.content.card;
         const errorMessage = _.$(".error-message");
 
         if (status === "OK") {
-            _.$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.card, {"value": card.text}));
+            const template = this.printCard(deckId, card);
+            _.$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", template);
         } else {
             errorMessage.innerHTML = res.message;
         }
@@ -35,10 +40,18 @@ class CardHandler {
 
     printCards(deckId, cards) {
         const html = cards.reduce((html, card) => {
-            return html + boardUtils.createTemplate(Template.card, {"value" : card.text})
+            return html + this.printCard(deckId, card);
         }, "")
 
         _.$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", html);
+    }
+
+    printCard(deckId, card) {
+        const data = {
+            "id": card.id,
+            "value": card.text
+        };
+        return boardUtils.createTemplate(Template.card, data);
     }
 
     cardEventHandler(deckId) {
@@ -48,10 +61,16 @@ class CardHandler {
             } else if (e.target.id === "cancel-card-" + deckId) {
                 this.toggleCardForm(deckId);
             } else if (e.target.id === "save-card-" + deckId) {
-                this.saveCard(deckId, this.appendCard);
+                this.saveCard(deckId, this.appendCard.bind(this));
                 this.toggleCardForm(deckId);
+            } else if (e.target.classList.contains("modalLink")) {
+                const cardId = e.target.id;
+
+                this.cardModalHandler.setDeckId(deckId);
+                this.cardModalHandler.setCardId(cardId);
+                this.cardModalHandler.getCardDetail(deckId, cardId, this.cardModalHandler.openCardModal.bind(this.cardModalHandler));
             }
-        })
+        });
     }
 }
 

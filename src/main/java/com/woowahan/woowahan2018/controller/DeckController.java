@@ -6,7 +6,9 @@ import com.woowahan.woowahan2018.dto.CommonResponse;
 import com.woowahan.woowahan2018.dto.DeckDto;
 import com.woowahan.woowahan2018.exception.BoardNotFoundException;
 import com.woowahan.woowahan2018.exception.UserNotFoundException;
+import com.woowahan.woowahan2018.security.SignedInUser;
 import com.woowahan.woowahan2018.service.BoardService;
+import com.woowahan.woowahan2018.service.DeckService;
 import com.woowahan.woowahan2018.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/boards/{boardId}/decks")
+@RequestMapping("/api/decks")
 public class DeckController {
 
     private static final Logger log = LoggerFactory.getLogger(DeckController.class);
@@ -27,16 +29,13 @@ public class DeckController {
     private UserService userService;
 
     @Autowired
-    private BoardService boardService;
+    private DeckService deckService;
 
     @PostMapping("")
-    public CommonResponse postDeck(Principal principal,
-                                   @PathVariable long boardId,
+    public CommonResponse postDeck(@SignedInUser User signedInUser,
                                    @RequestBody
                                    @Valid DeckDto deckDto) throws BoardNotFoundException, UserNotFoundException {
-        User signedInUser = userService.findUserByEmail(principal.getName());
-        boardService.findOneBoardForMember(signedInUser, boardId);
-        Deck deck = boardService.createDeck(boardId, deckDto);
+        Deck deck = deckService.createDeck(signedInUser, deckDto);
         return CommonResponse.success("Deck 생성", deck);
     }
 }

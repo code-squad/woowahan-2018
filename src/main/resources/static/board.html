@@ -59,14 +59,14 @@
 
   <!--------------------  Card Modal HTML-------------------------------->
 
-  <div id="modal" class="modal">
-    <div class="close-moadl"></div>
+  <div id="card-modal" class="modal">
+    <div class="close-modal"></div>
     <div class="modal-content">
-      <span class="card-title-in-modal">{{card-title}}</span>
+      <span class="card-title-in-modal">{{title}}</span>
       <span class="due-date-notification">Due Date</span>
       <div class="deck-name-and-current-due-date-wrapper">
         <span class="in-deck">in deck</span>
-        <span class="deck-name">{{deck-name}}</span>
+        <span class="deck-name">{{deckName}}</span>
         <span class="current-due-date"></span>
       </div>
 
@@ -81,7 +81,7 @@
         </div>
       </div>
 
-      <div class="card-description"></div>
+      <div class="card-description"> {{description}}</div>
 
       <p>Add comment</p>
       <div class="comment-frame">
