@@ -18,7 +18,7 @@ class UserController {
             "password": password.value
         }
 
-        _.ajax(loginURL, "POST", parameters).then(this.userViewHandler.login);
+        _.request(loginURL, "POST", parameters).then(this.userViewHandler.login);
     }
 
     signup(e) {
@@ -35,14 +35,14 @@ class UserController {
             "password": password.value
         };
 
-        _.ajax(signupURL, "POST", parameters).then(this.userViewHandler.signup.bind(this.userViewHandler));
+        _.request(signupURL, "POST", parameters).then(this.userViewHandler.signup.bind(this.userViewHandler));
     }
 
     logout(e) {
         e.preventDefault();
 
         const logoutURL = API.USERS.LOGOUT;
-        _.ajax(logoutURL, "POST").then(this.userViewHandler.logout);
+        _.request(logoutURL, "POST").then(this.userViewHandler.logout);
     }
 
     validateValue(e) {

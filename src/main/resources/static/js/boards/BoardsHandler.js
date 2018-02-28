@@ -16,7 +16,7 @@ class BoardsHandler {
             "name": nameDom.value
         }
 
-        _.ajax(API.BOARDS.MYBOARD, "POST", parameters).then(this.appendBoard.bind(this));
+        _.request(API.BOARDS.MYBOARD, "POST", parameters).then(this.appendBoard.bind(this));
     }
 
     printBoards(res) {

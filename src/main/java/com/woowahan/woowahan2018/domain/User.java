@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "user",
+    indexes = {@Index(name = "my_index_name",  columnList="email", unique = true)})
 public class User extends AbstractEntity {
-    @Column(nullable = false, unique = true)
+    @Column(name="email", nullable = false)
     @Length(min = 5, max = 30)
     private String email;
 

@@ -31,6 +31,6 @@ public class UserController {
         userService.createUser(userDto);
         log.debug("it's email : {}", userDto.getEmail());
 
-        return CommonResponse.success("성공적으로 가입했습니다.");
+        return CommonResponse.success("USER.CREATE");
     }
 }

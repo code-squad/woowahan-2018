@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class BoardDto {
 
-    @NotBlank(message = "이름을 입력하세요.")
+    @NotBlank(message = "TEXT.EMPTY")
     private String name;
 
     public BoardDto() {

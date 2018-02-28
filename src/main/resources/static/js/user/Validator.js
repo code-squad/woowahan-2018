@@ -1,4 +1,4 @@
-import * as SIGNUP_MSG from '../../message.json'
+import MSG from '../../message.json'
 
 class Validator {
     manager(targetDom) {
@@ -16,29 +16,29 @@ class Validator {
 
     checkEmail(email) {
         if (email === "") {
-            return SIGNUP_MSG.EMAIL.EMPTY;
+            return MSG.EMAIL.EMPTY;
         } else if (email.length < 5 || email.length > 30) {
-            return SIGNUP_MSG.EMAIL.LENGTH;
+            return MSG.EMAIL.LENGTH;
         } else if (!email.includes("@")) {
-            return SIGNUP_MSG.EMAIL.AT;
+            return MSG.EMAIL.AT;
         } else if (email[email.indexOf("@") + 1] === ".") {
-            return SIGNUP_MSG.EMAIL.DOT_LOCATION;
+            return MSG.EMAIL.DOT_LOCATION;
         }
     }
 
     checkPassword(password) {
         if (password === "") {
-            return SIGNUP_MSG.PASSWORD.EMPTY;
+            return MSG.PASSWORD.EMPTY;
         } else if (password.length < 10 || password.length > 30) {
-            return SIGNUP_MSG.PASSWORD.LENGTH;
+            return MSG.PASSWORD.LENGTH;
         } else if (!new RegExp("^(?=.*\\d)(?=.*[A-Za-z])(?=.*[$@#^!%*?&].*[$@#^!%*?&])[A-Za-z\\d$@#^!%*?&]{10,}").test(password)) {
-            return SIGNUP_MSG.PASSWORD.PATTERN;
+            return MSG.PASSWORD.PATTERN;
         }
     }
 
     checkName(name) {
         if (name.length === 0) {
-            return SIGNUP_MSG.NAME.EMPTY;
+            return MSG.NAME.EMPTY;
         }
     }
 }

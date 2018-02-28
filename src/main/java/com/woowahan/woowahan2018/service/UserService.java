@@ -8,6 +8,7 @@ import com.woowahan.woowahan2018.dto.UserDto;
 import com.woowahan.woowahan2018.exception.DuplicatedEmailException;
 import com.woowahan.woowahan2018.exception.UserNotFoundException;
 import com.woowahan.woowahan2018.exception.UnAuthorizedException;
+import com.woowahan.woowahan2018.exception.WrongPasswordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,24 +41,19 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	OAuth2ClientContext oauth2ClientContext;
 
-	public Optional<User> findUserById(long id) {
-		return Optional.ofNullable(userRepository.findOne(id));
-	}
-
 	public void createUser(UserDto userDto) throws DuplicatedEmailException {
 		Optional<User> maybeUser = userRepository.findByEmail(userDto.getEmail());
 
 		if (maybeUser.isPresent())
-			throw new DuplicatedEmailException("이미 가입된 사용자입니다.");
+			throw new DuplicatedEmailException();
 
 		userRepository.save(userDto.toUser(passwordEncoder));
 	}
 
-	public UserDetails login(String email, String password) {
+	public UserDetails login(String email, String password) throws WrongPasswordException {
 		User user = userRepository.findByEmail(email).orElseThrow(UnAuthorizedException::new);
-		if (!user.isCorrectPassword(password, passwordEncoder)) {
-			throw new UnAuthorizedException("아이디 또는 비밀번호가 잘못되었습니다.");
-		}
+		if (!user.isCorrectPassword(password, passwordEncoder))
+			throw new WrongPasswordException();
 
 		return registerAuthentication(user);
 	}
@@ -102,7 +98,8 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("로그인된 사용자가 없습니다."));
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new UsernameNotFoundException("USER.NO_SINGED_IN_USER"));
 		LoginUser loginUser = user.toLoginUser(buildUserAuthority());
 
 		log.debug("loginUser: {}", loginUser);

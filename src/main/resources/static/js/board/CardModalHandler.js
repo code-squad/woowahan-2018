@@ -15,14 +15,14 @@ class CardModalHandler {
     }
 
     getCardDetail(deckId, cardId, callback) {
-        _.ajax(API.BOARDS.CARD(cardId), 'GET').then(callback);
+        _.request(API.BOARDS.CARD(cardId), 'GET').then(callback);
     }
 
     editDescription(deckId, cardId, description, callback) {
         const data = {
             "description" : description
         }
-        _.ajax(API.BOARDS.CARD_DESCRIPTION(cardId), 'PUT', data).then(callback);
+        _.request(API.BOARDS.CARD_DESCRIPTION(cardId), 'PUT', data).then(callback);
     }
 
     printDescription(res) {

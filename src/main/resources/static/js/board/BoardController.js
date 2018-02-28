@@ -16,7 +16,7 @@ class BoardController {
     }
 
     getBoard(boardId, callback) {
-        _.ajax(API.BOARDS.BOARD(boardId), "GET").then(callback);
+        _.request(API.BOARDS.BOARD(boardId), "GET").then(callback);
     }
 }
 

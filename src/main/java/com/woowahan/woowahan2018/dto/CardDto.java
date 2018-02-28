@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class CardDto {
 
-    @NotBlank(message = "내용을 입력해주세요.")
+    @NotBlank(message = "TEXT.EMPTY")
     private String text;
 
     private String description = "";

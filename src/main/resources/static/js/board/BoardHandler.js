@@ -20,7 +20,7 @@ class BoardHandler {
             "email": email
         }
 
-        _.ajax(API.BOARDS.ADDMEMBER(this.boardId), "POST", data).then(this.addMembersResponseHandler.bind(this));
+        _.request(API.BOARDS.ADDMEMBER(this.boardId), "POST", data).then(this.addMembersResponseHandler.bind(this));
     }
 
     addMembersResponseHandler(res) {

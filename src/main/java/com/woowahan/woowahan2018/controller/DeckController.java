@@ -36,6 +36,6 @@ public class DeckController {
                                    @RequestBody
                                    @Valid DeckDto deckDto) throws BoardNotFoundException, UserNotFoundException {
         Deck deck = deckService.createDeck(signedInUser, deckDto);
-        return CommonResponse.success("Deck 생성", deck);
+        return CommonResponse.success("DECK.CREATE", deck);
     }
 }

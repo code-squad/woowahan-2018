@@ -39,7 +39,7 @@ public class BoardController {
         String userEmail = signedInUser.getEmail();
         List<Board> boards = userService.getBoardList(userEmail);
 
-        return CommonResponse.success("Boards를 읽어왔습니다.", boards);
+        return CommonResponse.success("BOARD.READ_MULTIPLE", boards);
     }
 
     @GetMapping("/{boardId}")
@@ -47,7 +47,7 @@ public class BoardController {
         User user = userService.findUserByEmail(signedInUser.getEmail());
         Board board = boardService.findOneBoardForMember(user, boardId);
         
-        return CommonResponse.success("Board를 읽어왔습니다.", board);
+        return CommonResponse.success("BOARD.READ_SINGLE", board);
     }
 
     @PostMapping("")
@@ -57,7 +57,7 @@ public class BoardController {
         log.debug("boardDto: {}", boardDto);
         User user = userService.findUserByEmail(signedInUser.getEmail());
         Board board = boardService.createBoard(user, boardDto);
-        return CommonResponse.success("Board를 성공적으로 생성했습니다.", board);
+        return CommonResponse.success("BOARD.CREATE", board);
     }
 
     @PostMapping("/{boardId}/members")
@@ -66,7 +66,7 @@ public class BoardController {
                                     @RequestBody Map<String, String> params) throws BoardNotFoundException, UserNotFoundException, ExistMemberExeption {
         Board board = boardService.addMember(boardId, signedInUser.getEmail(), params.get("email"));
 
-        return CommonResponse.success("Member를 성공적으로 추가했습니다.", board.getMembers());
+        return CommonResponse.success("MEMBER.ADD", board.getMembers());
     }
 
 }

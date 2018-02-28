@@ -13,6 +13,7 @@ public class CommonResponse {
 	private Object content;
 
 	public CommonResponse() {
+
 	}
 
 	private CommonResponse(ResponseStatus status, String message) {

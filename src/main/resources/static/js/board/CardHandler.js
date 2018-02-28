@@ -21,7 +21,7 @@ class CardHandler {
 
         };
 
-        _.ajax(API.BOARDS.CARDS(), "POST", data).then(callback);
+        _.request(API.BOARDS.CARDS(), "POST", data).then(callback);
     }
 
     appendCard(res) {

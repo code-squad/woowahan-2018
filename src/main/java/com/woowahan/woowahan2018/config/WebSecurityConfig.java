@@ -142,7 +142,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		                                    HttpServletResponse response,
 		                                    AuthenticationException exception) throws IOException {
 			log.debug("User login failed, name={}", request.getUserPrincipal());
-			responseText(response, CommonResponse.error("아이디 또는 비밀번호가 잘못되었습니다."));
+			responseText(response, CommonResponse.error("PASSWORD.WRONG"));
 		}
 	}
 
@@ -158,7 +158,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		                            HttpServletResponse response,
 		                            Authentication authentication) throws IOException {
 			log.debug("authentication: {}", authentication);
-			responseText(response, CommonResponse.success(authentication.getName() + " 로그아웃 되었습니다."));
+			responseText(response, CommonResponse.success("USER.LOGOUT"));
 		}
 	}
 

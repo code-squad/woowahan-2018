@@ -2,7 +2,6 @@ package com.woowahan.woowahan2018.config;
 
 import com.woowahan.woowahan2018.interceptor.LoggerInterceptor;
 import com.woowahan.woowahan2018.security.SignedInUserHandlerMethodArgumentResolver;
-import com.woowahan.woowahan2018.support.ErrorMessageContainer;
 import com.woowahan.woowahan2018.support.LocalDateTimeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

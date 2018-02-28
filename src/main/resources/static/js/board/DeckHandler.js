@@ -23,7 +23,7 @@ class DeckHandler {
             "boardId" : this.boardId
         };
 
-        _.ajax(API.BOARDS.DECKS(), "POST", data).then(callback);
+        _.request(API.BOARDS.DECKS(), "POST", data).then(callback);
     }
 
     appendDeck(res) {

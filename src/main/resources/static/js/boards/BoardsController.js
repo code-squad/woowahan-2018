@@ -15,7 +15,7 @@ class BoardsController {
     }
 
     getBoards() {
-        _.ajax(API.BOARDS.MYBOARD, "GET").then(this.boardsHandler.printBoards.bind(this.boardsHandler));
+        _.request(API.BOARDS.MYBOARD, "GET").then(this.boardsHandler.printBoards.bind(this.boardsHandler));
     }
 
 }

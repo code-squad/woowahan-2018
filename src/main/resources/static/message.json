@@ -9,9 +9,50 @@
   "PASSWORD": {
     "EMPTY": "비밀번호를 입력해주세요",
     "LENGTH": "비밀번호는 10자 이상, 30자 이하이어야 합니다.",
-    "PATTERN": "비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다."
+    "PATTERN": "비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다.",
+    "WRONG": "아이디 또는 비밀번호가 잘못되었습니다."
   },
   "NAME": {
-    "EMPTY": "사용자 이름을 입력해주세요."
+    "EMPTY": "이름을 입력해주세요."
+  },
+  "TEXT": {
+    "EMPTY": "내용을 입력해주세요."
+  },
+  "TITLE": {
+    "EMPTY": "제목을 입력해주세요.",
+    "LENGTH": "길이제한: 1~20자"
+  },
+  "BOARD": {
+    "NOT_FOUND": "보드를 찾을 수 없습니다.",
+    "READ_MULTIPLE": "Boards를 읽어왔습니다.",
+    "READ_SINGLE" : "보드를 읽어왔습니다.",
+    "CREATE" : "보드를 성공적으로 생성했습니다."
+  },
+  "DECK": {
+    "NOT_FOUND": "덱을 찾을 수 없습니다.",
+    "CREATE": "덱을 생성했습니다."
+  },
+  "CARD": {
+    "NOT_FOUND": "카드를 찾을 수 없습니다.",
+    "READ_SINGLE": "카드를 읽어왔습니다.",
+    "CREATE": "카드를 생성했습니다.",
+    "UPDATE_DESCRIPTION": "Description을 수정했습니다."
+  },
+  "MEMBER": {
+    "ALREADY_EXISTS": "이미 보드에 존재하는 멤버입니다.",
+    "ADD": "멤버를 성공적으로 추가했습니다."
+  },
+  "USER": {
+    "NOT_FOUND": "유저를 찾지 못했습니다.",
+    "ALREADY_EXISTS": "이미 가입된 사용자입니다.",
+    "NO_SIGNED_IN_USER": "로그인 된 유저가 없습니다.",
+    "CREATE": "성공적으로 가입했습니다.",
+    "LOGOUT": "로그아웃 되었습니다."
+  },
+  "AUTHENTICATION": {
+    "NOT_ALLOWED": "인증되지 않은 유저입니다."
+  },
+  "AUTHORIZATION": {
+    "NOT_ALLOWED": "권한이 없는 유저입니다."
   }
 }

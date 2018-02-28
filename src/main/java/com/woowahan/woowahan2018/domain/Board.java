@@ -74,7 +74,7 @@ public class Board extends AbstractEntity {
 
     public void checkOwner(User member) {
         if (!members.contains(member)) {
-            throw new UnAuthorizedException("멤버가 아닙니다.");
+            throw new UnAuthorizedException();
         }
     }
 

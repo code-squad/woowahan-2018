@@ -13,8 +13,8 @@ import java.util.Objects;
 
 public class DeckDto {
 
-    @NotBlank(message = "제목을 입력하세요.")
-    @Size(min = 1, max = 20, message = "길이제한: 1~20자")
+    @NotBlank(message = "TITLE.EMPTY")
+    @Size(min = 1, max = 20, message = "TITLE.LENGTH")
     private String name;
 
     private long boardId;

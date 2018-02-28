@@ -1,10 +1,20 @@
+import MSG from "../../message.json";
+
 const _ = {
-    ajax(url, httpMethod, parameters) {
+    request(url, httpMethod, parameters) {
         return new Promise((resolve) => {
             let xhr = new XMLHttpRequest();
             xhr.open(httpMethod, url, true);
             xhr.addEventListener("load", () => {
-                resolve(JSON.parse(xhr.response));
+                const res = JSON.parse(xhr.response);
+
+                if (!Array.isArray(res)) {
+                    res.message = this._byString(MSG, res.message);
+                } else {
+                    res.forEach((data) => data.message = this.byString(MSG, data.message));
+                }
+
+                resolve(res);
             });
             xhr.setRequestHeader("Content-type", "application/json");
             xhr.send(JSON.stringify(parameters));
@@ -23,6 +33,21 @@ const _ = {
         }
 
         dom.addEventListener(event, callback);
+    } ,
+
+    _byString(object, string) {
+        string = string.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+        string = string.replace(/^\./, '');           // strip a leading dot
+        var tokens = string.split('.');
+        for (var i = 0, n = tokens.length; i < n; ++i) {
+            var k = tokens[i];
+            if (k in object) {
+                object = object[k];
+            } else {
+                return;
+            }
+        }
+        return object;
     }
 };
 

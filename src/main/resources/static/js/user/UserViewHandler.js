@@ -1,4 +1,5 @@
-import {_} from '../support/Utils.js';
+import { _ } from '../support/Utils.js';
+import MSG from '../../message.json';
 
 class UserViewHandler {
     login(res) {
@@ -17,7 +18,6 @@ class UserViewHandler {
         if (status === "OK")
             window.location.href = "/login.html";
         else {
-
             if (!Array.isArray(res)) {
                 const targetDom = _.$("#" + res.field);
                 this.showErrorMessage(targetDom, res.message);
@@ -42,12 +42,16 @@ class UserViewHandler {
     }
 
     showErrorMessage(targetDom, message) {
+        if (targetDom.classList.contains("waves-button-input")) {
+            return;
+        }
+
         if (message === undefined) {
             targetDom.className = "validate valid";
-            _.$("." + targetDom.id + "-noti").innerHTML = "";
+            _.$(`.${targetDom.id}-noti`).innerHTML = "";
         } else {
             targetDom.className = "validate invalid";
-            _.$("." + targetDom.id + "-noti").innerHTML = message;
+            _.$(`.${targetDom.id}-noti`).innerHTML = message;
         }
     }
 }

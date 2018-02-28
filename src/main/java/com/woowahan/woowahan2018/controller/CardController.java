@@ -42,7 +42,7 @@ public class CardController {
                                   @PathVariable long cardId) throws DeckNotFoundException, CardNotFoundException {
         Card card = cardService.findOneCardForMember(signedInUser, cardId);
 
-        return CommonResponse.success("성공적으로 카드를 불러왔습니다.", card);
+        return CommonResponse.success("CARD.READ_SINGLE", card);
     }
 
     @PostMapping("")
@@ -57,7 +57,7 @@ public class CardController {
         content.put("card", card);
         content.put("deckId", deckId);
 
-        return CommonResponse.success("Card 생성", content);
+        return CommonResponse.success("CARD.CREATE", content);
     }
 
     @PutMapping("/{cardId}/description")
@@ -67,6 +67,6 @@ public class CardController {
         String description = requestBody.get("description");
         Card card = cardService.updateCardDescription(signedInUser, cardId, description);
 
-        return CommonResponse.success("Description을 수정했습니다.", card);
+        return CommonResponse.success("CARD.UPDATE_DESCRIPTION", card);
     }
 }
