@@ -9,7 +9,7 @@ var Template = {
                     "<div class='deck-header'>" +
                       "<textarea class='deck-header-name'>{{value}}</textarea>" +
                     "</div>" +
-                    "<div class='deck-cards' id='deck-cards-{{id}}'></div>" +
+                    "<div class='deck-cards' id='deck-cards-{{id}}' data-deck-id='{{id}}'></div>" +
                     "<div class='card-composer'>" +
                        "<div class='add-card-form' id='add-card-form-{{id}}'>" +
                           "<textarea class='card-title' id='card-title-{{id}}'></textarea>" +
@@ -22,7 +22,8 @@ var Template = {
                     "</div>" +
                 "</div>" +
               "</div>",
-  card : "<div class='deck-card'>" +
+
+  card : "<div id='card-{{id}}' class='deck-card' draggable='true' data-card-id='{{id}}'>" +
   						"<div class='deck-card-detail'>" +
                   "<a class='deck-card-title modal-trigger modalLink' id='{{id}}' dir='auto' href='#'>{{value}}</a>" +
               "</div>" +

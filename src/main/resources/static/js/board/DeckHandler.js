@@ -1,5 +1,5 @@
 import Template from '../support/template.js';
-import { _, boardUtils, API } from '../support/Utils.js';
+import {_, boardUtils, API} from '../support/Utils.js';
 import CardHandler from './CardHandler.js';
 
 class DeckHandler {
@@ -30,7 +30,10 @@ class DeckHandler {
         const status = res.status;
 
         if (status === "OK") {
-            this.deckList.insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.deck, {"id" : res.content.id, "value": res.content.name}));
+            this.deckList.insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.deck, {
+                "id": res.content.id,
+                "value": res.content.name
+            }));
             this.cardHandler.cardEventHandler(res.content.id);
             this.errorMessage.innerHTML = "";
         } else {
@@ -42,15 +45,20 @@ class DeckHandler {
 
     printDecks(decks) {
         decks.forEach((deck) => {
-            this.deckList.insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.deck, {"id" : deck.id, "value" : deck.name}));
+            this.deckList.insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.deck, {
+                "id": deck.id,
+                "value": deck.name
+            }));
             this.cardHandler.printCards(deck.id, deck.cards);
             this.cardHandler.cardEventHandler(deck.id);
         });
+
+        this.cardHandler.cardDragEventHandler();
         this.errorMessage.innerHTML = "";
     }
 
     deckEventHandler() {
-        _.eventHandler(".add-deck-area", "click", (e, callback) => {
+        _.eventHandler(".add-deck-area", "click", (e) => {
             e.preventDefault();
 
             if (e.target.id === "button-deck-save") {

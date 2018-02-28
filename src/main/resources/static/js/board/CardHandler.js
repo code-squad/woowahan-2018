@@ -18,7 +18,6 @@ class CardHandler {
         const data = {
             "text": _.$(`#card-title-${deckId}`).value,
             "deckId" : deckId
-
         };
 
         _.request(API.BOARDS.CARDS(), "POST", data).then(callback);
@@ -66,12 +65,99 @@ class CardHandler {
             } else if (e.target.classList.contains("modalLink")) {
                 const cardId = e.target.id;
 
-                this.cardModalHandler.setDeckId(deckId);
-                this.cardModalHandler.setCardId(cardId);
-                this.cardModalHandler.getCardDetail(deckId, cardId, this.cardModalHandler.openCardModal.bind(this.cardModalHandler));
+				this.cardModalHandler.setDeckId(deckId);
+				this.cardModalHandler.setCardId(cardId);
+				this.cardModalHandler.getCardDetail(deckId, cardId, this.cardModalHandler.openCardModal.bind(this.cardModalHandler));
+			}
+		});
+	}
+
+	cardDragEventHandler() {
+	    function getTargetDeck(target) {
+			const targetDeck = target.closest(".deck-cards");
+			if (targetDeck) {
+			    return targetDeck;
             }
-        });
-    }
+
+            try {
+                return target.closest(".deck-wrapper").querySelector(".deck-cards");
+            } catch (e) {
+                return;
+            }
+	    }
+
+		_.eventHandler(".deck-list", "dragstart", (e) => {
+			const targetCard = e.target.closest(".deck-card");
+			if (!targetCard) return false;
+
+			const dataTransfer = e.dataTransfer;
+
+			dataTransfer.effectAllowed = "move";
+			dataTransfer.setData("Data", targetCard.getAttribute("id"));
+			dataTransfer.setDragImage(targetCard, targetCard.clientWidth / 2, targetCard.clientHeight / 2);
+			return true;
+		});
+
+		_.eventHandler(".deck-list", "dragend", (e) => {
+			e.dataTransfer.clearData("Data");
+			return true;
+		});
+
+		_.eventHandler(".deck-list", "dragenter", (e) => {
+            const targetDeck = getTargetDeck(e.target);
+            if (!targetDeck) {
+                return false
+            }
+
+			e.preventDefault();
+			return true;
+		});
+
+		_.eventHandler(".deck-list", "dragover", (e) => {
+			const targetDeck = getTargetDeck(e.target);
+			if (!targetDeck) {
+			    return true;
+			}
+
+			e.preventDefault();
+			return false;
+		});
+
+		_.eventHandler(".deck-list", "drop", (e) => {
+			const targetDeck = getTargetDeck(e.target);
+
+			if (!targetDeck) {
+			    return true;
+			}
+
+			const standardCard = e.target.closest(".deck-card");
+			const targetCard = _.$(`#${e.dataTransfer.getData("Data")}`);
+
+			e.stopPropagation();
+
+			const params = {
+				deckId: parseInt(targetDeck.dataset.deckId),
+                standardCardId: -1,
+                standardType: false
+			};
+
+			if (standardCard && e.offsetY < targetCard.clientHeight / 2) {
+				params.standardCardId = parseInt(standardCard.dataset.cardId);
+				params.standardType = true;
+				targetDeck.insertBefore(targetCard, standardCard);
+			} else if (standardCard && standardCard.nextSibling) {
+				params.standardCardId = parseInt(standardCard.dataset.cardId);
+				params.standardType = false;
+				targetDeck.insertBefore(targetCard, standardCard.nextSibling);
+			} else {
+				targetDeck.appendChild(targetCard);
+			}
+
+			_.request(API.BOARDS.CARD_MOVE(targetCard.dataset.cardId), "PUT", params);
+			return false;
+		});
+	}
+
 }
 
 export default CardHandler;

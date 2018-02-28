@@ -538,6 +538,10 @@ header .header-wrapper ul li a:hover{
 
 }
 
+.drag{
+  background-color: #cac4ce;
+}
+
 .deck-card .deck-card-detail{
 
   overflow: hidden;

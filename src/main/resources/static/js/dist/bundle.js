@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,7 +71,7 @@
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return boardUtils; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return API; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__message_json__);
 
 
@@ -86,7 +86,7 @@ const _ = {
                 if (!Array.isArray(res)) {
                     res.message = this._byString(__WEBPACK_IMPORTED_MODULE_0__message_json___default.a, res.message);
                 } else {
-                    res.forEach((data) => data.message = this.byString(__WEBPACK_IMPORTED_MODULE_0__message_json___default.a, data.message));
+                    res.forEach((data) => data.message = this._byString(__WEBPACK_IMPORTED_MODULE_0__message_json___default.a, data.message));
                 }
 
                 resolve(res);
@@ -154,6 +154,9 @@ const API = {
         CARD(cardId) {
             return API.BOARDS.CARDS() + `/${cardId}`;
         },
+	    CARD_MOVE(cardId) {
+		    return API.BOARDS.CARDS() + `/${cardId}/move`;
+	    },
         CARD_DESCRIPTION(cardId) {
             return API.BOARDS.CARD(cardId) + `/description`;
         },
@@ -168,12 +171,6 @@ const API = {
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
-
-module.exports = {"EMAIL":{"EMPTY":"이메일을 입력해주세요.","LENGTH":"이메일은 5자 이상, 30자 이하이어야 합니다.","AT":"이메일은 @를 포함해야 합니다.","DOT_LOCATION":"'.'에서 '.'의 위치가 잘못되었습니다.","PATTERN":"유효한 이메일 형식이 아닙니다."},"PASSWORD":{"EMPTY":"비밀번호를 입력해주세요","LENGTH":"비밀번호는 10자 이상, 30자 이하이어야 합니다.","PATTERN":"비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다.","WRONG":"아이디 또는 비밀번호가 잘못되었습니다."},"NAME":{"EMPTY":"이름을 입력해주세요."},"TEXT":{"EMPTY":"내용을 입력해주세요."},"TITLE":{"EMPTY":"제목을 입력해주세요.","LENGTH":"길이제한: 1~20자"},"BOARD":{"NOT_FOUND":"보드를 찾을 수 없습니다.","READ_MULTIPLE":"Boards를 읽어왔습니다.","READ_SINGLE":"보드를 읽어왔습니다.","CREATE":"보드를 성공적으로 생성했습니다."},"DECK":{"NOT_FOUND":"덱을 찾을 수 없습니다.","CREATE":"덱을 생성했습니다."},"CARD":{"NOT_FOUND":"카드를 찾을 수 없습니다.","READ_SINGLE":"카드를 읽어왔습니다.","CREATE":"카드를 생성했습니다.","UPDATE_DESCRIPTION":"Description을 수정했습니다."},"MEMBER":{"ALREADY_EXISTS":"이미 보드에 존재하는 멤버입니다.","ADD":"멤버를 성공적으로 추가했습니다."},"USER":{"NOT_FOUND":"유저를 찾지 못했습니다.","ALREADY_EXISTS":"이미 가입된 사용자입니다.","NO_SIGNED_IN_USER":"로그인 된 유저가 없습니다.","CREATE":"성공적으로 가입했습니다.","LOGOUT":"로그아웃 되었습니다."},"AUTHENTICATION":{"NOT_ALLOWED":"인증되지 않은 유저입니다."},"AUTHORIZATION":{"NOT_ALLOWED":"권한이 없는 유저입니다."}}
-
-/***/ }),
-/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -188,7 +185,7 @@ var Template = {
                     "<div class='deck-header'>" +
                       "<textarea class='deck-header-name'>{{value}}</textarea>" +
                     "</div>" +
-                    "<div class='deck-cards' id='deck-cards-{{id}}'></div>" +
+                    "<div class='deck-cards' id='deck-cards-{{id}}' data-deck-id='{{id}}'></div>" +
                     "<div class='card-composer'>" +
                        "<div class='add-card-form' id='add-card-form-{{id}}'>" +
                           "<textarea class='card-title' id='card-title-{{id}}'></textarea>" +
@@ -201,7 +198,8 @@ var Template = {
                     "</div>" +
                 "</div>" +
               "</div>",
-  card : "<div class='deck-card'>" +
+
+  card : "<div id='card-{{id}}' class='deck-card' draggable='true' data-card-id='{{id}}'>" +
   						"<div class='deck-card-detail'>" +
                   "<a class='deck-card-title modal-trigger modalLink' id='{{id}}' dir='auto' href='#'>{{value}}</a>" +
               "</div>" +
@@ -219,13 +217,13 @@ var Template = {
 /* harmony default export */ __webpack_exports__["a"] = (Template);
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_UserController_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_UserController_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__boards_BoardsController_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__board_BoardController_js__ = __webpack_require__(9);
 
@@ -252,12 +250,12 @@ boardsController.domLoaded();
 boardController.domLoaded();
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Validator_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Validator_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__UserViewHandler_js__ = __webpack_require__(6);
 
 
@@ -317,11 +315,11 @@ class UserController {
 /* harmony default export */ __webpack_exports__["a"] = (UserController);
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__message_json__);
 
 
@@ -371,12 +369,18 @@ class Validator {
 /* harmony default export */ __webpack_exports__["a"] = (Validator);
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = {"EMAIL":{"EMPTY":"이메일을 입력해주세요.","LENGTH":"이메일은 5자 이상, 30자 이하이어야 합니다.","AT":"이메일은 @를 포함해야 합니다.","DOT_LOCATION":"'.'에서 '.'의 위치가 잘못되었습니다.","PATTERN":"유효한 이메일 형식이 아닙니다."},"PASSWORD":{"EMPTY":"비밀번호를 입력해주세요","LENGTH":"비밀번호는 10자 이상, 30자 이하이어야 합니다.","PATTERN":"비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다.","WRONG":"아이디 또는 비밀번호가 잘못되었습니다."},"NAME":{"EMPTY":"이름을 입력해주세요."},"TEXT":{"EMPTY":"내용을 입력해주세요."},"TITLE":{"EMPTY":"제목을 입력해주세요.","LENGTH":"길이제한: 1~20자"},"BOARD":{"NOT_FOUND":"보드를 찾을 수 없습니다.","READ_MULTIPLE":"Boards를 읽어왔습니다.","READ_SINGLE":"보드를 읽어왔습니다.","CREATE":"보드를 성공적으로 생성했습니다."},"DECK":{"NOT_FOUND":"덱을 찾을 수 없습니다.","CREATE":"덱을 생성했습니다."},"CARD":{"NOT_FOUND":"카드를 찾을 수 없습니다.","READ_SINGLE":"카드를 읽어왔습니다.","CREATE":"카드를 생성했습니다.","UPDATE_DESCRIPTION":"Description을 수정했습니다.","MOVE":"카드를 이동했습니다."},"MEMBER":{"ALREADY_EXISTS":"이미 보드에 존재하는 멤버입니다.","ADD":"멤버를 성공적으로 추가했습니다."},"USER":{"NOT_FOUND":"유저를 찾지 못했습니다.","ALREADY_EXISTS":"이미 가입된 사용자입니다.","NO_SIGNED_IN_USER":"로그인 된 유저가 없습니다.","CREATE":"성공적으로 가입했습니다.","LOGOUT":"로그아웃 되었습니다."},"AUTHENTICATION":{"NOT_ALLOWED":"인증되지 않은 유저입니다."},"AUTHORIZATION":{"NOT_ALLOWED":"권한이 없는 유저입니다."}}
+
+/***/ }),
 /* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__message_json__);
 
 
@@ -474,7 +478,7 @@ class BoardsController {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__ = __webpack_require__(0);
 
 
@@ -655,7 +659,7 @@ class BoardHandler {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CardHandler_js__ = __webpack_require__(12);
 
@@ -690,7 +694,10 @@ class DeckHandler {
         const status = res.status;
 
         if (status === "OK") {
-            this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_0__support_template_js__["a" /* default */].deck, {"id" : res.content.id, "value": res.content.name}));
+            this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_0__support_template_js__["a" /* default */].deck, {
+                "id": res.content.id,
+                "value": res.content.name
+            }));
             this.cardHandler.cardEventHandler(res.content.id);
             this.errorMessage.innerHTML = "";
         } else {
@@ -702,15 +709,20 @@ class DeckHandler {
 
     printDecks(decks) {
         decks.forEach((deck) => {
-            this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_0__support_template_js__["a" /* default */].deck, {"id" : deck.id, "value" : deck.name}));
+            this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_0__support_template_js__["a" /* default */].deck, {
+                "id": deck.id,
+                "value": deck.name
+            }));
             this.cardHandler.printCards(deck.id, deck.cards);
             this.cardHandler.cardEventHandler(deck.id);
         });
+
+        this.cardHandler.cardDragEventHandler();
         this.errorMessage.innerHTML = "";
     }
 
     deckEventHandler() {
-        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].eventHandler(".add-deck-area", "click", (e, callback) => {
+        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].eventHandler(".add-deck-area", "click", (e) => {
             e.preventDefault();
 
             if (e.target.id === "button-deck-save") {
@@ -731,7 +743,7 @@ class DeckHandler {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CardModalHandler_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__ = __webpack_require__(0);
 
@@ -754,7 +766,6 @@ class CardHandler {
         const data = {
             "text": __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$(`#card-title-${deckId}`).value,
             "deckId" : deckId
-
         };
 
         __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["a" /* API */].BOARDS.CARDS(), "POST", data).then(callback);
@@ -802,12 +813,99 @@ class CardHandler {
             } else if (e.target.classList.contains("modalLink")) {
                 const cardId = e.target.id;
 
-                this.cardModalHandler.setDeckId(deckId);
-                this.cardModalHandler.setCardId(cardId);
-                this.cardModalHandler.getCardDetail(deckId, cardId, this.cardModalHandler.openCardModal.bind(this.cardModalHandler));
+				this.cardModalHandler.setDeckId(deckId);
+				this.cardModalHandler.setCardId(cardId);
+				this.cardModalHandler.getCardDetail(deckId, cardId, this.cardModalHandler.openCardModal.bind(this.cardModalHandler));
+			}
+		});
+	}
+
+	cardDragEventHandler() {
+	    function getTargetDeck(target) {
+			const targetDeck = target.closest(".deck-cards");
+			if (targetDeck) {
+			    return targetDeck;
             }
-        });
-    }
+
+            try {
+                return target.closest(".deck-wrapper").querySelector(".deck-cards");
+            } catch (e) {
+                return;
+            }
+	    }
+
+		__WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].eventHandler(".deck-list", "dragstart", (e) => {
+			const targetCard = e.target.closest(".deck-card");
+			if (!targetCard) return false;
+
+			const dataTransfer = e.dataTransfer;
+
+			dataTransfer.effectAllowed = "move";
+			dataTransfer.setData("Data", targetCard.getAttribute("id"));
+			dataTransfer.setDragImage(targetCard, targetCard.clientWidth / 2, targetCard.clientHeight / 2);
+			return true;
+		});
+
+		__WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].eventHandler(".deck-list", "dragend", (e) => {
+			e.dataTransfer.clearData("Data");
+			return true;
+		});
+
+		__WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].eventHandler(".deck-list", "dragenter", (e) => {
+            const targetDeck = getTargetDeck(e.target);
+            if (!targetDeck) {
+                return false
+            }
+
+			e.preventDefault();
+			return true;
+		});
+
+		__WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].eventHandler(".deck-list", "dragover", (e) => {
+			const targetDeck = getTargetDeck(e.target);
+			if (!targetDeck) {
+			    return true;
+			}
+
+			e.preventDefault();
+			return false;
+		});
+
+		__WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].eventHandler(".deck-list", "drop", (e) => {
+			const targetDeck = getTargetDeck(e.target);
+
+			if (!targetDeck) {
+			    return true;
+			}
+
+			const standardCard = e.target.closest(".deck-card");
+			const targetCard = __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$(`#${e.dataTransfer.getData("Data")}`);
+
+			e.stopPropagation();
+
+			const params = {
+				deckId: parseInt(targetDeck.dataset.deckId),
+                standardCardId: -1,
+                standardType: false
+			};
+
+			if (standardCard && e.offsetY < targetCard.clientHeight / 2) {
+				params.standardCardId = parseInt(standardCard.dataset.cardId);
+				params.standardType = true;
+				targetDeck.insertBefore(targetCard, standardCard);
+			} else if (standardCard && standardCard.nextSibling) {
+				params.standardCardId = parseInt(standardCard.dataset.cardId);
+				params.standardType = false;
+				targetDeck.insertBefore(targetCard, standardCard.nextSibling);
+			} else {
+				targetDeck.appendChild(targetCard);
+			}
+
+			__WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["a" /* API */].BOARDS.CARD_MOVE(targetCard.dataset.cardId), "PUT", params);
+			return false;
+		});
+	}
+
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (CardHandler);

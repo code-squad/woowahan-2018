@@ -13,6 +13,8 @@ public class Card extends AbstractEntity {
 
     private String description;
 
+    private int orderIndex;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "deck_id", foreignKey = @ForeignKey(name = "fk_deck_cards"))
@@ -26,6 +28,7 @@ public class Card extends AbstractEntity {
         this.text = text;
         this.description = description;
         this.deck = deck;
+        this.orderIndex = deck.getCardsSize();
     }
 
     public String getText() {
@@ -49,6 +52,24 @@ public class Card extends AbstractEntity {
         return this;
     }
 
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
+    public Card setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+        return this;
+    }
+
+    public Card moveTo(Deck deck) {
+        this.deck = deck;
+        return this;
+    }
+
+    public void checkMember(User signedInUser) {
+        this.deck.checkMember(signedInUser);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,7 +83,6 @@ public class Card extends AbstractEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(super.hashCode(), text, description, deck);
     }
 
@@ -71,11 +91,7 @@ public class Card extends AbstractEntity {
         return "Card{" +
                 "text='" + text + '\'' +
                 ", description='" + description + '\'' +
-                ", deck=" + deck +
+                ", orderIndex='" + orderIndex + '\'' +
                 '}';
-    }
-
-    public void checkMember(User signedInUser) {
-        this.deck.checkMember(signedInUser);
     }
 }

@@ -11,7 +11,7 @@ const _ = {
                 if (!Array.isArray(res)) {
                     res.message = this._byString(MSG, res.message);
                 } else {
-                    res.forEach((data) => data.message = this.byString(MSG, data.message));
+                    res.forEach((data) => data.message = this._byString(MSG, data.message));
                 }
 
                 resolve(res);
@@ -79,6 +79,9 @@ const API = {
         CARD(cardId) {
             return API.BOARDS.CARDS() + `/${cardId}`;
         },
+	    CARD_MOVE(cardId) {
+		    return API.BOARDS.CARDS() + `/${cardId}/move`;
+	    },
         CARD_DESCRIPTION(cardId) {
             return API.BOARDS.CARD(cardId) + `/description`;
         },

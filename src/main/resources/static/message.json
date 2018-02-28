@@ -36,7 +36,8 @@
     "NOT_FOUND": "카드를 찾을 수 없습니다.",
     "READ_SINGLE": "카드를 읽어왔습니다.",
     "CREATE": "카드를 생성했습니다.",
-    "UPDATE_DESCRIPTION": "Description을 수정했습니다."
+    "UPDATE_DESCRIPTION": "Description을 수정했습니다.",
+    "MOVE": "카드를 이동했습니다."
   },
   "MEMBER": {
     "ALREADY_EXISTS": "이미 보드에 존재하는 멤버입니다.",
