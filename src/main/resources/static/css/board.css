@@ -192,6 +192,10 @@ header .header-wrapper ul li a:hover{
 
 }
 
+.board-header-area .member-list .add-member-form .add-member-btn input {
+  line-height: 37px;
+}
+
 .board-header-area .members-btn {
 
   display: inline-block;
@@ -213,6 +217,8 @@ header .header-wrapper ul li a:hover{
   border: 1px solid #e0e0e0;
   text-transform: none;
   transition: all .5s ease 0s;
+  position: fixed;
+  right: 0;
 
 }
 
@@ -669,6 +675,7 @@ body #card-modal{
 
   padding-left:1.5em;
   padding-top: 0;
+  height: 100px;
   width: 73%;
   box-sizing:border-box;
   float: left;
@@ -1300,4 +1307,13 @@ input[type=time]::-webkit-clear-button {
 
 .assignees-list-item.member .fa-check {
   display: none;
+}
+
+.deck-warning {
+  margin: 0;
+  position: absolute;
+  top: -7px;
+  text-align: center;
+  width: 100%;
+  color: red;
 }

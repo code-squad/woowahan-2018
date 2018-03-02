@@ -7,7 +7,7 @@ var Template = {
   deck : "<div class='deck-wrapper'>" +
                 "<div class='deck-content z-depth-1'>" +
                     "<div class='deck-header'>" +
-                      "<textarea class='deck-header-name'>{{value}}</textarea>" +
+                      "<div class='deck-header-name'>{{value}}</div>" +
                     "</div>" +
                     "<div class='deck-cards' id='deck-cards-{{id}}' data-deck-id='{{id}}'></div>" +
                     "<div class='card-composer'>" +
@@ -31,13 +31,16 @@ var Template = {
 
   assignees : "<li class='assignees-list-item {{type}}' data-email='{{email}}'><span>{{name}}</span><i class='fa fa-check fa-lg' aria-hidden='true'></i></li>",
 
-  comment :  "<div class='comment' id='{{id}}'>" +
+  comment :  "<div class='comment' id='comment-{{id}}'>" +
                 "<div class='commenter'>{{writerName}}</div>" +
                 "<div class='comment-contents z-depth-1'>{{commentContents}}</div>" +
                 "<div class='comment-date'>{{currentTime}} - </div>" +
                 "<div class='comment-delete' id='{{id}}'> delete</div>" +
-    			  "</div>"
-
+    			  "</div>",
+    member : "<li class='member'>" +
+    "                <img src='./image/profile.png'/>" +
+    "                <span class='member-name'>{{name}}</span>" +
+    "            </li>"
 };
 
 export default Template;

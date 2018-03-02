@@ -1,4 +1,5 @@
 import Template from '../support/template.js';
+import MSG from '../../message.json';
 import { _, boardUtils, API } from '../support/Utils.js';
 
 class BoardsHandler {
@@ -8,13 +9,20 @@ class BoardsHandler {
 
     toggleModal() {
         this.modalDiv.classList.toggle('open');
+        _.$(".board-name").value="";
+        _.$(".warning").innerHTML = "";
     }
 
     saveBoard() {
-        const nameDom = _.$('.board-name');
-        const parameters = {
-            "name": nameDom.value
+        const boardName = _.$('.board-name').value;
+        if (boardName.length > 20) {
+            this.showWarning(MSG.NAME.LENGTH);
+            return;
         }
+
+        const parameters = {
+            "name": boardName
+        };
 
         _.request(API.BOARDS.MYBOARD, "POST", parameters).then(this.appendBoard.bind(this));
     }
@@ -40,16 +48,26 @@ class BoardsHandler {
             this.toggleModal();
             nameDom.value = "";
         } else {
-            const warning = _.$('.warning');
-            warning.innerHTML = res.message;
-            warning.style.display = 'block';
+            console.log(res);
+            res.forEach((content) => {
+                this.showWarning(content.message);
+            });
         }
+    }
+
+    showWarning(message) {
+        const warning = _.$('.warning');
+        warning.innerHTML = message;
+        warning.style.display = 'block';
     }
 
     boardsEventHandler() {
         _.eventHandler(".add-board-btn", "click", this.toggleModal.bind(this));
         _.eventHandler(".close-modal", "click", this.toggleModal.bind(this));
-        _.eventHandler(".save-board", "click", this.saveBoard.bind(this));
+        _.eventHandler(".add-board-form", "submit", (e) => {
+            e.preventDefault();
+            this.saveBoard();
+        });
     }
 
 }

@@ -11,7 +11,9 @@ class CardHandler {
     toggleCardForm(id) {
         _.$(`#add-card-form-${id}`).classList.toggle("open");
         _.$(`#add-card-btn-${id}`).classList.toggle("close");
-        _.$(`#card-title-${id}`).value = "";
+        const cardTitleDom = _.$(`#card-title-${id}`);
+        cardTitleDom.value = "";
+        cardTitleDom.focus();
     }
 
     saveCard(deckId, callback) {

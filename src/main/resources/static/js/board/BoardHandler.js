@@ -1,11 +1,14 @@
 import DeckHandler from './DeckHandler.js';
 import { _, API } from '../support/Utils.js';
+import {boardUtils} from "../support/Utils";
+import Template from "../support/template";
 
 class BoardHandler {
     constructor(boardId) {
         this.deckHandler = new DeckHandler(boardId);
         this.errorMessage = _.$(".error-message");
         this.boardId = boardId;
+
     }
 
     toggleMembersForm() {
@@ -55,8 +58,11 @@ class BoardHandler {
 
     printMembers() {
         const html = this.board.members.reduce((html, member) => {
-            return html + `<li><span>email: ${member.email}</span></br><span>name: ${member.name}</span></li>`
-        }, "")
+            const data = {
+                "name": member.name
+            };
+            return html + boardUtils.createTemplate(Template.member, data);
+        }, "");
 
         _.$(".exist-member-list").innerHTML = html;
     }

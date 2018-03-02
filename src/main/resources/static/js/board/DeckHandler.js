@@ -1,5 +1,6 @@
 import Template from '../support/template.js';
 import {_, boardUtils, API} from '../support/Utils.js';
+import MSG from '../../message.json';
 import CardHandler from './CardHandler.js';
 
 class DeckHandler {
@@ -8,18 +9,36 @@ class DeckHandler {
         this.deckList = _.$(".deck-list");
         this.errorMessage = _.$(".error-message");
         this.boardId = boardId;
+        this.deckWarning = _.$(".deck-warning");
     }
 
     toggleDeckForm() {
         _.$(".add-deck-form").classList.toggle("open");
-        _.$("#add-deck").value = "";
+        const addDeckDom = _.$("#add-deck");
+        addDeckDom.value = "";
+        addDeckDom.focus();
+
+        this.deckWarning.innerHTML = "";
+    }
+
+    showDeckWarning(message) {
+        this.deckWarning.innerHTML = message;
     }
 
     saveDeck(e, callback) {
-        const nameDom = _.$("#add-deck");
+        const deckName = _.$("#add-deck").value;
+        if (deckName.length === 0) {
+            this.showDeckWarning(MSG.NAME.EMPTY);
+            return;
+        }
+
+        if (deckName.length > 20) {
+            this.showDeckWarning(MSG.NAME.LENGTH);
+            return;
+        }
 
         const data = {
-            "name": nameDom.value,
+            "name": deckName,
             "boardId" : this.boardId
         };
 
@@ -28,6 +47,7 @@ class DeckHandler {
 
     appendDeck(res) {
         const status = res.status;
+        this.errorMessage.innerHTML = "";
 
         if (status === "OK") {
             this.deckList.insertAdjacentHTML("beforeend", boardUtils.createTemplate(Template.deck, {
@@ -35,9 +55,10 @@ class DeckHandler {
                 "value": res.content.name
             }));
             this.cardHandler.cardEventHandler(res.content.id);
-            this.errorMessage.innerHTML = "";
         } else {
-            this.errorMessage.innerHTML = res.message;
+            res.forEach((content) => {
+                this.errorMessage.innerHTML = content.message;
+            })
         }
 
         this.toggleDeckForm();

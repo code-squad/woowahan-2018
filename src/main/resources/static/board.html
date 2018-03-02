@@ -10,7 +10,7 @@
 
 <header>
     <div class="header-wrapper">
-        <a href="#" class="brand-logo">JWP Trello</a>
+        <a href="/" class="brand-logo">JWP Trello</a>
         <ul>
             <li><a class="button-logout" href="#">logout</a></li>
         </ul>
@@ -21,16 +21,10 @@
     <p class="board-name"></p>
     <p class="error-message"></p>
     <div class="member-list z-depth-1">
-        <ul class="members">
-            <li class="member">
-                <img src="./image/profile.png"/>
-                <span class="member-name">Javajigi</span>
-            </li>
-        </ul>
         <div class="error-member-message"></div>
         <form class="add-member-form">
             <input id="button-member-add" class="email-for-invitation" type="text" placeholder="e.g. taco@trello.com"/>
-            <input class="add-member-btn btn waves-effect waves-light" type="submit" value="submit"/>
+            <input class="add-member-btn btn waves-effect waves-light" type="submit" value="Submit"/>
         </form>
         <ul class="exist-member-list">
         </ul>
@@ -47,6 +41,7 @@
         <button class="btn waves-effect waves-light add-deck-btn" id="button-deck-add">Add a Deck</button>
         <form class="add-deck-form z-depth-1">
             <div class="input-field col s12">
+                <p class="deck-warning"></p>
                 <input id="add-deck" type="text" class="validate" placeholder="Deck's name"/>
                 <div class=btn-area>
                     <button type="submit" class="waves-effect waves-light btn save-deck" id="button-deck-save">save
@@ -92,7 +87,7 @@
         <div class="comment-send btn waves-effect waves-light">Send</div>
         </br>
 
-        <p>Activity</p>
+        <!--<p>Activity</p>-->
         <div class="comments">
 
         </div>
@@ -131,28 +126,17 @@
             </form>
         </div>
 
-        <div class="modal-sidebar-btn z-depth-1 file-attachment">Attachment</div>
+        <!--<div class="modal-sidebar-btn z-depth-1 file-attachment">Attachment</div>-->
 
-        <div class="modal-for-attachment z-depth-1">
-            <div class="attachment-btn-header">Attach</div>
-            <input type="file" id="fileUpload" name="files[]"/>
-            <div class="attach-from-computer">Computer</div>
-            <div class="attach-with-link">Attach a link</div>
-            <input type="text" class="link-for-attachment" placeholder="Paste any link here..."/>
-            <div class="link-submit z-depth-1">Attach</div>
-        </div>
+        <!--<div class="modal-for-attachment z-depth-1">-->
+            <!--<div class="attachment-btn-header">Attach</div>-->
+            <!--<input type="file" id="fileUpload" name="files[]"/>-->
+            <!--<div class="attach-from-computer">Computer</div>-->
+            <!--<div class="attach-with-link">Attach a link</div>-->
+            <!--<input type="text" class="link-for-attachment" placeholder="Paste any link here..."/>-->
+            <!--<div class="link-submit z-depth-1">Attach</div>-->
+        <!--</div>-->
 
-    </div>
-</div>
-
-<!----------------------------------------------------------------->
-
-<!--------------------  Warning Modal HTML-------------------------------->
-
-<div id="warning-modal" class="modal">
-    <div class="close-moadl"></div>
-    <div class="modal-content">
-        <h5>Please Write Contents!</h5>
     </div>
 </div>
 

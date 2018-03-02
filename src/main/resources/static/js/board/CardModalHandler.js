@@ -53,7 +53,7 @@ class CardModalHandler {
 
         if (status === 'OK') {
             const commentsDom = _.$(".comments");
-            commentsDom.removeChild(document.getElementById(content.id));
+            commentsDom.removeChild(document.getElementById(`comment-${content.id}`));
         } else {
             console.log("removeComment error.")
         }
@@ -198,6 +198,7 @@ class CardModalHandler {
     }
 
     toggleAssigneesModal() {
+        this.closeDueDateModal();
         _.$(".modal-for-members").classList.toggle("on")
     }
 
@@ -218,6 +219,7 @@ class CardModalHandler {
     }
 
     toggleDueDateModal() {
+        this.closeAssigneesModal();
         _.$(".modal-for-due-date").classList.toggle("on")
     }
 

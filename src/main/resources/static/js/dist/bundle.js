@@ -71,7 +71,7 @@
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return boardUtils; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return API; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__message_json__);
 
 
@@ -183,6 +183,12 @@ const API = {
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+module.exports = {"EMAIL":{"EMPTY":"이메일을 입력해주세요.","LENGTH":"이메일은 5자 이상, 30자 이하이어야 합니다.","AT":"이메일은 @를 포함해야 합니다.","DOT_LOCATION":"'.'에서 '.'의 위치가 잘못되었습니다.","PATTERN":"유효한 이메일 형식이 아닙니다."},"PASSWORD":{"EMPTY":"비밀번호를 입력해주세요","LENGTH":"비밀번호는 10자 이상, 30자 이하이어야 합니다.","PATTERN":"비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다.","WRONG":"아이디 또는 비밀번호가 잘못되었습니다."},"NAME":{"EMPTY":"이름을 입력해주세요.","LENGTH":"이름을 20자 이하 이어야 합니다."},"TEXT":{"EMPTY":"내용을 입력해주세요."},"TITLE":{"EMPTY":"제목을 입력해주세요.","LENGTH":"길이제한: 1~20자"},"BOARD":{"NOT_FOUND":"보드를 찾을 수 없습니다.","READ_MULTIPLE":"Boards를 읽어왔습니다.","READ_SINGLE":"보드를 읽어왔습니다.","CREATE":"보드를 성공적으로 생성했습니다."},"DECK":{"NOT_FOUND":"덱을 찾을 수 없습니다.","CREATE":"덱을 생성했습니다."},"CARD":{"NOT_FOUND":"카드를 찾을 수 없습니다.","READ_SINGLE":"카드를 읽어왔습니다.","CREATE":"카드를 생성했습니다.","UPDATE_DESCRIPTION":"Description을 수정했습니다.","MOVE":"카드를 이동했습니다."},"MEMBER":{"ALREADY_EXISTS":"이미 보드에 존재하는 멤버입니다.","ADD":"멤버를 성공적으로 추가했습니다."},"USER":{"NOT_FOUND":"유저를 찾지 못했습니다.","ALREADY_EXISTS":"이미 가입된 사용자입니다.","NO_SIGNED_IN_USER":"로그인 된 유저가 없습니다.","CREATE":"성공적으로 가입했습니다.","LOGOUT":"로그아웃 되었습니다."},"AUTHENTICATION":{"NOT_ALLOWED":"인증되지 않은 유저입니다."},"AUTHORIZATION":{"NOT_ALLOWED":"권한이 없는 유저입니다."}}
+
+/***/ }),
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -195,7 +201,7 @@ var Template = {
   deck : "<div class='deck-wrapper'>" +
                 "<div class='deck-content z-depth-1'>" +
                     "<div class='deck-header'>" +
-                      "<textarea class='deck-header-name'>{{value}}</textarea>" +
+                      "<div class='deck-header-name'>{{value}}</div>" +
                     "</div>" +
                     "<div class='deck-cards' id='deck-cards-{{id}}' data-deck-id='{{id}}'></div>" +
                     "<div class='card-composer'>" +
@@ -219,22 +225,19 @@ var Template = {
 
   assignees : "<li class='assignees-list-item {{type}}' data-email='{{email}}'><span>{{name}}</span><i class='fa fa-check fa-lg' aria-hidden='true'></i></li>",
 
-  comment :  "<div class='comment' id='{{id}}'>" +
+  comment :  "<div class='comment' id='comment-{{id}}'>" +
                 "<div class='commenter'>{{writerName}}</div>" +
                 "<div class='comment-contents z-depth-1'>{{commentContents}}</div>" +
                 "<div class='comment-date'>{{currentTime}} - </div>" +
                 "<div class='comment-delete' id='{{id}}'> delete</div>" +
-    			  "</div>"
-
+    			  "</div>",
+    member : "<li class='member'>" +
+    "                <img src='./image/profile.png'/>" +
+    "                <span class='member-name'>{{name}}</span>" +
+    "            </li>"
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Template);
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = {"EMAIL":{"EMPTY":"이메일을 입력해주세요.","LENGTH":"이메일은 5자 이상, 30자 이하이어야 합니다.","AT":"이메일은 @를 포함해야 합니다.","DOT_LOCATION":"'.'에서 '.'의 위치가 잘못되었습니다.","PATTERN":"유효한 이메일 형식이 아닙니다."},"PASSWORD":{"EMPTY":"비밀번호를 입력해주세요","LENGTH":"비밀번호는 10자 이상, 30자 이하이어야 합니다.","PATTERN":"비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다.","WRONG":"아이디 또는 비밀번호가 잘못되었습니다."},"NAME":{"EMPTY":"이름을 입력해주세요."},"TEXT":{"EMPTY":"내용을 입력해주세요."},"TITLE":{"EMPTY":"제목을 입력해주세요.","LENGTH":"길이제한: 1~20자"},"BOARD":{"NOT_FOUND":"보드를 찾을 수 없습니다.","READ_MULTIPLE":"Boards를 읽어왔습니다.","READ_SINGLE":"보드를 읽어왔습니다.","CREATE":"보드를 성공적으로 생성했습니다."},"DECK":{"NOT_FOUND":"덱을 찾을 수 없습니다.","CREATE":"덱을 생성했습니다."},"CARD":{"NOT_FOUND":"카드를 찾을 수 없습니다.","READ_SINGLE":"카드를 읽어왔습니다.","CREATE":"카드를 생성했습니다.","UPDATE_DESCRIPTION":"Description을 수정했습니다.","MOVE":"카드를 이동했습니다."},"MEMBER":{"ALREADY_EXISTS":"이미 보드에 존재하는 멤버입니다.","ADD":"멤버를 성공적으로 추가했습니다."},"USER":{"NOT_FOUND":"유저를 찾지 못했습니다.","ALREADY_EXISTS":"이미 가입된 사용자입니다.","NO_SIGNED_IN_USER":"로그인 된 유저가 없습니다.","CREATE":"성공적으로 가입했습니다.","LOGOUT":"로그아웃 되었습니다."},"AUTHENTICATION":{"NOT_ALLOWED":"인증되지 않은 유저입니다."},"AUTHORIZATION":{"NOT_ALLOWED":"권한이 없는 유저입니다."}}
 
 /***/ }),
 /* 3 */
@@ -339,7 +342,7 @@ class UserController {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__message_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__message_json__);
 
 
@@ -394,7 +397,7 @@ class Validator {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__message_json__);
 
 
@@ -492,35 +495,45 @@ class BoardsController {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__message_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__ = __webpack_require__(0);
+
 
 
 
 class BoardsHandler {
     constructor() {
-        this.modalDiv = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$('#modal');
+        this.modalDiv = __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$('#modal');
     }
 
     toggleModal() {
         this.modalDiv.classList.toggle('open');
+        __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$(".board-name").value="";
+        __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$(".warning").innerHTML = "";
     }
 
     saveBoard() {
-        const nameDom = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$('.board-name');
-        const parameters = {
-            "name": nameDom.value
+        const boardName = __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$('.board-name').value;
+        if (boardName.length > 20) {
+            this.showWarning(__WEBPACK_IMPORTED_MODULE_1__message_json___default.a.NAME.LENGTH);
+            return;
         }
 
-        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["a" /* API */].BOARDS.MYBOARD, "POST", parameters).then(this.appendBoard.bind(this));
+        const parameters = {
+            "name": boardName
+        };
+
+        __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["a" /* API */].BOARDS.MYBOARD, "POST", parameters).then(this.appendBoard.bind(this));
     }
 
     printBoards(res) {
         const boards = res.content;
-        const boardListDom = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$('.board-list');
+        const boardListDom = __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$('.board-list');
 
         boards.forEach((item) => {
-            boardListDom.innerHTML += __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_0__support_template_js__["a" /* default */].board, {'id': item.id, 'name': item.name});
+            boardListDom.innerHTML += __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_0__support_template_js__["a" /* default */].board, {'id': item.id, 'name': item.name});
         })
 
         this.boardsEventHandler();
@@ -528,24 +541,34 @@ class BoardsHandler {
 
     appendBoard(res) {
         const status = res.status;
-        const nameDom = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$('.board-name');
-        const boardListDom = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$('.board-list');
+        const nameDom = __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$('.board-name');
+        const boardListDom = __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$('.board-list');
 
         if (status === "OK") {
-            boardListDom.insertAdjacentHTML('beforeend', __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_0__support_template_js__["a" /* default */].board, {'id' : res.content.id, 'name': res.content.name}));
+            boardListDom.insertAdjacentHTML('beforeend', __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_0__support_template_js__["a" /* default */].board, {'id' : res.content.id, 'name': res.content.name}));
             this.toggleModal();
             nameDom.value = "";
         } else {
-            const warning = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$('.warning');
-            warning.innerHTML = res.message;
-            warning.style.display = 'block';
+            console.log(res);
+            res.forEach((content) => {
+                this.showWarning(content.message);
+            });
         }
     }
 
+    showWarning(message) {
+        const warning = __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$('.warning');
+        warning.innerHTML = message;
+        warning.style.display = 'block';
+    }
+
     boardsEventHandler() {
-        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].eventHandler(".add-board-btn", "click", this.toggleModal.bind(this));
-        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].eventHandler(".close-modal", "click", this.toggleModal.bind(this));
-        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].eventHandler(".save-board", "click", this.saveBoard.bind(this));
+        __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].eventHandler(".add-board-btn", "click", this.toggleModal.bind(this));
+        __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].eventHandler(".close-modal", "click", this.toggleModal.bind(this));
+        __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].eventHandler(".add-board-form", "submit", (e) => {
+            e.preventDefault();
+            this.saveBoard();
+        });
     }
 
 }
@@ -590,6 +613,10 @@ class BoardController {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DeckHandler_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__support_Utils__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__support_template__ = __webpack_require__(2);
+
+
 
 
 
@@ -598,6 +625,7 @@ class BoardHandler {
         this.deckHandler = new __WEBPACK_IMPORTED_MODULE_0__DeckHandler_js__["a" /* default */](boardId);
         this.errorMessage = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".error-message");
         this.boardId = boardId;
+
     }
 
     toggleMembersForm() {
@@ -647,8 +675,11 @@ class BoardHandler {
 
     printMembers() {
         const html = this.board.members.reduce((html, member) => {
-            return html + `<li><span>email: ${member.email}</span></br><span>name: ${member.name}</span></li>`
-        }, "")
+            const data = {
+                "name": member.name
+            };
+            return html + __WEBPACK_IMPORTED_MODULE_2__support_Utils__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_3__support_template__["a" /* default */].member, data);
+        }, "");
 
         __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".exist-member-list").innerHTML = html;
     }
@@ -673,31 +704,52 @@ class BoardHandler {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CardHandler_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__message_json__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__message_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__message_json__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__CardHandler_js__ = __webpack_require__(12);
+
 
 
 
 
 class DeckHandler {
     constructor(boardId) {
-        this.cardHandler = new __WEBPACK_IMPORTED_MODULE_2__CardHandler_js__["a" /* default */](boardId);
+        this.cardHandler = new __WEBPACK_IMPORTED_MODULE_3__CardHandler_js__["a" /* default */](boardId);
         this.deckList = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".deck-list");
         this.errorMessage = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".error-message");
         this.boardId = boardId;
+        this.deckWarning = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".deck-warning");
     }
 
     toggleDeckForm() {
         __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$(".add-deck-form").classList.toggle("open");
-        __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$("#add-deck").value = "";
+        const addDeckDom = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$("#add-deck");
+        addDeckDom.value = "";
+        addDeckDom.focus();
+
+        this.deckWarning.innerHTML = "";
+    }
+
+    showDeckWarning(message) {
+        this.deckWarning.innerHTML = message;
     }
 
     saveDeck(e, callback) {
-        const nameDom = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$("#add-deck");
+        const deckName = __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["b" /* _ */].$("#add-deck").value;
+        if (deckName.length === 0) {
+            this.showDeckWarning(__WEBPACK_IMPORTED_MODULE_2__message_json___default.a.NAME.EMPTY);
+            return;
+        }
+
+        if (deckName.length > 20) {
+            this.showDeckWarning(__WEBPACK_IMPORTED_MODULE_2__message_json___default.a.NAME.LENGTH);
+            return;
+        }
 
         const data = {
-            "name": nameDom.value,
+            "name": deckName,
             "boardId" : this.boardId
         };
 
@@ -706,6 +758,7 @@ class DeckHandler {
 
     appendDeck(res) {
         const status = res.status;
+        this.errorMessage.innerHTML = "";
 
         if (status === "OK") {
             this.deckList.insertAdjacentHTML("beforeend", __WEBPACK_IMPORTED_MODULE_1__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_0__support_template_js__["a" /* default */].deck, {
@@ -713,9 +766,10 @@ class DeckHandler {
                 "value": res.content.name
             }));
             this.cardHandler.cardEventHandler(res.content.id);
-            this.errorMessage.innerHTML = "";
         } else {
-            this.errorMessage.innerHTML = res.message;
+            res.forEach((content) => {
+                this.errorMessage.innerHTML = content.message;
+            })
         }
 
         this.toggleDeckForm();
@@ -757,7 +811,7 @@ class DeckHandler {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_template_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CardModalHandler_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__ = __webpack_require__(0);
 
@@ -773,7 +827,9 @@ class CardHandler {
     toggleCardForm(id) {
         __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$(`#add-card-form-${id}`).classList.toggle("open");
         __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$(`#add-card-btn-${id}`).classList.toggle("close");
-        __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$(`#card-title-${id}`).value = "";
+        const cardTitleDom = __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$(`#card-title-${id}`);
+        cardTitleDom.value = "";
+        cardTitleDom.focus();
     }
 
     saveCard(deckId, callback) {
@@ -930,7 +986,7 @@ class CardHandler {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_template_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_template_js__ = __webpack_require__(2);
 
 
 
@@ -986,7 +1042,7 @@ class CardModalHandler {
 
         if (status === 'OK') {
             const commentsDom = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".comments");
-            commentsDom.removeChild(document.getElementById(content.id));
+            commentsDom.removeChild(document.getElementById(`comment-${content.id}`));
         } else {
             console.log("removeComment error.")
         }
@@ -1131,6 +1187,7 @@ class CardModalHandler {
     }
 
     toggleAssigneesModal() {
+        this.closeDueDateModal();
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".modal-for-members").classList.toggle("on")
     }
 
@@ -1151,6 +1208,7 @@ class CardModalHandler {
     }
 
     toggleDueDateModal() {
+        this.closeAssigneesModal();
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".modal-for-due-date").classList.toggle("on")
     }
 

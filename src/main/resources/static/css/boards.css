@@ -209,3 +209,7 @@ header .header-wrapper li a:hover{
   box-shadow: 0 1px 0 0 #4dd0e1;
 
 }
+
+.save-board input {
+  line-height: 36px;
+}
