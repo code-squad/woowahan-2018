@@ -3,8 +3,6 @@ package com.woowahan.woowahan2018.dto;
 import com.woowahan.woowahan2018.domain.Board;
 import com.woowahan.woowahan2018.domain.Card;
 import com.woowahan.woowahan2018.domain.Deck;
-import com.woowahan.woowahan2018.dto.group.name.NameFirstGroup;
-import com.woowahan.woowahan2018.dto.group.name.NameSecondGroup;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -15,10 +13,8 @@ import java.util.Objects;
 
 public class DeckDto {
 
-    @NotBlank(message = "TITLE.EMPTY"
-            , groups = NameFirstGroup.class)
-    @Size(min = 1, max = 20, message = "TITLE.LENGTH"
-            , groups = NameSecondGroup.class)
+    @NotBlank(message = "TITLE.EMPTY")
+    @Size(min = 1, max = 20, message = "TITLE.LENGTH")
     private String name;
 
     private long boardId;
