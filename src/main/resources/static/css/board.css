@@ -689,7 +689,7 @@ body #card-modal{
   vertical-align: middle;
   display: inline-block;
   margin-top: -6px;
-  margin-left: 15px;
+  margin-left: 48px;
   font-size: 20px;
   font-weight: bold;
   color: rgba(0,0,0,0.6);
@@ -898,7 +898,7 @@ body #card-modal{
 #card-modal .modal-sidebar .modal-for-due-date{
 
   width: 172px;
-  height: 255px;
+  height: 220px;
   margin-right: 19px;
   margin-top: 0.6em;
   position: absolute;
@@ -908,32 +908,6 @@ body #card-modal{
   border-bottom-color: #c4c9cc;
   display: none;
 
-}
-
-#card-modal .modal-sidebar .modal-for-due-date.on{
-
-  display: block;
-
-}
-
-.btn.due-date-send {
-  width: 75px;
-  height: 35px;
-  line-height: 35px;
-  text-align: center;
-  background-color: #4dd0e1;
-  border-radius: 5px;
-  margin-top: 10px;
-  margin-left: 5px;
-  color: white;
-  cursor: pointer;
-  font-weight: 300;
-  padding-right: 20px;
-  padding-left: 21px;
-  float: left;
-  box-shadow: none;
-  text-transform: none;
-  border: 1px solid #00bcd4;
 }
 
 #card-modal .modal-sidebar .modal-for-attachment{
@@ -1072,12 +1046,6 @@ body #card-modal{
 
 }
 
-#card-modal .modal-sidebar .modal-for-members.on{
-
-  display: block;
-
-}
-
 #card-modal .modal-sidebar .modal-for-members .members-btn-header{
 
   width: 90%;
@@ -1095,6 +1063,7 @@ body #card-modal{
 
   width: 90%;
   margin: 0 auto;
+
 }
 
 #card-modal .modal-sidebar .modal-for-members .search-member input:focus {
@@ -1223,7 +1192,7 @@ body #card-modal{
 
 }
 
-#card-modal .comment .comment-delete{
+#card-modal .comment .comment-reply{
 
   color: #8c8c8c;
   font-size: 14px;
@@ -1277,27 +1246,4 @@ body #warning-modal {
     max-height: 50vh;
     overflow: scroll;
 
-}
-
-input[type=date]::-webkit-calendar-picker-indicator {
-  -webkit-appearance: none;
-  display: none;
-}
-
-input[type=time]::-webkit-clear-button {
-  -webkit-appearance: none;
-  display: none;
-}
-
-.assignees-list-item {
-  width: 100%;
-  height: 25px;
-  font-family: "Roboto", sans-serif;
-  border-bottom: 1px solid #c1c1c1;
-  margin: 3px;
-  cursor: pointer;
-}
-
-.assignees-list-item.member .fa-check {
-  display: none;
 }

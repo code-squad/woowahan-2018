@@ -29,13 +29,11 @@ var Template = {
               "</div>" +
           "</div>",
 
-  assignees : "<li class='assignees-list-item {{type}}' data-email='{{email}}'><span>{{name}}</span><i class='fa fa-check fa-lg' aria-hidden='true'></i></li>",
-
-  comment :  "<div class='comment' id='{{id}}'>" +
-                "<div class='commenter'>{{writerName}}</div>" +
-                "<div class='comment-contents z-depth-1'>{{commentContents}}</div>" +
-                "<div class='comment-date'>{{currentTime}} - </div>" +
-                "<div class='comment-delete' id='{{id}}'> delete</div>" +
+  comment :  "<div class='comment'>" +
+                "<div class='commenter'>{writer-name}</div>" +
+                "<div class='comment-contents z-depth-1'>{{comment-contents}}</div>" +
+                "<div class='comment-date'>{{current-time}} - </div>" +
+                "<div class='comment-reply'> Reply</div>" +
     			  "</div>"
 
 };

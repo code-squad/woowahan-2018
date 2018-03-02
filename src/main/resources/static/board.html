@@ -1,166 +1,159 @@
 <html>
 <head>
-    <meta charset="utf-8">
-    <link type="text/css" rel="stylesheet" href="./lib/materialize.min.css" media="screen,projection"/>
-    <link type="text/css" rel="stylesheet" href="./css/board.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="./lib/materialize.min.css"  media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="./css/board.css"/>
 </head>
 
 <body>
 
-<header>
+  <header>
     <div class="header-wrapper">
-        <a href="#" class="brand-logo">JWP Trello</a>
-        <ul>
-            <li><a class="button-logout" href="#">logout</a></li>
-        </ul>
+      <a href="#" class="brand-logo">JWP Trello</a>
+      <ul>
+        <li><a class="button-logout" href="#">logout</a></li>
+      </ul>
     </div>
-</header>
+  </header>
 
-<div class="board-header-area">
-    <p class="board-name"></p>
-    <p class="error-message"></p>
-    <div class="member-list z-depth-1">
-        <ul class="members">
+  <div class="board-header-area">
+      <p class="board-name"></p>
+      <p class="error-message"></p>
+      <div class="member-list z-depth-1">
+          <ul class="members">
             <li class="member">
-                <img src="./image/profile.png"/>
+                <img src="./image/profile.png" />
                 <span class="member-name">Javajigi</span>
             </li>
-        </ul>
-        <div class="error-member-message"></div>
-        <form class="add-member-form">
-            <input id="button-member-add" class="email-for-invitation" type="text" placeholder="e.g. taco@trello.com"/>
-            <input class="add-member-btn btn waves-effect waves-light" type="submit" value="submit"/>
-        </form>
+          </ul>
+          <div class="error-member-message"></div>
+          <form class="add-member-form">
+              <input id="button-member-add" class="email-for-invitation" type="text" placeholder="e.g. taco@trello.com"/>
+              <input class="add-member-btn btn waves-effect waves-light" type="submit" value="submit"></input>
+          </form>
         <ul class="exist-member-list">
         </ul>
-    </div>
+      </div>
 
-    <div class="members-btn waves-effect waves-light btn" id="button-board-members">members</div>
-</div>
+      <div class="members-btn waves-effect waves-light btn" id="button-board-members">members</div>
+  </div>
 
-<div id="board-canvas" class="deck-sortable">
+  <div id="board-canvas" class="deck-sortable">
     <div class="deck-list">
 
     </div>
     <div class="add-deck-area">
-        <button class="btn waves-effect waves-light add-deck-btn" id="button-deck-add">Add a Deck</button>
-        <form class="add-deck-form z-depth-1">
-            <div class="input-field col s12">
-                <input id="add-deck" type="text" class="validate" placeholder="Deck's name"/>
-                <div class=btn-area>
-                    <button type="submit" class="waves-effect waves-light btn save-deck" id="button-deck-save">save
-                    </button>
-                    <button class="waves-effect waves-light btn cancel-deck" id="button-deck-cancel">cancel</button>
-                </div>
-            </div>
-        </form>
+      <button class="btn waves-effect waves-light add-deck-btn" id="button-deck-add">Add a Deck</button>
+      <form class="add-deck-form z-depth-1">
+        <div class="input-field col s12">
+          <input id="add-deck" type="text" class="validate" placeholder="Deck's name"/>
+          <div class=btn-area>
+            <button type="submit" class="waves-effect waves-light btn save-deck" id="button-deck-save">save</button>
+            <button class="waves-effect waves-light btn cancel-deck" id="button-deck-cancel">cancel</button>
+          </div>
+        </div>
+      </form>
     </div>
 
-</div>
+  </div>
 
-<!--------------------  Card Modal HTML-------------------------------->
+  <!--------------------  Card Modal HTML-------------------------------->
 
-<div id="card-modal" class="modal">
+  <div id="card-modal" class="modal">
     <div class="close-modal"></div>
     <div class="modal-content">
-        <span class="card-title-in-modal">{{title}}</span>
-        <span class="due-date-notification">Due Date</span>
-        <div class="deck-name-and-current-due-date-wrapper">
-            <span class="in-deck">in deck</span>
-            <span class="deck-name">{{deckName}}</span>
-            <span class="current-due-date">{{dueDate}}</span>
+      <span class="card-title-in-modal">{{title}}</span>
+      <span class="due-date-notification">Due Date</span>
+      <div class="deck-name-and-current-due-date-wrapper">
+        <span class="in-deck">in deck</span>
+        <span class="deck-name">{{deckName}}</span>
+        <span class="current-due-date"></span>
+      </div>
+
+      <p class="card-description-edit-btn">
+        Edit the description
+      </p>
+      <div class="card-description-edit">
+        <textarea class="card-description-textarea"></textarea>
+        <div class="edit-controls">
+          <button class="btn waves-effect waves-light card-edit-save">Save</button>
+          <button class="btn waves-effect waves-light card-edit-close">Cancel</button>
         </div>
+      </div>
 
-        <p class="card-description-edit-btn">
-            Edit the description
-        </p>
-        <div class="card-description-edit">
-            <textarea class="card-description-textarea"></textarea>
-            <div class="edit-controls">
-                <button class="btn waves-effect waves-light card-edit-save">Save</button>
-                <button class="btn waves-effect waves-light card-edit-close">Cancel</button>
-            </div>
-        </div>
+      <div class="card-description"> {{description}}</div>
 
-        <div class="card-description"> {{description}}</div>
+      <p>Add comment</p>
+      <div class="comment-frame">
+        <textarea class="comment-contents z-depth-1" placeholder="Write a comment..."></textarea>
+      </div>
+      <div class="comment-send btn waves-effect waves-light">Send</div></br>
 
-        <p>Add comment</p>
-        <div class="comment-frame">
-            <textarea class="comment-contents z-depth-1" placeholder="Write a comment..."></textarea>
-        </div>
-        <div class="comment-send btn waves-effect waves-light">Send</div>
-        </br>
+      <p>Activity</p>
+      <div class="comments">
 
-        <p>Activity</p>
-        <div class="comments">
-
-        </div>
+      </div>
     </div>
 
     <div class="modal-sidebar">
 
-        <p>Add</p>
-        <div class="modal-sidebar-btn z-depth-1 members-btn-in-card">Members</div>
+      <p>Add</p>
+      <div class="modal-sidebar-btn z-depth-1 members-btn-in-card">Members</div>
 
-        <div class="modal-for-members z-depth-1">
-            <div class="members-btn-header">Members</div>
-            <div class="search-member">
-                <ul class="assignees-list">
-
-                </ul>
-            </div>
+      <div class="modal-for-members z-depth-1">
+        <div class="members-btn-header">Members</div>
+        <div class="search-member">
+          <input type="text" placeholder="Search members" />
         </div>
+      </div>
 
-        <div class="modal-sidebar-btn z-depth-1 due-date-btn"> Due Date</div>
-        <div class="modal-for-due-date z-depth-1">
-            <div class="due-date-btn-header">Change Due Date</div>
-            <form class="dpicker-widget">
-                <div class="datapicker-select-date">
-                    <label>Date</label></br>
-                    <input class="datepicker datapicker-select-input" type="date" name="date" max="9999-12-31"
-                           required/>
-                </div>
+      <div class="modal-sidebar-btn z-depth-1 due-date-btn"> Due Date</div>
+      <div class="modal-for-due-date z-depth-1">
+        <div class="due-date-btn-header">Change Due Date</div>
+        <form class="dpicker-widget">
+          <div class="datapicker-select-date">
+            <label>Date</label></br>
+            <input class="datepicker datapicker-select-input" type="date" placeholder="17/6/2016"/>
+          </div>
 
-                <div class="datapicker-select-time">
-                    <label>Time</label></br>
-                    <input class="datapicker-select-input" type="time" placeholder="00:00" name="time" tabindex="101"/>
-                </div>
-                <div class="btn due-date-send">Save</div>
+          <div class="datapicker-select-time">
+            <label>Time</label></br>
+            <input class="datapicker-select-input" type="text" placeholder="12:00" tabindex="101"/>
+          </div>
 
-            </form>
-        </div>
+        </form>
+      </div>
 
-        <div class="modal-sidebar-btn z-depth-1 file-attachment">Attachment</div>
+      <div class="modal-sidebar-btn z-depth-1 file-attachment">Attachment</div>
 
-        <div class="modal-for-attachment z-depth-1">
-            <div class="attachment-btn-header">Attach</div>
-            <input type="file" id="fileUpload" name="files[]"/>
-            <div class="attach-from-computer">Computer</div>
-            <div class="attach-with-link">Attach a link</div>
-            <input type="text" class="link-for-attachment" placeholder="Paste any link here..."/>
-            <div class="link-submit z-depth-1">Attach</div>
-        </div>
+      <div class="modal-for-attachment z-depth-1">
+        <div class="attachment-btn-header">Attach</div>
+        <input type="file" id="fileUpload" name="files[]" />
+        <div class="attach-from-computer">Computer</div>
+        <div class="attach-with-link">Attach a link</div>
+        <input type="text" class="link-for-attachment" placeholder="Paste any link here..." />
+        <div class="link-submit z-depth-1">Attach</div>
+      </div>
 
     </div>
-</div>
+  </div>
 
-<!----------------------------------------------------------------->
+  <!----------------------------------------------------------------->
 
-<!--------------------  Warning Modal HTML-------------------------------->
+  <!--------------------  Warning Modal HTML-------------------------------->
 
-<div id="warning-modal" class="modal">
-    <div class="close-moadl"></div>
-    <div class="modal-content">
-        <h5>Please Write Contents!</h5>
+    <div id="warning-modal" class="modal">
+     <div class="close-moadl"></div>
+     <div class="modal-content">
+       <h5>Please Write Contents!</h5>
+     </div>
     </div>
-</div>
 
-<!----------------------------------------------------------------->
+  <!----------------------------------------------------------------->
 
-<script type="text/javascript" src="lib/jquery-2.2.0.min.js"></script>
-<script type="text/javascript" src="lib/materialize.min.js"></script>
-<script type="text/javascript" src="lib/handlebars-v4.0.5.js"></script>
-<script type="text/javascript" src="./js/dist/bundle.js"></script>
+  <script type="text/javascript" src="lib/jquery-2.2.0.min.js"></script>
+  <script type="text/javascript" src="lib/materialize.min.js"></script>
+  <script type="text/javascript" src="lib/handlebars-v4.0.5.js"></script>
+  <script type="text/javascript" src="./js/dist/bundle.js"></script>
 </body>
 </html>

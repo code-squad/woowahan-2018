@@ -40,7 +40,7 @@ class CardHandler {
     printCards(deckId, cards) {
         const html = cards.reduce((html, card) => {
             return html + this.printCard(deckId, card);
-        }, "");
+        }, "")
 
         _.$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", html);
     }
@@ -65,9 +65,9 @@ class CardHandler {
             } else if (e.target.classList.contains("modalLink")) {
                 const cardId = e.target.id;
 
-                this.cardModalHandler.setDeckId(deckId);
-                this.cardModalHandler.setCardId(cardId);
-                this.cardModalHandler.getCardDetail(cardId, this.cardModalHandler.openCardModal.bind(this.cardModalHandler));
+				this.cardModalHandler.setDeckId(deckId);
+				this.cardModalHandler.setCardId(cardId);
+				this.cardModalHandler.getCardDetail(deckId, cardId, this.cardModalHandler.openCardModal.bind(this.cardModalHandler));
 			}
 		});
 	}
@@ -141,7 +141,7 @@ class CardHandler {
                 standardType: false
 			};
 
-			if (standardCard && e.offsetY < targetCard.clientHeight / 2) {₩
+			if (standardCard && e.offsetY < targetCard.clientHeight / 2) {
 				params.standardCardId = parseInt(standardCard.dataset.cardId);
 				params.standardType = true;
 				targetDeck.insertBefore(targetCard, standardCard);

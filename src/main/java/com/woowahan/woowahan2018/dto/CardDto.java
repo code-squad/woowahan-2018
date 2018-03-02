@@ -1,92 +1,79 @@
 package com.woowahan.woowahan2018.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowahan.woowahan2018.domain.Card;
 import com.woowahan.woowahan2018.domain.Deck;
+import com.woowahan.woowahan2018.dto.group.name.NameFirstGroup;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class CardDto {
 
-    @NotBlank(message = "TEXT.EMPTY")
-    private String text;
+	@NotBlank(message = "TEXT.EMPTY"
+			, groups = NameFirstGroup.class)
+	private String text;
 
-    private String description = "";
+	private String description = "";
 
-    private LocalDateTime dueDate;
+	private long deckId;
 
+	public CardDto() {
 
-    private long deckId;
+	}
 
-    public CardDto() {
+	public String getText() {
+		return text;
+	}
 
-    }
+	public CardDto setText(String text) {
+		this.text = text;
+		return this;
+	}
 
-    public String getText() {
-        return text;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public CardDto setText(String text) {
-        this.text = text;
-        return this;
-    }
+	public CardDto setDescription(String description) {
+		this.description = description;
+		return this;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public long getDeckId() {
+		return deckId;
+	}
 
-    public CardDto setDescription(String description) {
-        this.description = description;
-        return this;
-    }
+	public CardDto setDeckId(long deckId) {
+		this.deckId = deckId;
+		return this;
+	}
 
-    public LocalDateTime getDueDate() {
-        return dueDate;
-    }
+	public Card toCard(Deck deck) {
+		return new Card(text, description, deck);
+	}
 
-    public void setDueDate(LocalDateTime dueDate) {
-        this.dueDate = dueDate;
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CardDto cardDto = (CardDto) o;
+		return deckId == cardDto.deckId &&
+				Objects.equals(text, cardDto.text) &&
+				Objects.equals(description, cardDto.description);
+	}
 
-    public long getDeckId() {
-        return deckId;
-    }
+	@Override
+	public int hashCode() {
 
-    public CardDto setDeckId(long deckId) {
-        this.deckId = deckId;
-        return this;
-    }
+		return Objects.hash(text, description, deckId);
+	}
 
-    public Card toCard(Deck deck) {
-        return new Card(text, description, dueDate, deck);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CardDto cardDto = (CardDto) o;
-        return deckId == cardDto.deckId &&
-                Objects.equals(text, cardDto.text) &&
-                Objects.equals(description, cardDto.description);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(text, description, deckId);
-    }
-
-    @Override
-    public String toString() {
-        return "CardDto{" +
-                "text='" + text + '\'' +
-                ", description='" + description + '\'' +
-                ", deckId=" + deckId +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "CardDto{" +
+				"text='" + text + '\'' +
+				", description='" + description + '\'' +
+				", deckId=" + deckId +
+				'}';
+	}
 }

@@ -85,20 +85,8 @@ const API = {
         CARD_DESCRIPTION(cardId) {
             return API.BOARDS.CARD(cardId) + `/description`;
         },
-        CARD_DATE(cardId) {
-            return API.BOARDS.CARD(cardId) + `/date`;
-        },
-        CARD_ASSIGNEE(cardId) {
-            return API.BOARDS.CARD(cardId) + `/assignees`;
-        },
         ADDMEMBER(boardId) {
             return `/api/boards/${boardId}/members`;
-        },
-        COMMENTS() {
-            return `/api/comments`;
-        },
-        COMMENT(commentId) {
-            return `/api/comments/${commentId}`;
         }
     }
 };

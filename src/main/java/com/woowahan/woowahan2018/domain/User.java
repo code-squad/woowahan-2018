@@ -60,12 +60,12 @@ public class User extends AbstractEntity {
         return name;
     }
 
-    public LoginUser toLoginUser(List<GrantedAuthority> authorities) {
-        return new LoginUser(email, encryptedPassword, authorities);
+    public String getEncryptedPassword() {
+        return encryptedPassword;
     }
 
-    public boolean matchId(long id) {
-        return getId() == id;
+    public LoginUser toLoginUser(List<GrantedAuthority> authorities) {
+        return new LoginUser(email, encryptedPassword, authorities);
     }
 
     @Override

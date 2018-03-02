@@ -1,9 +1,6 @@
 package com.woowahan.woowahan2018.service;
 
-import com.woowahan.woowahan2018.domain.Board;
-import com.woowahan.woowahan2018.domain.BoardRepository;
-import com.woowahan.woowahan2018.domain.User;
-import com.woowahan.woowahan2018.domain.UserRepository;
+import com.woowahan.woowahan2018.domain.*;
 import com.woowahan.woowahan2018.dto.BoardDto;
 import com.woowahan.woowahan2018.exception.BoardNotFoundException;
 import com.woowahan.woowahan2018.exception.ExistMemberException;
