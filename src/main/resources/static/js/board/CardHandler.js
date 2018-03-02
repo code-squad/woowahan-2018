@@ -141,7 +141,7 @@ class CardHandler {
                 standardType: false
 			};
 
-			if (standardCard && e.offsetY < targetCard.clientHeight / 2) {₩
+			if (standardCard && e.offsetY < targetCard.clientHeight / 2) {
 				params.standardCardId = parseInt(standardCard.dataset.cardId);
 				params.standardType = true;
 				targetDeck.insertBefore(targetCard, standardCard);

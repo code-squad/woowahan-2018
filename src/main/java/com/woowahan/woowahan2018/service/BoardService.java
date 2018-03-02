@@ -1,12 +1,10 @@
 package com.woowahan.woowahan2018.service;
 
-import com.woowahan.woowahan2018.domain.Board;
-import com.woowahan.woowahan2018.domain.BoardRepository;
-import com.woowahan.woowahan2018.domain.User;
-import com.woowahan.woowahan2018.domain.UserRepository;
+import com.woowahan.woowahan2018.domain.*;
 import com.woowahan.woowahan2018.dto.BoardDto;
+import com.woowahan.woowahan2018.dto.DeckDto;
 import com.woowahan.woowahan2018.exception.BoardNotFoundException;
-import com.woowahan.woowahan2018.exception.ExistMemberException;
+import com.woowahan.woowahan2018.exception.ExistMemberExeption;
 import com.woowahan.woowahan2018.exception.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,7 +49,7 @@ public class BoardService {
     }
 
     @Transactional
-    public Board addMember(long boardId, String ownerEmail, String memberEmail) throws BoardNotFoundException, UserNotFoundException, ExistMemberException {
+    public Board addMember(long boardId, String ownerEmail, String memberEmail) throws BoardNotFoundException, UserNotFoundException, ExistMemberExeption {
         User signedInUser = userService.findUserByEmail(ownerEmail);
         Board board = findOneBoardForMember(signedInUser, boardId);
         User user = userRepository.findByEmail(memberEmail)
