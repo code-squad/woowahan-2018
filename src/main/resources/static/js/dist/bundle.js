@@ -160,8 +160,20 @@ const API = {
         CARD_DESCRIPTION(cardId) {
             return API.BOARDS.CARD(cardId) + `/description`;
         },
+        CARD_DATE(cardId) {
+            return API.BOARDS.CARD(cardId) + `/date`;
+        },
+        CARD_ASSIGNEE(cardId) {
+            return API.BOARDS.CARD(cardId) + `/assignees`;
+        },
         ADDMEMBER(boardId) {
             return `/api/boards/${boardId}/members`;
+        },
+        COMMENTS() {
+            return `/api/comments`;
+        },
+        COMMENT(commentId) {
+            return `/api/comments/${commentId}`;
         }
     }
 };
@@ -205,11 +217,13 @@ var Template = {
               "</div>" +
           "</div>",
 
-  comment :  "<div class='comment'>" +
-                "<div class='commenter'>{writer-name}</div>" +
-                "<div class='comment-contents z-depth-1'>{{comment-contents}}</div>" +
-                "<div class='comment-date'>{{current-time}} - </div>" +
-                "<div class='comment-reply'> Reply</div>" +
+  assignees : "<li class='assignees-list-item {{type}}' data-email='{{email}}'><span>{{name}}</span><i class='fa fa-check fa-lg' aria-hidden='true'></i></li>",
+
+  comment :  "<div class='comment' id='{{id}}'>" +
+                "<div class='commenter'>{{writerName}}</div>" +
+                "<div class='comment-contents z-depth-1'>{{commentContents}}</div>" +
+                "<div class='comment-date'>{{currentTime}} - </div>" +
+                "<div class='comment-delete' id='{{id}}'> delete</div>" +
     			  "</div>"
 
 };
@@ -788,7 +802,7 @@ class CardHandler {
     printCards(deckId, cards) {
         const html = cards.reduce((html, card) => {
             return html + this.printCard(deckId, card);
-        }, "")
+        }, "");
 
         __WEBPACK_IMPORTED_MODULE_2__support_Utils_js__["b" /* _ */].$(`#deck-cards-${deckId}`).insertAdjacentHTML("beforeend", html);
     }
@@ -813,9 +827,9 @@ class CardHandler {
             } else if (e.target.classList.contains("modalLink")) {
                 const cardId = e.target.id;
 
-				this.cardModalHandler.setDeckId(deckId);
-				this.cardModalHandler.setCardId(cardId);
-				this.cardModalHandler.getCardDetail(deckId, cardId, this.cardModalHandler.openCardModal.bind(this.cardModalHandler));
+                this.cardModalHandler.setDeckId(deckId);
+                this.cardModalHandler.setCardId(cardId);
+                this.cardModalHandler.getCardDetail(cardId, this.cardModalHandler.openCardModal.bind(this.cardModalHandler));
 			}
 		});
 	}
@@ -916,10 +930,12 @@ class CardHandler {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__support_template_js__ = __webpack_require__(1);
+
 
 
 class CardModalHandler {
-    constructor(deckId, cardId) {
+    constructor() {
         this.cardModal = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("#card-modal");
         this.cardModalEventHandler();
     }
@@ -932,19 +948,69 @@ class CardModalHandler {
         this.cardId = cardId;
     }
 
-    getCardDetail(deckId, cardId, callback) {
+    getCardDetail(cardId, callback) {
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARD(cardId), 'GET').then(callback);
     }
 
-    editDescription(deckId, cardId, description, callback) {
+    saveComment(cardId, contents, callback) {
         const data = {
-            "description" : description
+            "cardId" : cardId,
+            "contents" : contents
         }
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.COMMENTS(), 'POST', data).then(callback);
+    }
+
+    editDescription(cardId, description, callback) {
+        const data = {
+            "description": description
+        };
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARD_DESCRIPTION(cardId), 'PUT', data).then(callback);
     }
 
+    deleteComment(commentId, callback) {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.COMMENT(commentId), 'DELETE').then(callback);
+    }
+
+    appendComment(res) {
+        const status = res.status;
+
+        if (status === 'OK') {
+            this.printComment(res.content);
+            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".comment-contents").value = "";
+        } else {
+            console.log("appendComment error.")
+        }
+    }
+
+    removeComment({status, content}) {
+
+        if (status === 'OK') {
+            const commentsDom = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".comments");
+            commentsDom.removeChild(document.getElementById(content.id));
+        } else {
+            console.log("removeComment error.")
+        }
+    }
+
+    printComments(comments) {
+        this.resetComments();
+        comments.forEach((comment) => {
+            this.printComment(comment);
+        });
+    }
+
+    printComment(comment) {
+        const data = {
+            "writerName" : comment.authorName,
+            "commentContents" : comment.contents,
+            "currentTime" : comment.createDate,
+            "id" : comment.id
+        };
+        const template = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_1__support_template_js__["a" /* default */].comment, data);
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".comments").insertAdjacentHTML('beforeend', template);
+    }
+
     printDescription(res) {
-        console.log(res);
         const card = res.content;
 
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".card-description").innerHTML = card.description;
@@ -957,9 +1023,15 @@ class CardModalHandler {
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".card-title-in-modal").innerHTML = card.text;
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".deck-name").innerHTML = card.deckName;
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".card-description").innerHTML = card.description;
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".current-due-date").innerHTML = card.dueDate;
 
+        this.setDueDateInputField(card.dueDate);
+
+        this.printComments(card.comments);
         this.cardModal.classList.add("open");
         this.closeDescriptionField();
+        this.closeDueDateModal();
+        this.closeAssigneesModal();
     }
 
     closeCardModal() {
@@ -977,23 +1049,130 @@ class CardModalHandler {
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".card-description").classList.remove("close");
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".card-description-edit").classList.remove("open");
         __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".card-description-edit-btn").classList.remove("close");
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".comment-contents").value = "";
     }
 
     cardModalEventHandler() {
-        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler("#card-modal", "click", (e) => {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".comments", "click", (e) => {
             e.preventDefault();
-
-            if(e.target.classList.contains("close-modal")) {
-                this.closeCardModal();
-            } else if (e.target.classList.contains("card-description-edit-btn")) {
-                this.openDescriptionField();
-            } else if (e.target.classList.contains("card-edit-close")) {
-                this.closeDescriptionField();
-            } else if (e.target.classList.contains("card-edit-save")) {
-                const description = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".card-description-textarea").value;
-                this.editDescription(this.deckId, this.cardId, description, this.printDescription.bind(this));
-            }
+            const classList = e.target.classList;
+            if (!classList.contains("comment-delete")) return;
+            this.deleteComment(e.target.id, this.removeComment.bind(this));
         });
+
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".close-modal", "click", this.closeCardModal.bind(this));
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".card-description-edit-btn", "click", this.openDescriptionField.bind(this));
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".card-edit-close", "click", this.closeDescriptionField.bind(this));
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".card-edit-save", "click", () => {
+            const description = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".card-description-textarea").value;
+            this.editDescription(this.cardId, description, this.printDescription.bind(this));
+        });
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".comment-send", "click", () => {
+            const contents = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".comment-contents").value;
+            this.saveComment(this.cardId, contents, this.appendComment.bind(this));
+        });
+
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".due-date-btn", "click", this.toggleDueDateModal.bind(this));
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".due-date-send", "click", this.requestSaveDate.bind(this));
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".members-btn-in-card", "click", (e) => {
+            this.toggleAssigneesModal();
+            this.resetAssigneesList();
+            __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARD_ASSIGNEE(this.cardId), "GET").then((res) => {
+                this.printMembers(res.content.assignees, "assignee");
+                this.printMembers(res.content.boardMembers, "member");
+            });
+        });
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].eventHandler(".assignees-list", "click", (e) => {
+            const assigneeItem = e.target.closest("LI");
+            if (!assigneeItem.classList.contains("assignee")) {
+                this.requestAddAssignees(assigneeItem);
+            } else {
+                this.requestDeleteAssignees(assigneeItem);
+            }
+        })
+    }
+
+    printMembers(members, type) {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".assignees-list").innerHTML += members.reduce((html, member) => {
+            member["type"] = type;
+            return html + __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["c" /* boardUtils */].createTemplate(__WEBPACK_IMPORTED_MODULE_1__support_template_js__["a" /* default */].assignees, member);
+        }, "");
+    }
+
+    resetComments() {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".comments").innerHTML = "";
+    }
+
+    resetAssigneesList() {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".assignees-list").innerHTML = "";
+    }
+
+    requestAddAssignees(assigneeItem) {
+        const data = {
+            "email": assigneeItem.dataset.email
+        };
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARD_ASSIGNEE(this.cardId), "POST", data)
+            .then((res) => this.toggleAssigneeMember.call(this, res, assigneeItem));
+    }
+
+    requestDeleteAssignees(assigneeItem) {
+        const data = {
+            "email": assigneeItem.dataset.email
+        };
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARD_ASSIGNEE(this.cardId), "DELETE", data)
+            .then((res) => this.toggleAssigneeMember.call(this, res, assigneeItem));
+    }
+
+    toggleAssigneeMember(res, assigneeItem) {
+        if (res.status === "OK") {
+            assigneeItem.classList.toggle("member");
+            assigneeItem.classList.toggle("assignee");
+        }
+    }
+
+    toggleAssigneesModal() {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".modal-for-members").classList.toggle("on")
+    }
+
+    closeAssigneesModal() {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".modal-for-members").classList.remove("on")
+    }
+
+    setDueDateInputField(dueDate) {
+        const dateInput = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("input[name=date]");
+        const timeInput = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("input[name=time]");
+        if (!dueDate) {
+            dateInput.value = "";
+            timeInput.value = "";
+            return;
+        }
+        dateInput.value = dueDate.split(" ")[0];
+        timeInput.value = dueDate.split(" ")[1];
+    }
+
+    toggleDueDateModal() {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".modal-for-due-date").classList.toggle("on")
+    }
+
+    closeDueDateModal() {
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".modal-for-due-date").classList.remove("on");
+    }
+
+    requestSaveDate() {
+        const date = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("input[name=date]").value;
+        const time = __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$("input[name=time]").value;
+
+        const data = {
+            "dueDate": `${date}T${time}:00`
+        };
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].request(__WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["a" /* API */].BOARDS.CARD_DATE(this.cardId), "PUT", data).then(this.printDueDate.bind(this));
+    }
+
+    printDueDate(res) {
+        const card = res.content;
+
+        __WEBPACK_IMPORTED_MODULE_0__support_Utils_js__["b" /* _ */].$(".current-due-date").innerHTML = card.dueDate;
+        this.toggleDueDateModal();
     }
 }
 

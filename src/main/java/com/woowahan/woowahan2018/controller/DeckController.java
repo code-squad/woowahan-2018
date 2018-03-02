@@ -26,9 +26,6 @@ public class DeckController {
     private static final Logger log = LoggerFactory.getLogger(DeckController.class);
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private DeckService deckService;
 
     @PostMapping("")

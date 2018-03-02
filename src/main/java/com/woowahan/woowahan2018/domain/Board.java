@@ -1,7 +1,7 @@
 package com.woowahan.woowahan2018.domain;
 
 import com.woowahan.woowahan2018.dto.UserDto;
-import com.woowahan.woowahan2018.exception.ExistMemberExeption;
+import com.woowahan.woowahan2018.exception.ExistMemberException;
 import com.woowahan.woowahan2018.exception.UnAuthorizedException;
 
 import javax.persistence.*;
@@ -78,9 +78,9 @@ public class Board extends AbstractEntity {
         }
     }
 
-    public void checkMember(User user) throws ExistMemberExeption {
+    public void checkMember(User user) throws ExistMemberException {
         if (members.contains(user)) {
-            throw new ExistMemberExeption();
+            throw new ExistMemberException();
         }
     }
 
