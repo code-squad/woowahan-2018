@@ -23,7 +23,7 @@ public class BoardAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void create() throws Exception {
 		BoardDto newBoard = new BoardDto("Test Board");
-		CommonResponse response = basicAuthTemplate().postForObject("/api/boards/", newBoard, CommonResponse.class);
+		CommonResponse response = basicAuthTemplate().postForObject("/api/boards", newBoard, CommonResponse.class);
 
 		assertThat(response.getStatus(), is(ResponseStatus.OK));
 		assertThat(response.getMessage(), is("BOARD.CREATE"));
@@ -32,7 +32,7 @@ public class BoardAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void create_null() throws Exception {
 		BoardDto newBoard = new BoardDto();
-		List<CommonResponse> responses = Arrays.asList(basicAuthTemplate().postForObject("/api/boards/", newBoard, CommonResponse[].class));
+		List<CommonResponse> responses = Arrays.asList(basicAuthTemplate().postForObject("/api/boards", newBoard, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
 		assertThat(responses.get(0).getStatus(), is(ResponseStatus.FAIL));
@@ -42,7 +42,7 @@ public class BoardAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void create_blank() throws Exception {
 		BoardDto newBoard = new BoardDto("");
-		List<CommonResponse> responses = Arrays.asList(basicAuthTemplate().postForObject("/api/boards/", newBoard, CommonResponse[].class));
+		List<CommonResponse> responses = Arrays.asList(basicAuthTemplate().postForObject("/api/boards", newBoard, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
 		assertThat(responses.get(0).getStatus(), is(ResponseStatus.FAIL));
@@ -52,11 +52,10 @@ public class BoardAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void showAll() {
 		BoardDto newBoard = new BoardDto("Test Board!!");
-		basicAuthTemplate().postForObject("/api/boards/", newBoard, CommonResponse.class);
+		basicAuthTemplate().postForObject("/api/boards", newBoard, CommonResponse.class);
 
-		CommonResponse response = basicAuthTemplate().getForObject("/api/boards/", CommonResponse.class);
+		CommonResponse response = basicAuthTemplate().getForObject("/api/boards", CommonResponse.class);
 
-		log.debug("response: {}", response);
 		assertThat(response.getContent().toString(), containsString(newBoard.getName()));
 	}
 
