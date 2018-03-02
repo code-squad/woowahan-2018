@@ -22,7 +22,7 @@ public class UserDto {
     @Size(min = 5, max = 30
             , message = "EMAIL.LENGTH"
             , groups = EmailSecondGroup.class)
-    @Email(message = "EMAIL.INVALID"
+    @Email(message = "EMAIL.PATTERN"
             , groups = EmailThirdGroup.class)
     private String email;
 

@@ -26,7 +26,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		UserDto newUser = createUserDto();
 
 		CommonResponse response = template().postForObject("/api/users", newUser, CommonResponse.class);
-		assertThat(response, is(CommonResponse.success("성공적으로 가입했습니다.")));
+		assertThat(response.getMessage(), is("USER.CREATE"));
 	}
 
 	@Test
@@ -36,7 +36,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		template().postForObject("/api/users", newUser, CommonResponse.class);
 		CommonResponse response = template().postForObject("/api/users", newUser, CommonResponse.class);
 
-		assertThat(response, is(CommonResponse.error("이미 가입된 사용자입니다.")));
+		assertThat(response.getMessage(), is("USER.ALREADY_EXISTS"));
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
-		assertTrue(responses.contains(CommonResponse.error("email", "이메일을 입력해주세요.")));
+		assertThat(responses.get(0), is(CommonResponse.error("email", "EMAIL.EMPTY")));
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
-		assertTrue(responses.contains(CommonResponse.error("email", "이메일을 입력해주세요.")));
+		assertTrue(responses.contains(CommonResponse.error("email", "EMAIL.EMPTY")));
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
-		assertTrue(responses.contains(CommonResponse.error("email", "이메일은 5자 이상, 30자 이하이어야 합니다.")));
+		assertTrue(responses.contains(CommonResponse.error("email", "EMAIL.LENGTH")));
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
-		assertTrue(responses.contains(CommonResponse.error("email", "이메일은 @를 포함해야 합니다.")));
+		assertTrue(responses.contains(CommonResponse.error("email", "EMAIL.PATTERN")));
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
-		assertTrue(responses.contains(CommonResponse.error("password", "비밀번호를 입력해주세요.")));
+		assertTrue(responses.contains(CommonResponse.error("password", "PASSWORD.EMPTY")));
 	}
 
 	@Test
@@ -96,7 +96,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
-		assertTrue(responses.contains(CommonResponse.error("password", "비밀번호를 입력해주세요.")));
+		assertTrue(responses.contains(CommonResponse.error("password", "PASSWORD.EMPTY")));
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
-		assertTrue(responses.contains(CommonResponse.error("password", "비밀번호는 10자 이상, 30자 이하이어야 합니다.")));
+		assertTrue(responses.contains(CommonResponse.error("password", "PASSWORD.LENGTH")));
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
-		assertTrue(responses.contains(CommonResponse.error("password", "비밀번호는 문자/숫자를 각각 1개 이상, 특수문자를 2개 이상 포함해야 합니다.")));
+		assertTrue(responses.contains(CommonResponse.error("password", "PASSWORD.PATTERN")));
 	}
 
 	@Test
@@ -126,7 +126,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
-		assertTrue(responses.contains(CommonResponse.error("name", "사용자 이름을 입력해주세요.")));
+		assertTrue(responses.contains(CommonResponse.error("name", "NAME.EMPTY")));
 	}
 
 	@Test
@@ -136,7 +136,7 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(1));
-		assertTrue(responses.contains(CommonResponse.error("name", "사용자 이름을 입력해주세요.")));
+		assertTrue(responses.contains(CommonResponse.error("name", "NAME.EMPTY")));
 	}
 
 	@Test
@@ -146,8 +146,8 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(2));
-		assertTrue(responses.contains(CommonResponse.error("email", "이메일을 입력해주세요.")));
-		assertTrue(responses.contains(CommonResponse.error("password", "비밀번호는 10자 이상, 30자 이하이어야 합니다.")));
+		assertTrue(responses.contains(CommonResponse.error("email", "EMAIL.EMPTY")));
+		assertTrue(responses.contains(CommonResponse.error("password", "PASSWORD.LENGTH")));
 	}
 
 	@Test
@@ -157,8 +157,8 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(2));
-		assertTrue(responses.contains(CommonResponse.error("email", "이메일은 @를 포함해야 합니다.")));
-		assertTrue(responses.contains(CommonResponse.error("name", "사용자 이름을 입력해주세요.")));
+		assertTrue(responses.contains(CommonResponse.error("email", "EMAIL.PATTERN")));
+		assertTrue(responses.contains(CommonResponse.error("name", "NAME.EMPTY")));
 	}
 
 	@Test
@@ -168,9 +168,9 @@ public class UserAcceptanceTest extends AcceptanceTest {
 		List<CommonResponse> responses = Arrays.asList(template().postForObject("/api/users", newUser, CommonResponse[].class));
 
 		assertThat(responses.size(), is(3));
-		assertTrue(responses.contains(CommonResponse.error("email", "이메일은 @를 포함해야 합니다.")));
-		assertTrue(responses.contains(CommonResponse.error("password", "비밀번호는 10자 이상, 30자 이하이어야 합니다.")));
-		assertTrue(responses.contains(CommonResponse.error("name", "사용자 이름을 입력해주세요.")));
+		assertTrue(responses.contains(CommonResponse.error("email", "EMAIL.PATTERN")));
+		assertTrue(responses.contains(CommonResponse.error("password", "PASSWORD.LENGTH")));
+		assertTrue(responses.contains(CommonResponse.error("name", "NAME.EMPTY")));
 	}
 
 }

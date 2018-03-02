@@ -35,6 +35,6 @@ public class LoginAcceptanceTest extends AcceptanceTest {
 
         CommonResponse response = template().postForObject("/api/users/login", existedUser, CommonResponse.class);
 
-        assertThat(response, is(CommonResponse.error("아이디 또는 비밀번호가 잘못되었습니다.")));
+        assertThat(response.getMessage(), is("PASSWORD.WRONG"));
     }
 }
