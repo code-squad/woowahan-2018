@@ -1,19 +1,24 @@
 package com.woowahan.woowahan2018.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woowahan.woowahan2018.domain.Card;
 import com.woowahan.woowahan2018.domain.Deck;
 import com.woowahan.woowahan2018.dto.group.name.NameFirstGroup;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class CardDto {
 
-	@NotBlank(message = "TEXT.EMPTY"
-			, groups = NameFirstGroup.class)
+	@NotBlank(message = "TEXT.EMPTY")
 	private String text;
 
 	private String description = "";
+
+	private LocalDateTime dueDate;
 
 	private long deckId;
 
@@ -39,6 +44,15 @@ public class CardDto {
 		return this;
 	}
 
+	public LocalDateTime getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(LocalDateTime dueDate) {
+		this.dueDate = dueDate;
+	}
+
+
 	public long getDeckId() {
 		return deckId;
 	}
@@ -49,7 +63,7 @@ public class CardDto {
 	}
 
 	public Card toCard(Deck deck) {
-		return new Card(text, description, deck);
+		return new Card(text, description, dueDate, deck);
 	}
 
 	@Override
@@ -76,4 +90,5 @@ public class CardDto {
 				", deckId=" + deckId +
 				'}';
 	}
+
 }
