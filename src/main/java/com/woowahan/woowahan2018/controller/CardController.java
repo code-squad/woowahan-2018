@@ -5,6 +5,7 @@ import com.woowahan.woowahan2018.domain.User;
 import com.woowahan.woowahan2018.dto.CardDto;
 import com.woowahan.woowahan2018.dto.CommonResponse;
 import com.woowahan.woowahan2018.dto.MovedCardDto;
+import com.woowahan.woowahan2018.dto.group.NamePriorityGroup;
 import com.woowahan.woowahan2018.exception.CardNotFoundException;
 import com.woowahan.woowahan2018.exception.DeckNotFoundException;
 import com.woowahan.woowahan2018.exception.UnAuthenticationException;
@@ -15,9 +16,9 @@ import com.woowahan.woowahan2018.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,8 +47,8 @@ public class CardController {
 
 	@PostMapping("")
 	public CommonResponse postCard(@SignedInUser User signedInUser,
-	                               @RequestBody
-	                               @Valid CardDto cardDto) throws DeckNotFoundException {
+	                               @Validated(value = {NamePriorityGroup.class})
+	                               @RequestBody CardDto cardDto) throws DeckNotFoundException {
 
 		long deckId = cardDto.getDeckId();
 		Card card = cardService.createCard(signedInUser, deckId, cardDto);
