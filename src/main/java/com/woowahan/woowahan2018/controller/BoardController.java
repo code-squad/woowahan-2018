@@ -7,7 +7,7 @@ import com.woowahan.woowahan2018.dto.CommonResponse;
 import com.woowahan.woowahan2018.dto.MemberDto;
 import com.woowahan.woowahan2018.dto.group.NamePriorityGroup;
 import com.woowahan.woowahan2018.exception.BoardNotFoundException;
-import com.woowahan.woowahan2018.exception.ExistMemberExeption;
+import com.woowahan.woowahan2018.exception.ExistMemberException;
 import com.woowahan.woowahan2018.exception.UserNotFoundException;
 import com.woowahan.woowahan2018.security.SignedInUser;
 import com.woowahan.woowahan2018.service.BoardService;
@@ -60,7 +60,7 @@ public class BoardController {
     @PostMapping("/{boardId}/members")
     public CommonResponse addMember(@SignedInUser User signedInUser,
                                     @PathVariable long boardId,
-                                    @RequestBody MemberDto memberDto) throws BoardNotFoundException, UserNotFoundException, ExistMemberExeption {
+                                    @RequestBody MemberDto memberDto) throws BoardNotFoundException, UserNotFoundException, ExistMemberException {
         Board board = boardService.addMember(boardId, signedInUser.getEmail(), memberDto.getEmail());
 
         return CommonResponse.success("MEMBER.ADD", board.getMembers());
